@@ -11,7 +11,8 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-                <TabControl Grid.Column="0" TabStripPlacement="Left">
+        
+        <TabControl Grid.Column="0" TabStripPlacement="Left">
             <TabItem Header="Play song">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -23,7 +24,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     
-                    <Button Content="Choose file"/>
+                    <Button Name="Button_Choose_File" Content="Choose file" Click="Button_Choose_File_Click"/>
                     <Label Grid.Row="1" Content="Choosen file name: "/>
                     <Label Grid.Row="1" Grid.Column="1" Content="filename" />
                 </Grid>
@@ -118,7 +119,7 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Current song -->
