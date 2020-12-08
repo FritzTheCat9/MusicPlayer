@@ -8,43 +8,91 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
                 <TabControl Grid.Column="0" TabStripPlacement="Left">
             <TabItem Header="Play song">
-                <Grid>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     
+                    <Button Content="Choose file"/>
+                    <Label Grid.Row="1" Content="Choosen file name: "/>
+                    <Label Grid.Row="1" Grid.Column="1" Content="filename" />
                 </Grid>
             </TabItem>
             <TabItem Header="Playlists">
                 <Grid>
-
+                    <ListBox>
+                        <ListBoxItem>Sample playlist</ListBoxItem>
+                        <ListBoxItem>Sample playlist</ListBoxItem>
+                        <ListBoxItem>Sample playlist</ListBoxItem>
+                        <ListBoxItem>Sample playlist</ListBoxItem>
+                        <ListBoxItem>Sample playlist</ListBoxItem>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Songs library">
                 <Grid>
-
+                    <ListBox Grid.Row="1">
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                        <ListBoxItem>Sample song</ListBoxItem>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="YouTube">
-                <Grid>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
+                    <Label Content="Link to video"/>
+                    <TextBox Grid.Column="1" Text="link"/>
+                    <Button Grid.Row="1" Content="Download"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Albums">
                 <Grid>
-
+                    <ListBox Grid.Row="1">
+                        <ListBoxItem>Sample album</ListBoxItem>
+                        <ListBoxItem>Sample album</ListBoxItem>
+                        <ListBoxItem>Sample album</ListBoxItem>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Autors">
                 <Grid>
-
+                    <ListBox Grid.Row="1">
+                        <ListBoxItem>Sample author</ListBoxItem>
+                        <ListBoxItem>Sample author</ListBoxItem>
+                        <ListBoxItem>Sample author</ListBoxItem>
+                        <ListBoxItem>Sample author</ListBoxItem>
+                        <ListBoxItem>Sample author</ListBoxItem>
+                        <ListBoxItem>Sample author</ListBoxItem>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
                 <Grid>
-
+                    
                 </Grid>
             </TabItem>
         </TabControl>
@@ -69,7 +117,10 @@
             <!-- Current playlist -->
 
             <ListBox Grid.Row="1">
-
+                <ListBoxItem>Sample song 1</ListBoxItem>
+                <ListBoxItem>Sample song 2</ListBoxItem>
+                <ListBoxItem>Sample song 3</ListBoxItem>
+                <ListBoxItem>Sample song 4</ListBoxItem>
             </ListBox>
         </Grid>
         
