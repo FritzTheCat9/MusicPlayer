@@ -30,7 +30,24 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Playlists">
-                <Grid>
+                <StackPanel>
+                    <Menu>
+                        <MenuItem Header="Add"/>
+                        <MenuItem Header="Edit"/>
+                        <MenuItem Header="Delete"/>
+                        <MenuItem Header="Details"/>
+                        <Separator/>
+                        <MenuItem Header="Export">
+                            <MenuItem Header="To XML"/>
+                            <MenuItem Header="To JSON"/>
+                            <MenuItem Header="To ZIP"/>
+                        </MenuItem>
+                        <MenuItem Header="Import">
+                            <MenuItem Header="From XML"/>
+                            <MenuItem Header="From JSON"/>
+                            <MenuItem Header="From ZIP"/>
+                        </MenuItem>
+                    </Menu>
                     <ListBox>
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
@@ -38,7 +55,7 @@
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
                     </ListBox>
-                </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Songs library">
                 <Grid>
@@ -71,16 +88,28 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Albums">
-                <Grid>
+                <StackPanel>
+                    <Menu>
+                        <MenuItem Header="Add"/>
+                        <MenuItem Header="Edit"/>
+                        <MenuItem Header="Delete"/>
+                        <MenuItem Header="Details"/>
+                    </Menu>
                     <ListBox Grid.Row="1">
                         <ListBoxItem>Sample album</ListBoxItem>
                         <ListBoxItem>Sample album</ListBoxItem>
                         <ListBoxItem>Sample album</ListBoxItem>
                     </ListBox>
-                </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Autors">
-                <Grid>
+                <StackPanel>
+                    <Menu>
+                        <MenuItem Header="Add"/>
+                        <MenuItem Header="Edit"/>
+                        <MenuItem Header="Delete"/>
+                        <MenuItem Header="Details"/>
+                    </Menu>
                     <ListBox Grid.Row="1">
                         <ListBoxItem>Sample author</ListBoxItem>
                         <ListBoxItem>Sample author</ListBoxItem>
@@ -89,7 +118,7 @@
                         <ListBoxItem>Sample author</ListBoxItem>
                         <ListBoxItem>Sample author</ListBoxItem>
                     </ListBox>
-                </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Settings">
                 <Grid>
@@ -98,6 +127,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
@@ -112,6 +142,7 @@
                         <ComboBoxItem>LIGHT</ComboBoxItem>
                         <ComboBoxItem>COLOR</ComboBoxItem>
                     </ComboBox>
+                    <CheckBox Grid.Row="2" Content="Play songs randomly" />
                 </Grid>
             </TabItem>
         </TabControl>
