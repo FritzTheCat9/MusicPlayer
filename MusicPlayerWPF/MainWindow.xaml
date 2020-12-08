@@ -49,6 +49,7 @@
                         </MenuItem>
                     </Menu>
                     <ListBox>
+
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
@@ -58,7 +59,26 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Songs library">
-                <Grid>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Content="Search" />
+                        <TextBox Grid.Column="1"/>
+                        <Label Grid.Row="1" Content="Sort" />
+                        <ComboBox Grid.Row="1" Grid.Column="1">
+                            <ComboBoxItem>By title ascending</ComboBoxItem>
+                            <ComboBoxItem>By title descending</ComboBoxItem>
+                            <ComboBoxItem>By length</ComboBoxItem>
+                            <ComboBoxItem>By author</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
                     <ListBox Grid.Row="1">
                         <ListBoxItem>Sample song</ListBoxItem>
                         <ListBoxItem>Sample song</ListBoxItem>
@@ -69,7 +89,7 @@
                         <ListBoxItem>Sample song</ListBoxItem>
                         <ListBoxItem>Sample song</ListBoxItem>
                     </ListBox>
-                </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">
                 <Grid>
@@ -95,6 +115,23 @@
                         <MenuItem Header="Delete"/>
                         <MenuItem Header="Details"/>
                     </Menu>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Content="Search" />
+                        <TextBox Grid.Column="1"/>
+                        <Label Grid.Row="1" Content="Sort" />
+                        <ComboBox Grid.Row="1" Grid.Column="1">
+                            <ComboBoxItem>By name</ComboBoxItem>
+                            <ComboBoxItem>By author</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
                     <ListBox Grid.Row="1">
                         <ListBoxItem>Sample album</ListBoxItem>
                         <ListBoxItem>Sample album</ListBoxItem>
@@ -110,6 +147,23 @@
                         <MenuItem Header="Delete"/>
                         <MenuItem Header="Details"/>
                     </Menu>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Content="Search" />
+                        <TextBox Grid.Column="1"/>
+                        <Label Grid.Row="1" Content="Sort" />
+                        <ComboBox Grid.Row="1" Grid.Column="1">
+                            <ComboBoxItem>By name ascending</ComboBoxItem>
+                            <ComboBoxItem>By name descending</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
                     <ListBox Grid.Row="1">
                         <ListBoxItem>Sample author</ListBoxItem>
                         <ListBoxItem>Sample author</ListBoxItem>
@@ -157,10 +211,12 @@
             <StackPanel Grid.Row="0">
                 <Image Grid.Row="0" Source="Images/DefaultImage.png" Width="320" Height="180"/>
                 <Slider Grid.Row="1"/>
+                <Label Content="TIME"/>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Previous"/>
                     <Button Content="Play"/>
                     <Button Content="Next"/>
+                    <Button Content="Shuffle"/>
                 </StackPanel>
             </StackPanel>
 
