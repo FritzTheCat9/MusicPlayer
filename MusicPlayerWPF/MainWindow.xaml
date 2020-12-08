@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MusicPlayer" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
@@ -60,6 +60,12 @@
             </TabItem>
             <TabItem Header="Songs library">
                 <StackPanel>
+                    <Menu>
+                        <MenuItem Header="Add"/>
+                        <MenuItem Header="Edit"/>
+                        <MenuItem Header="Delete"/>
+                        <MenuItem Header="Details"/>
+                    </Menu>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
