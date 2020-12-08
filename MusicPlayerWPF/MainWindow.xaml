@@ -1,0 +1,77 @@
+﻿<Window x:Class="MusicPlayerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPlayerWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+                <TabControl Grid.Column="0" TabStripPlacement="Left">
+            <TabItem Header="Play song">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Playlists">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Songs library">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="YouTube">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Albums">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Autors">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Current song -->
+            <StackPanel Grid.Row="0">
+                <Image Grid.Row="0" Source="Images/DefaultImage.png" Width="320" Height="180"/>
+                <Slider Grid.Row="1"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Previous"/>
+                    <Button Content="Play"/>
+                    <Button Content="Next"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Current playlist -->
+
+            <ListBox Grid.Row="1">
+
+            </ListBox>
+        </Grid>
+        
+    </Grid>
+</Window>
