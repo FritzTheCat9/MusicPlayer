@@ -13,10 +13,10 @@
         </Grid.ColumnDefinitions>
                 <TabControl Grid.Column="0" TabStripPlacement="Left">
             <TabItem Header="Play song">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -54,10 +54,10 @@
                 </Grid>
             </TabItem>
             <TabItem Header="YouTube">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -92,7 +92,25 @@
             </TabItem>
             <TabItem Header="Settings">
                 <Grid>
-                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Label>Save Playlist format</Label>
+                    <ComboBox Grid.Column="1" Grid.Row="0">
+                        <ComboBoxItem>JSON</ComboBoxItem>
+                        <ComboBoxItem>XML</ComboBoxItem>
+                    </ComboBox>
+                    <Label Grid.Row="1">Default style</Label>
+                    <ComboBox Grid.Column="1" Grid.Row="1">
+                        <ComboBoxItem>DARK</ComboBoxItem>
+                        <ComboBoxItem>LIGHT</ComboBoxItem>
+                        <ComboBoxItem>COLOR</ComboBoxItem>
+                    </ComboBox>
                 </Grid>
             </TabItem>
         </TabControl>
