@@ -15,11 +15,15 @@ namespace MusicPlayer
         public int PlaylistID { get; set; }
 
         /* POLA ENTITY FRAMEWORK */
-        [ForeignKey("SongID")]
+        [ForeignKey(nameof(SongID))]
         public virtual Song Song { get; set; }
-        [ForeignKey("PlaylistID")]
+        [ForeignKey(nameof(PlaylistID))]
         public virtual Playlist Playlist { get; set; }
 
         /* METODY */
+        public SongPlaylist()
+        {
+
+        }
     }
 }

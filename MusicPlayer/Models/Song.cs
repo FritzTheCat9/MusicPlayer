@@ -13,7 +13,7 @@ namespace MusicPlayer
     {
         /* POLA */
         public int SongID { get; set; }
-        public int AlbumID { get; set; }
+        public int? AlbumID { get; set; }
         public int AuthorID { get; set; }
         public string Title { get; set; }
         public string FilePath { get; set; }
@@ -21,57 +21,35 @@ namespace MusicPlayer
         public int Length { get; set; }
 
         /* POLA ENTITY FRAMEWORK */
-        [ForeignKey("AlbumID")]
+        [ForeignKey(nameof(AlbumID))]
         public virtual Album Album { get; set; }
-        [ForeignKey("AuthorID")]
+        [ForeignKey(nameof(AuthorID))]
         public virtual Author Author { get; set; }
         public virtual ICollection<SongPlaylist> SongPlaylists { get; set; } = new ObservableCollection<SongPlaylist>();
 
         /* METODY */
-        public Song() { }
-        public Song(string title, string filePath, string imagePath, string albumName, string authorName)
+        public Song()
+        {
+            Title = "Song title";
+            FilePath = "Song filePath";
+            ImagePath = "Song imagePath";
+            Length = 0;
+        }
+
+        public Song(string title, string filePath, string imagePath, int length)
         {
             Title = title;
             FilePath = filePath;
             ImagePath = imagePath;
-            Length = getSongLength(filePath);
-
-            using (var context = new MusicPlayerContext())
-            {
-                // Sprawdzenie czy autor jest w bazie jak go nie ma to dodajemy go i odczytujemy z bazy ponownie
-                var author = context.Authors.Where(x => x.Name == authorName).FirstOrDefault();
-                if (author == null)
-                {
-                    context.Authors.Add(new Author(authorName));
-                    context.SaveChanges();
-                    author = context.Authors.Where(x => x.Name == authorName).FirstOrDefault();
-                }
-                AuthorID = author.AuthorID;
-
-                // Sprawdzenie czy album jest w bazie jak go nie ma to dodajemy go i odczytujemy z bazy ponownie
-                var album = context.Albums.Where(x => x.Name == albumName).FirstOrDefault();
-                if (album == null)
-                {
-                    context.Albums.Add(new Album(albumName, author.Name));
-                    context.SaveChanges();
-                    album = context.Albums.Where(x => x.Name == albumName).FirstOrDefault();
-                }
-                AlbumID = album.AlbumID;
-            }
+            Length = length;
         }
 
-        private static int getSongLength(string filePath)
+        public Song(Song song)
         {
-            try
-            {
-                Mp3FileReader reader = new Mp3FileReader(filePath);
-                TimeSpan duration = reader.TotalTime;
-                return (int) duration.TotalSeconds;
-            }
-            catch
-            {
-                return 0;
-            }
+            Title = song.Title;
+            FilePath = song.FilePath;
+            ImagePath = song.ImagePath;
+            Length = song.Length;
         }
     }
 }

@@ -18,10 +18,19 @@ namespace MusicPlayer
         public virtual ICollection<Song> Songs { get; set; } = new ObservableCollection<Song>();
 
         /* METODY */
-        public Author() { }
+        public Author() 
+        {
+            Name = "Author name";
+        }
+
         public Author(string name)
         {
             Name = name;
+        }
+
+        public Author(Author author)
+        {
+            Name = author.Name;
         }
     }
 }

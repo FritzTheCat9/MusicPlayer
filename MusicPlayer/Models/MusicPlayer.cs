@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MusicPlayer.Data;
+using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,10 +19,40 @@ namespace MusicPlayer
     {
         /* Singleton - one Music Player in application */
         private static MusicPlayer _instance = new MusicPlayer();
-        private MusicPlayer() { }
+        private MusicPlayer()
+        {
+            // This will get the current WORKING directory (i.e. \bin\Debug)
+            string workingDirectory = Environment.CurrentDirectory;
+
+            // This will get the current SOLUTION directory
+            string solutionDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
+            SOLUTION_DIRECTORY = solutionDirectory;
+            SONGS_FOLDER = SOLUTION_DIRECTORY + @"\Songs\";
+            IMAGES_FOLER = SOLUTION_DIRECTORY + @"\Images\";
+            PLAYLISTS_FOLDER = SOLUTION_DIRECTORY + @"\Playlists\";
+        }
         public static MusicPlayer getInstance()
         {
             return _instance;
+        }
+
+        private string SOLUTION_DIRECTORY;
+        private string SONGS_FOLDER;
+        private string IMAGES_FOLER;
+        private string PLAYLISTS_FOLDER;
+
+        private int getSongLength(string filePath)
+        {
+            try
+            {
+                Mp3FileReader reader = new Mp3FileReader(filePath);
+                TimeSpan duration = reader.TotalTime;
+                return (int)duration.TotalSeconds;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -28,61 +60,46 @@ namespace MusicPlayer
         /// </summary>
         /// <param name="title">Song title</param>
         /// <param name="filePath">Song file path</param>
-        /// <param name="albumName">Album name</param>
-        /// <param name="authorName">Author name</param>
         /// <param name="imagePath">Image file path</param>
+        /// <param name="authorName">Author name</param>
+        /// <param name="albumName">Album name (can be null)</param>
         /// <returns></returns>
-        public bool AddSong(string title, string filePath, string albumName, string authorName, string imagePath = @"\Images\DefaultImage.png")
+        public bool AddSong(string title, string filePath, string imagePath, string authorName, string albumName = null)
         {
-            // Set default song image
-            if(imagePath == @"\Images\DefaultImage.png")
+            // Adding song
+            if (File.Exists(filePath))
             {
-                imagePath = Directory.GetCurrentDirectory() + @"\Images\DefaultImage.png";
+                var newFilePath = SONGS_FOLDER + Path.GetFileName(filePath);
+                if (!File.Exists(newFilePath))
+                {
+                    File.Copy(filePath, newFilePath);
+                    filePath = newFilePath;
+                }
             }
-            
-            using (var context = new MusicPlayerContext())
+            else
             {
-                //Sprawdzenie czy piosenka już jest w bazie (jak jest to nie dodajemy jej ponownie)
-                var searchedSong = context.Songs.Where(x => x.Title == title).FirstOrDefault();
-                if (searchedSong != null)
-                {
-                    Console.WriteLine($"Song: {title} already exists");
-                    return true;
-                }
-
-                // Add song to database
-                var song = new Song(title, filePath, imagePath, albumName, authorName);
-                context.Songs.Add(song);
-                context.SaveChanges();
-
-                // Add song to Songs folder
-                if (!File.Exists(@"Songs\" + Path.GetFileName(filePath)))
-                {
-                    File.Copy(filePath, @"Songs\" + Path.GetFileName(filePath));
-                }
-                    
-                // Add song to Images folder
-                if (imagePath != Directory.GetCurrentDirectory() + @"\Images\DefaultImage.png")
-                {
-                    if (!File.Exists(@"Images\" + Path.GetFileName(imagePath)))
-                    {
-                        File.Copy(imagePath, @"Images\" + Path.GetFileName(imagePath));
-                    }
-                }
-
-                // Change paths to local folders for Images and Songs
-                var currentPath = Directory.GetCurrentDirectory();
-                var updatedSong = context.Songs.Where(x => x.SongID == song.SongID).FirstOrDefault();
-                if (updatedSong != null)
-                {
-                    updatedSong.FilePath = currentPath + @"\Songs\" + Path.GetFileName(filePath);
-                    updatedSong.ImagePath = currentPath + @"\Images\" + Path.GetFileName(imagePath);
-                    context.SaveChanges();
-                }
-
-                Console.WriteLine($"Song: {title} has been added");
-                return true;
+                return false;
             }
+
+            // Adding image
+            if (File.Exists(imagePath))
+            {
+                var newImagePath = IMAGES_FOLER + Path.GetFileName(imagePath);
+                if (!File.Exists(newImagePath))
+                {
+                    File.Copy(imagePath, newImagePath);
+                    imagePath = newImagePath;
+                }
+            }
+            else
+            {
+                imagePath = IMAGES_FOLER + "DefaultImage.png";
+            }
+
+            // Adding to database
+            Database.AddSong(title, filePath, imagePath, getSongLength(filePath), authorName, albumName);
+
+            return true;
         }
 
         /// <summary>
@@ -92,33 +109,35 @@ namespace MusicPlayer
         /// <returns></returns>
         public bool DeleteSong(string title)
         {
-            using (var context = new MusicPlayerContext())
+            var songToRemove = Database.GetSong(title);
+
+            if(songToRemove != null)
             {
-                // Delete song from database
-                var songToRemove = context.Songs.Where(x => x.Title == title).FirstOrDefault();
-                if (songToRemove == null)
+                // Delete from Images Folder
+                if(songToRemove.ImagePath != IMAGES_FOLER + "DefaultImage.png")
                 {
-                    Console.WriteLine($"Song: {title} did not exist");
-                    return false;
+                    if (File.Exists(songToRemove.ImagePath))
+                    {
+                        File.Delete(songToRemove.ImagePath);
+                    }
                 }
 
-                // Delete song from Songs folder
-                File.Delete(songToRemove.FilePath);
-                // Delete song from Images folder
-                if (songToRemove.ImagePath != Directory.GetCurrentDirectory() + @"\Images\DefaultImage.png")
+                // Delete from Songs Folder
+                if (File.Exists(songToRemove.FilePath))
                 {
-                    File.Delete(songToRemove.ImagePath);
+                    File.Delete(songToRemove.FilePath);
                 }
 
-                context.Songs.Remove(songToRemove);
-                context.SaveChanges();
+                // Delete from database
+                Database.RemoveSong(title);
 
-                Console.WriteLine($"Song: {title} has been deleted");
                 return true;
             }
+
+            return false;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Edit song in database, Songs folder and Images folder
         /// </summary>
         /// <param name="oldTitle">Edited song title</param>
@@ -128,12 +147,39 @@ namespace MusicPlayer
         /// <param name="authorName">New author name</param>
         /// <param name="imagePath">New image file path</param>
         /// <returns></returns>
-        public bool EditSong(string oldTitle, string newTitle, string filePath, string albumName, string authorName, string imagePath= @"\Images\DefaultImage.png")
+        public bool EditSong(string oldTitle, string newTitle, string newFilePath, string newImagePath, string newAuthorName, string newAlbumName = null)
         {
             if (imagePath == @"\Images\DefaultImage.png")
             {
                 imagePath = Directory.GetCurrentDirectory() + @"\Images\DefaultImage.png";
             }
+
+            //var songToRemove = Database.GetSong(title);
+
+            //if (songToRemove != null)
+            //{
+            //    // Delete from Images Folder
+            //    if (songToRemove.ImagePath != IMAGES_FOLER + "DefaultImage.png")
+            //    {
+            //        if (File.Exists(songToRemove.ImagePath))
+            //        {
+            //            File.Delete(songToRemove.ImagePath);
+            //        }
+            //    }
+
+            //    // Delete from Songs Folder
+            //    if (File.Exists(songToRemove.FilePath))
+            //    {
+            //        File.Delete(songToRemove.FilePath);
+            //    }
+
+            //    // Delete from database
+            //    Database.RemoveSong(title);
+
+            //    return true;
+            //}
+
+            //return false;
 
             using (var context = new MusicPlayerContext())
             {
@@ -204,9 +250,9 @@ namespace MusicPlayer
                 Console.WriteLine($"Song: {oldTitle} has been updated");
                 return true;
             }
-        }
+        }*/
 
-        public bool AddPlaylist(string name, PlaylistFormat format)
+        /*public bool AddPlaylist(string name, PlaylistFormat format)
         {
             if(format == PlaylistFormat.XML)
             {
@@ -217,15 +263,15 @@ namespace MusicPlayer
                 var currentPath = Directory.GetCurrentDirectory();
                 doc.Save(currentPath + @"\Playlists\" + name + ".xml");
 
-                /*using (var context = new MusicPlayerContext())
-                {
-                    Playlist playlist = context.Albums.Where(x => x.Name == albumName).FirstOrDefault();
-                    if (album == null)
-                    {
-                        context.Albums.Add(new Album(albumName, authorName));
-                        context.SaveChanges();
-                    }
-                }*/
+                //using (var context = new MusicPlayerContext())
+                //{
+                //    Playlist playlist = context.Albums.Where(x => x.Name == albumName).FirstOrDefault();
+                //    if (album == null)
+                //    {
+                //        context.Albums.Add(new Album(albumName, authorName));
+                //        context.SaveChanges();
+                //    }
+                //}
 
             } else if (format == PlaylistFormat.JSON)
             {
@@ -235,6 +281,6 @@ namespace MusicPlayer
             
 
             return true;
-        }
+        }*/
     }
 }

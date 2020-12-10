@@ -12,32 +12,29 @@ namespace MusicPlayer
     {
         /* POLA */
         public int AlbumID { get; set; }
-        public int AuthorID{ get; set; }
+        public int AuthorID { get; set; }
         public string Name { get; set; }
 
         /* POLA ENTITY FRAMEWORK */
-        [ForeignKey("AuthorID")]
+        [ForeignKey(nameof(AuthorID))]
         public virtual Author Author { get; set; }
         public virtual ICollection<Song> Songs { get; set; } = new ObservableCollection<Song>();
 
         /* METODY */
-        public Album() { }
-
-        public Album(string albumName, string authorName)
+        public Album()
         {
-            using (var context = new MusicPlayerContext())
-            {
-                // Sprawdzenie czy autor jest w bazie jak go nie ma to dodajemy go i odczytujemy z bazy ponownie
-                var author = context.Authors.Where(x => x.Name == authorName).FirstOrDefault();
-                if (author == null)
-                {
-                    context.Authors.Add(new Author(authorName));
-                    context.SaveChanges();
-                    author = context.Authors.Where(x => x.Name == authorName).FirstOrDefault();
-                }
-                AuthorID = author.AuthorID;
-                Name = albumName;
-            }
+            Name = "Album name";
+        }
+
+        public Album(string name)
+        {
+            Name = name;
+        }
+
+        public Album(Album album)
+        {
+            Name = album.Name;
+            Author = album.Author;
         }
     }
 }

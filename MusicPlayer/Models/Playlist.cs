@@ -18,11 +18,22 @@ namespace MusicPlayer
         public virtual ICollection<SongPlaylist> SongPlaylists { get; set; } = new ObservableCollection<SongPlaylist>();
 
         /* METODY */
-        public Playlist() { }
+        public Playlist()
+        {
+            Name = "Playlist name";
+            FilePath = "Playlist filePath";
+        }
+
         public Playlist(string name, string filePath)
         {
             Name = name;
             FilePath = filePath;
+        }
+
+        public Playlist(Playlist playlist)
+        {
+            Name = playlist.Name;
+            FilePath = playlist.FilePath;
         }
     }
 }

@@ -215,9 +215,27 @@
 
             <!-- Current song -->
             <StackPanel Grid.Row="0">
-                <Image Grid.Row="0" Source="Images/DefaultImage.png" Width="320" Height="180"/>
-                <Slider Grid.Row="1"/>
-                <Label Content="TIME"/>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Column="0" Grid.RowSpan="2" Source="img/DefaultImage.png" Width="320" Height="180"/>
+                    <Slider Grid.Column="1" Orientation="Vertical"/>
+                    <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Slider/>
+                    <Label Grid.Column="1" Content="TIME"/>
+                </Grid>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Previous"/>
                     <Button Content="Play"/>

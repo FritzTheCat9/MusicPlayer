@@ -59,7 +59,7 @@ namespace MusicPlayer.Migrations
                 {
                     SongID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AlbumID = table.Column<int>(nullable: false),
+                    AlbumID = table.Column<int>(nullable: true),
                     AuthorID = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     FilePath = table.Column<string>(nullable: true),
@@ -74,13 +74,13 @@ namespace MusicPlayer.Migrations
                         column: x => x.AlbumID,
                         principalTable: "Albums",
                         principalColumn: "AlbumID",
-                        onDelete: ReferentialAction.NoAction);          // Usunięcie piosenki nie usuwa albumu
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Songs_Authors_AuthorID",
                         column: x => x.AuthorID,
                         principalTable: "Authors",
                         principalColumn: "AuthorID",
-                        onDelete: ReferentialAction.NoAction);          // Usunięcie piosenki nie usuwa autora
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
