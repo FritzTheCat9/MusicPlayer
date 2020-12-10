@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace MusicPlayer
 {
@@ -40,6 +41,8 @@ namespace MusicPlayer
         private string SONGS_FOLDER;
         private string IMAGES_FOLER;
         private string PLAYLISTS_FOLDER;
+
+        /* SONG */
 
         private int getSongLength(string filePath)
         {
@@ -107,7 +110,7 @@ namespace MusicPlayer
         /// </summary>
         /// <param name="title">Song title</param>
         /// <returns></returns>
-        public bool DeleteSong(string title)
+        public bool RemoveSong(string title)
         {
             var songToRemove = Database.GetSong(title);
 
@@ -147,7 +150,7 @@ namespace MusicPlayer
         /// <param name="authorName">New author name</param>
         /// <param name="imagePath">New image file path</param>
         /// <returns></returns>
-        public bool EditSong(string oldTitle, string newTitle, string newFilePath, string newImagePath, string newAuthorName, string newAlbumName = null)
+        public bool UpdateSong(string oldTitle, string newTitle, string newFilePath, string newImagePath, string newAuthorName, string newAlbumName = null)
         {
             var songToUpdate = Database.GetSong(oldTitle);
 
@@ -215,6 +218,158 @@ namespace MusicPlayer
             {
                 return false;
             }
+        }
+
+        public Song GetSong(string title)
+        {
+            return Database.GetSong(title);
+        }
+
+        public IEnumerable<Song> GetAllSongs()
+        {
+            return Database.GetAllSongs();
+        }
+
+        /* AUTHOR */
+
+        public Author AddAuthor(string name)
+        {
+            return Database.AddAuthor(name);
+        }
+
+        public bool RemoveAuthor(string name)
+        {
+            return Database.RemoveAuthor(name);
+        }
+
+        public Author UpdateAuthor(string name, string newName)
+        {
+            return Database.UpdateAuthor(name, newName);
+        }
+
+        public Author GetAuthor(string name)
+        {
+            return Database.GetAuthor(name);
+        }
+
+        public IEnumerable<Author> GetAllAuthors()
+        {
+            return Database.GetAllAuthors();
+        }
+
+        /* PLAYLIST */
+
+        public Playlist AddPlaylist(string name, string filePath)
+        {
+            return Database.AddPlaylist(name, filePath);
+        }
+
+        public bool RemovePlaylist(string name)
+        {
+            return Database.RemovePlaylist(name);
+        }
+
+        public Playlist UpdatePlaylist(string name, string newName, string newFilePath)
+        {
+            return Database.UpdatePlaylist(name, newName, newFilePath);
+        }
+
+        public Playlist GetPlaylist(string name)
+        {
+            return Database.GetPlaylist(name);
+        }
+
+        public IEnumerable<Playlist> GetAllPlaylists()
+        {
+            return Database.GetAllPlaylists();
+        }
+
+        /* ALBUM */
+
+        public Album AddAlbum(string albumName, string authorName)
+        {
+            return Database.AddAlbum(albumName, authorName);
+        }
+
+        public bool RemoveAlbum(string name)
+        {
+            return Database.RemoveAlbum(name);
+        }
+
+        public Album UpdateAlbum(string name, string newName, string newAuthor)
+        {
+            return Database.UpdateAlbum(name, newName, newAuthor);
+        }
+
+        public Album GetAlbum(string name)
+        {
+            return Database.GetAlbum(name);
+        }
+
+        public IEnumerable<Album> GetAllAlbums()
+        {
+            return Database.GetAllAlbums();
+        }
+
+        /* SONGPLAYLIST */
+
+        public SongPlaylist AddSongPlaylist(string songTitle, string playlistName)
+        {
+            return Database.AddSongPlaylist(songTitle, playlistName);
+        }
+
+        public bool RemoveSongPlaylist(string songTitle, string playlistName)
+        {
+            return Database.RemoveSongPlaylist(songTitle, playlistName);
+        }
+
+        public SongPlaylist GetSongPlaylist(string songTitle, string playlistName)
+        {
+            return Database.GetSongPlaylist(songTitle, playlistName);
+        }
+
+        public IEnumerable<SongPlaylist> GetAllSongPlaylists()
+        {
+            return Database.GetAllSongPlaylists();
+        }
+
+        public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
+        {
+            XDocument playlistXML = XDocument.Load(xmlFilePath);
+
+            var root = playlistXML.Root;
+            string playlistName = root.Attribute("name").Value;
+            string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".xml";
+
+            Playlist newPlaylist = null;
+
+            if (File.Exists(xmlFilePath))
+            {
+                if (!File.Exists(playlistFilePath))
+                {
+                    File.Copy(xmlFilePath, playlistFilePath);
+                    newPlaylist = new Playlist(playlistName, playlistFilePath);
+                    Database.AddPlaylist(playlistName, playlistFilePath);
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            foreach (var song in playlistXML.Descendants("song"))
+            {
+                string album = song.Attribute("album").Value == "" ? null : song.Attribute("album").Value;
+                string author = song.Attribute("author").Value;
+                string title = song.Attribute("title").Value;
+
+                string songPATH = songsFolderPath + @"\" + title + ".mp3";
+                string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
+
+                AddSong(title, songPATH, imagePATH, author, album);
+            }
+
+            return true;
         }
 
         /*public bool AddPlaylist(string name, PlaylistFormat format)
