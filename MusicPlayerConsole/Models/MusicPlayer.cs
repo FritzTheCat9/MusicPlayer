@@ -466,7 +466,6 @@ namespace MusicPlayerConsole
 
                 Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
             }
-            Console.Read();
         }
 
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
