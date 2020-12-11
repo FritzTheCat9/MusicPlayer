@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPlayerConsole;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,6 +43,20 @@ namespace MusicPlayerWPF
                 // Open document
                 string filename = dlg.FileName;
             }
+        }
+
+        private async void button_DownloadYoutubeVideo_Click(object sender, RoutedEventArgs e)
+        {
+            var link = textBox_YoutubeVideoLink.Text;
+
+            await MusicPlayer.getInstance().SaveSongFromYoutubeAsync(link);
+        }
+
+        private async void button_DownloadPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            var link = textBox_PlaylistLink.Text;
+
+            await MusicPlayer.getInstance().GetVideosFromPlaylistAsync(link);
         }
     }
 }

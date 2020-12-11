@@ -409,15 +409,25 @@ namespace MusicPlayerConsole
 
         public bool SaveSongFromYoutube(string url)
         {
-            DownloadSongFromYoutubeVideo(url);
-            DownloadImageFromYoutubeVideo(url);
-            string title = getVideoTitle(url);
-            string imagePath = IMAGES_FOLER + title + ".jpg";
-            string filePath = SONGS_FOLDER + title + ".mp3";
+            var youTube = YouTube.Default;
+            YouTubeVideo video = null;
+            try
+            {
+                video = youTube.GetVideo(url);
+                DownloadSongFromYoutubeVideo(url);
+                DownloadImageFromYoutubeVideo(url);
+                string title = getVideoTitle(url);
+                string imagePath = IMAGES_FOLER + title + ".jpg";
+                string filePath = SONGS_FOLDER + title + ".mp3";
 
-            AddSong(title, filePath, imagePath);
+                AddSong(title, filePath, imagePath);
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void DownloadImageFromYoutubeVideo2(string videoID)
@@ -430,15 +440,41 @@ namespace MusicPlayerConsole
 
         public bool SaveSongFromYoutube2(string url, string videoID)
         {
-            DownloadSongFromYoutubeVideo(url);
-            DownloadImageFromYoutubeVideo2(videoID);
-            string title = getVideoTitle(url);
-            string imagePath = IMAGES_FOLER + title + ".jpg";
-            string filePath = SONGS_FOLDER + title + ".mp3";
+            var youTube = YouTube.Default;
+            YouTubeVideo video = null;
+            try
+            {
+                video = youTube.GetVideo(url);
+                DownloadSongFromYoutubeVideo(url);
+                DownloadImageFromYoutubeVideo2(videoID);
+                string title = getVideoTitle(url);
+                string imagePath = IMAGES_FOLER + title + ".jpg";
+                string filePath = SONGS_FOLDER + title + ".mp3";
 
-            AddSong(title, filePath, imagePath);
+                AddSong(title, filePath, imagePath);
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task SaveSongFromYoutubeAsync(string url)
+        {
+            await Task.Run(() =>
+            {
+                SaveSongFromYoutube(url);
+            });
+        }
+
+        public async Task GetVideosFromPlaylistAsync(string url)
+        {
+            await Task.Run(() =>
+            {
+                GetVideosFromPlaylist(url);
+            });
         }
 
         public void GetVideosFromPlaylist(string url)

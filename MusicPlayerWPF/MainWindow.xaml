@@ -106,11 +106,16 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Content="Link to video"/>
-                    <TextBox Grid.Column="1" Text="link"/>
-                    <Button Grid.Row="1" Content="Download"/>
+                    <TextBox Name="textBox_YoutubeVideoLink" Grid.Column="1" Text="link"/>
+                    <Button Name="button_DownloadYoutubeVideo" Grid.Row="1" Content="Download" Click="button_DownloadYoutubeVideo_Click"/>
+                    <Label Content="Link to playlist" Grid.Row="2"/>
+                    <TextBox Name="textBox_PlaylistLink" Grid.Row="2" Grid.Column="1" Text="link"/>
+                    <Button Name="button_DownloadPlaylist" Grid.Row="3" Content="Download" Click="button_DownloadPlaylist_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Albums">

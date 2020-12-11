@@ -10,7 +10,7 @@ using MusicPlayerConsole;
 namespace MusicPlayerConsole.Migrations
 {
     [DbContext(typeof(MusicPlayerContext))]
-    [Migration("20201211110312_migracja")]
+    [Migration("20201211215936_migracja")]
     partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

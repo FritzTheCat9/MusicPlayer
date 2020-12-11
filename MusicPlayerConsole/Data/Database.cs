@@ -258,7 +258,7 @@ namespace MusicPlayerConsole.Data
                     album = AddAlbum(albumName, authorName);
                 }
 
-                var song = context.Songs.Where(x => x.Title == title).Include(x => x.Author).Include(x => x.Album).FirstOrDefault();
+                var song = context.Songs.Include(x => x.Author).Include(x => x.Album).Where(x => x.Title == title).FirstOrDefault();
                 if (song == null)
                 {
                     song = new Song(title, filePath, imagePath, length);

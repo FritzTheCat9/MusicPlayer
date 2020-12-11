@@ -16,9 +16,9 @@ namespace MusicPlayerConsole
 
         /* POLA ENTITY FRAMEWORK */
         [ForeignKey(nameof(SongID))]
-        public virtual Song Song { get; set; }
+        public Song Song { get; set; }
         [ForeignKey(nameof(PlaylistID))]
-        public virtual Playlist Playlist { get; set; }
+        public Playlist Playlist { get; set; }
 
         /* METODY */
         public SongPlaylist()

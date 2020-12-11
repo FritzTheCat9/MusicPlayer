@@ -15,7 +15,7 @@ namespace MusicPlayerConsole
         public string FilePath { get; set; }
 
         /* POLA ENTITY FRAMEWORK */
-        public virtual ICollection<SongPlaylist> SongPlaylists { get; set; } = new ObservableCollection<SongPlaylist>();
+        public ICollection<SongPlaylist> SongPlaylists { get; set; } = new ObservableCollection<SongPlaylist>();
 
         /* METODY */
         public Playlist()

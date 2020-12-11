@@ -17,8 +17,8 @@ namespace MusicPlayerConsole
 
         /* POLA ENTITY FRAMEWORK */
         [ForeignKey(nameof(AuthorID))]
-        public virtual Author Author { get; set; }
-        public virtual ICollection<Song> Songs { get; set; } = new ObservableCollection<Song>();
+        public Author Author { get; set; }
+        public ICollection<Song> Songs { get; set; } = new ObservableCollection<Song>();
 
         /* METODY */
         public Album()

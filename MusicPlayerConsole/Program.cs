@@ -33,7 +33,18 @@ namespace MusicPlayerConsole
             MusicPlayer.getInstance().SaveSongFromYoutube(@"https://www.youtube.com/watch?v=r4P-WOOUPk4&ab_channel=littlemixVEVO");*/
 
 
-            MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv");
+            //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv");
+            
+
+
+            /* TO PONIZEJ DZIAŁA */
+            //MusicPlayer.getInstance().GetVideosFromPlaylistAsync("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv").Wait();
+            MusicPlayer.getInstance().SaveSongFromYoutubeAsync("https://www.youtube.com/watch?v=5zIXwpDsLF0&ab_channel=Jacu%C5%9B").Wait();
+
+
+
+            // main async i ponizej
+            //await MusicPlayer.getInstance().GetVideosFromPlaylistAsync("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv");
 
             // Nie da się wiecej jak 50 :(
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
