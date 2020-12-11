@@ -32,8 +32,11 @@ namespace MusicPlayerConsole
             /*MusicPlayer.getInstance().SaveSongFromYoutube(@"https://www.youtube.com/watch?v=fZ3QyttXaaQ&ab_channel=Jacu%C5%9B");
             MusicPlayer.getInstance().SaveSongFromYoutube(@"https://www.youtube.com/watch?v=r4P-WOOUPk4&ab_channel=littlemixVEVO");*/
 
+
             MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv");
 
+            // Nie da się wiecej jak 50 :(
+            //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
         }
     }
 }
