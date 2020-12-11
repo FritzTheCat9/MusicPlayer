@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicPlayer.Data
+namespace MusicPlayerConsole.Data
 {
     public static class Database
     {
@@ -242,11 +242,15 @@ namespace MusicPlayer.Data
 
         /* SONG */
 
-        public static Song AddSong(string title, string filePath, string imagePath, int length, string authorName, string albumName = null)
+        public static Song AddSong(string title, string filePath, string imagePath, int length, string authorName = null, string albumName = null)
         {
             using (var context = new MusicPlayerContext())
             {
-                Author author = AddAuthor(authorName);
+                Author author = null;
+                if (authorName != null)
+                {
+                    author = AddAuthor(authorName);
+                }
 
                 Album album = null;
                 if(albumName != null)
@@ -258,8 +262,17 @@ namespace MusicPlayer.Data
                 if (song == null)
                 {
                     song = new Song(title, filePath, imagePath, length);
-                    song.AuthorID = author.AuthorID;
-                    if(album != null)
+                    
+                    if (author != null)
+                    {
+                        song.AuthorID = author.AuthorID;
+                    }
+                    else
+                    {
+                        song.AuthorID = null;
+                    }
+
+                    if (album != null)
                     {
                         song.AlbumID = album.AlbumID;
                     }
@@ -268,7 +281,6 @@ namespace MusicPlayer.Data
                         song.AlbumID = null;
                     }
                     
-
                     context.Songs.Add(song);
                     context.SaveChanges();
                 }
@@ -297,7 +309,11 @@ namespace MusicPlayer.Data
         {
             using (var context = new MusicPlayerContext())
             {
-                Author author = AddAuthor(newAuthorName);
+                Author author = null;
+                if (newAuthorName != null)
+                {
+                    author = AddAuthor(newAuthorName);
+                }
 
                 Album album = null;
                 if (newAlbumName != null)
@@ -312,7 +328,16 @@ namespace MusicPlayer.Data
                     song.FilePath = newFilePath;
                     song.ImagePath = newImagePath;
                     song.Length = newLength;
-                    song.AuthorID = author.AuthorID;
+
+                    if (author != null)
+                    {
+                        song.AuthorID = author.AuthorID;
+                    }
+                    else
+                    {
+                        song.AuthorID = null;
+                    }
+
                     if (album != null)
                     {
                         song.AlbumID = album.AlbumID;
@@ -321,7 +346,6 @@ namespace MusicPlayer.Data
                     {
                         song.AlbumID = null;
                     }
-
 
                     context.Songs.Update(song);
                     context.SaveChanges();

@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MusicPlayer;
+using MusicPlayerConsole;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayerConsole.Migrations
 {
     [DbContext(typeof(MusicPlayerContext))]
-    [Migration("20201210123454_migracja")]
-    partial class migracja
+    partial class MusicPlayerContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace MusicPlayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MusicPlayer.Album", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Album", b =>
                 {
                     b.Property<int>("AlbumID")
                         .ValueGeneratedOnAdd()
@@ -41,7 +39,7 @@ namespace MusicPlayer.Migrations
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("MusicPlayer.Author", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Author", b =>
                 {
                     b.Property<int>("AuthorID")
                         .ValueGeneratedOnAdd()
@@ -56,7 +54,7 @@ namespace MusicPlayer.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("MusicPlayer.Playlist", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Playlist", b =>
                 {
                     b.Property<int>("PlaylistID")
                         .ValueGeneratedOnAdd()
@@ -74,7 +72,7 @@ namespace MusicPlayer.Migrations
                     b.ToTable("Playlists");
                 });
 
-            modelBuilder.Entity("MusicPlayer.Song", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Song", b =>
                 {
                     b.Property<int>("SongID")
                         .ValueGeneratedOnAdd()
@@ -84,7 +82,7 @@ namespace MusicPlayer.Migrations
                     b.Property<int?>("AlbumID")
                         .HasColumnType("int");
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int?>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
@@ -108,7 +106,7 @@ namespace MusicPlayer.Migrations
                     b.ToTable("Songs");
                 });
 
-            modelBuilder.Entity("MusicPlayer.SongPlaylist", b =>
+            modelBuilder.Entity("MusicPlayerConsole.SongPlaylist", b =>
                 {
                     b.Property<int>("SongPlaylistID")
                         .ValueGeneratedOnAdd()
@@ -130,37 +128,35 @@ namespace MusicPlayer.Migrations
                     b.ToTable("SongPlaylists");
                 });
 
-            modelBuilder.Entity("MusicPlayer.Album", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Album", b =>
                 {
-                    b.HasOne("MusicPlayer.Author", "Author")
+                    b.HasOne("MusicPlayerConsole.Author", "Author")
                         .WithMany("Albums")
                         .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MusicPlayer.Song", b =>
+            modelBuilder.Entity("MusicPlayerConsole.Song", b =>
                 {
-                    b.HasOne("MusicPlayer.Album", "Album")
+                    b.HasOne("MusicPlayerConsole.Album", "Album")
                         .WithMany("Songs")
                         .HasForeignKey("AlbumID");
 
-                    b.HasOne("MusicPlayer.Author", "Author")
+                    b.HasOne("MusicPlayerConsole.Author", "Author")
                         .WithMany("Songs")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorID");
                 });
 
-            modelBuilder.Entity("MusicPlayer.SongPlaylist", b =>
+            modelBuilder.Entity("MusicPlayerConsole.SongPlaylist", b =>
                 {
-                    b.HasOne("MusicPlayer.Playlist", "Playlist")
+                    b.HasOne("MusicPlayerConsole.Playlist", "Playlist")
                         .WithMany("SongPlaylists")
                         .HasForeignKey("PlaylistID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MusicPlayer.Song", "Song")
+                    b.HasOne("MusicPlayerConsole.Song", "Song")
                         .WithMany("SongPlaylists")
                         .HasForeignKey("SongID")
                         .OnDelete(DeleteBehavior.Cascade)

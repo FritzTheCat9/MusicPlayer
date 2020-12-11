@@ -1,14 +1,18 @@
-﻿using MusicPlayer.Data;
+﻿using MediaToolkit;
+using MediaToolkit.Model;
+using MusicPlayerConsole.Data;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using VideoLibrary;
 
-namespace MusicPlayer
+namespace MusicPlayerConsole
 {
     public enum PlaylistFormat
     {
@@ -26,7 +30,7 @@ namespace MusicPlayer
             string workingDirectory = Environment.CurrentDirectory;
 
             // This will get the current SOLUTION directory
-            string solutionDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
+            string solutionDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             SOLUTION_DIRECTORY = solutionDirectory;
             SONGS_FOLDER = SOLUTION_DIRECTORY + @"\Songs\";
             IMAGES_FOLER = SOLUTION_DIRECTORY + @"\Images\";
@@ -67,7 +71,7 @@ namespace MusicPlayer
         /// <param name="authorName">Author name</param>
         /// <param name="albumName">Album name (can be null)</param>
         /// <returns></returns>
-        public bool AddSong(string title, string filePath, string imagePath, string authorName, string albumName = null)
+        public bool AddSong(string title, string filePath, string imagePath, string authorName = null, string albumName = null)
         {
             // Adding song
             if (File.Exists(filePath))
@@ -150,7 +154,7 @@ namespace MusicPlayer
         /// <param name="authorName">New author name</param>
         /// <param name="imagePath">New image file path</param>
         /// <returns></returns>
-        public bool UpdateSong(string oldTitle, string newTitle, string newFilePath, string newImagePath, string newAuthorName, string newAlbumName = null)
+        public bool UpdateSong(string oldTitle, string newTitle, string newFilePath, string newImagePath, string newAuthorName = null, string newAlbumName = null)
         {
             var songToUpdate = Database.GetSong(oldTitle);
 
@@ -332,6 +336,81 @@ namespace MusicPlayer
         {
             return Database.GetAllSongPlaylists();
         }
+
+        private static string FindTextBetween(string text, string left, string right)
+        {
+            // Walidacja danych 
+            if (!text.Contains(left))
+                return string.Empty;
+
+            if (!text.Contains(right))
+                return string.Empty;
+
+            // Algorytm
+            int beginIndex = text.IndexOf(left);
+            if (beginIndex == -1)
+                return string.Empty;
+
+            beginIndex += left.Length;
+
+            int endIndex = text.IndexOf(right, beginIndex);
+            if (endIndex == -1)
+                return string.Empty;
+
+            return text.Substring(beginIndex, endIndex - beginIndex).Trim();
+        }
+
+        public void DownloadImageFromYoutubeVideo(string url)
+        {
+            // Get image
+            WebClient cli = new WebClient();
+            var videoID = FindTextBetween(url, "/watch?v=", "&");
+            var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
+            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle(url) + ".jpg", imgBytes);
+        }
+
+        public void DownloadSongFromYoutubeVideo(string url)
+        {
+            var youTube = YouTube.Default;
+            var video = youTube.GetVideo(url);
+            File.WriteAllBytes(SONGS_FOLDER + video.FullName, video.GetBytes());
+
+            MediaFile inputFile = new MediaFile { Filename = SONGS_FOLDER + video.FullName };
+            MediaFile outputFile = new MediaFile { Filename = $"{SONGS_FOLDER + video.FullName.Remove(video.FullName.Length - 4, 4)}.mp3" };
+
+            using (var engine = new Engine())
+            {
+                engine.GetMetadata(inputFile);
+
+                engine.Convert(inputFile, outputFile);
+            }
+
+            File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
+        }
+
+        public string getVideoTitle(string url)
+        {
+            // Get video title
+            var youTube = YouTube.Default;
+            var video = youTube.GetVideo(url);
+            var title = video.FullName.Remove(video.FullName.Length - 4, 4);
+            return title;
+        }
+
+        public bool SaveSongFromYoutube(string url)
+        {
+            DownloadSongFromYoutubeVideo(url);
+            DownloadImageFromYoutubeVideo(url);
+            string title = getVideoTitle(url);
+            string imagePath = IMAGES_FOLER + title + ".jpg";
+            string filePath = SONGS_FOLDER + title + ".mp3";
+
+            AddSong(title, filePath, imagePath);
+
+            return true;
+        }
+
+
 
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
         {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayerConsole.Migrations
 {
     public partial class migracja : Migration
     {
@@ -50,7 +50,7 @@ namespace MusicPlayer.Migrations
                         column: x => x.AuthorID,
                         principalTable: "Authors",
                         principalColumn: "AuthorID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,7 +60,7 @@ namespace MusicPlayer.Migrations
                     SongID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AlbumID = table.Column<int>(nullable: true),
-                    AuthorID = table.Column<int>(nullable: false),
+                    AuthorID = table.Column<int>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     FilePath = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true),
@@ -80,7 +80,7 @@ namespace MusicPlayer.Migrations
                         column: x => x.AuthorID,
                         principalTable: "Authors",
                         principalColumn: "AuthorID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,13 +100,13 @@ namespace MusicPlayer.Migrations
                         column: x => x.PlaylistID,
                         principalTable: "Playlists",
                         principalColumn: "PlaylistID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SongPlaylists_Songs_SongID",
                         column: x => x.SongID,
                         principalTable: "Songs",
                         principalColumn: "SongID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
