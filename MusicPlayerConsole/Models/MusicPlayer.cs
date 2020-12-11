@@ -398,33 +398,6 @@ namespace MusicPlayerConsole
             File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
         }
 
-        /*public void DownloadSongFromYoutubeVideoId(string videoId)
-        {
-            var youTube = YouTube.Default;
-            var video = youTube.GetVideo(@"https://www.youtube.com/watch?v=" + videoId + "&ab_channel=littlemixVEVO");
-            File.WriteAllBytes(SONGS_FOLDER + video.FullName, video.GetBytes());
-
-            MediaFile inputFile = new MediaFile { Filename = SONGS_FOLDER + video.FullName };
-            MediaFile outputFile = new MediaFile { Filename = $"{SONGS_FOLDER + video.FullName.Remove(video.FullName.Length - 4, 4)}.mp3" };
-
-            using (var engine = new Engine())
-            {
-                engine.GetMetadata(inputFile);
-
-                engine.Convert(inputFile, outputFile);
-            }
-
-            File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
-        }*/
-
-        /*public void DownloadImageFromYoutubeVideoId(string videoId)
-        {
-            // Get image
-            WebClient cli = new WebClient();
-            var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoId + @"/mqdefault.jpg");
-            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle(url) + ".jpg", imgBytes);
-        }*/
-
         public string getVideoTitle(string url)
         {
             // Get video title
@@ -438,6 +411,27 @@ namespace MusicPlayerConsole
         {
             DownloadSongFromYoutubeVideo(url);
             DownloadImageFromYoutubeVideo(url);
+            string title = getVideoTitle(url);
+            string imagePath = IMAGES_FOLER + title + ".jpg";
+            string filePath = SONGS_FOLDER + title + ".mp3";
+
+            AddSong(title, filePath, imagePath);
+
+            return true;
+        }
+
+        public void DownloadImageFromYoutubeVideo2(string videoID)
+        {
+            // Get image
+            WebClient cli = new WebClient();
+            var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
+            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle("https://www.youtube.com/watch?v=" + videoID) + ".jpg", imgBytes);
+        }
+
+        public bool SaveSongFromYoutube2(string url, string videoID)
+        {
+            DownloadSongFromYoutubeVideo(url);
+            DownloadImageFromYoutubeVideo2(videoID);
             string title = getVideoTitle(url);
             string imagePath = IMAGES_FOLER + title + ".jpg";
             string filePath = SONGS_FOLDER + title + ".mp3";
@@ -467,9 +461,10 @@ namespace MusicPlayerConsole
             {
                 var SongTitle = playlistItem.Snippet.Title;
                 var SongId = playlistItem.Snippet.ResourceId.VideoId;
-                var Channel = playlistItem.Snippet.ChannelTitle;
 
-                Console.WriteLine("Song: {0} {1} {2}", SongTitle, SongId, Channel);
+                SaveSongFromYoutube2("https://www.youtube.com/watch?v=" + SongId, SongId);
+
+                Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
             }
             Console.Read();
         }
