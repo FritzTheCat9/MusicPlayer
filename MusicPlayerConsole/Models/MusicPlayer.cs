@@ -8,9 +8,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using VideoLibrary;
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.Upload;
+using Google.Apis.Util.Store;
+using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
+using System.Threading;
+using System.Reflection;
 
 namespace MusicPlayerConsole
 {
@@ -388,6 +398,33 @@ namespace MusicPlayerConsole
             File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
         }
 
+        /*public void DownloadSongFromYoutubeVideoId(string videoId)
+        {
+            var youTube = YouTube.Default;
+            var video = youTube.GetVideo(@"https://www.youtube.com/watch?v=" + videoId + "&ab_channel=littlemixVEVO");
+            File.WriteAllBytes(SONGS_FOLDER + video.FullName, video.GetBytes());
+
+            MediaFile inputFile = new MediaFile { Filename = SONGS_FOLDER + video.FullName };
+            MediaFile outputFile = new MediaFile { Filename = $"{SONGS_FOLDER + video.FullName.Remove(video.FullName.Length - 4, 4)}.mp3" };
+
+            using (var engine = new Engine())
+            {
+                engine.GetMetadata(inputFile);
+
+                engine.Convert(inputFile, outputFile);
+            }
+
+            File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
+        }*/
+
+        /*public void DownloadImageFromYoutubeVideoId(string videoId)
+        {
+            // Get image
+            WebClient cli = new WebClient();
+            var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoId + @"/mqdefault.jpg");
+            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle(url) + ".jpg", imgBytes);
+        }*/
+
         public string getVideoTitle(string url)
         {
             // Get video title
@@ -410,7 +447,32 @@ namespace MusicPlayerConsole
             return true;
         }
 
+        public void GetVideosFromPlaylist(string url)
+        {
+            string list = "list=";
+            string playlistId = url.Substring(url.IndexOf(list) + list.Length);
 
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
+            });
+
+            var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+            playlistItemsListRequest.MaxResults = 50;
+            playlistItemsListRequest.PlaylistId = playlistId;
+
+            var playlistItemsListResponse = playlistItemsListRequest.Execute();
+
+            foreach (var playlistItem in playlistItemsListResponse.Items)
+            {
+                var SongTitle = playlistItem.Snippet.Title;
+                var SongId = playlistItem.Snippet.ResourceId.VideoId;
+                var Channel = playlistItem.Snippet.ChannelTitle;
+
+                Console.WriteLine("Song: {0} {1} {2}", SongTitle, SongId, Channel);
+            }
+            Console.Read();
+        }
 
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
         {
@@ -450,36 +512,5 @@ namespace MusicPlayerConsole
 
             return true;
         }
-
-        /*public bool AddPlaylist(string name, PlaylistFormat format)
-        {
-            if(format == PlaylistFormat.XML)
-            {
-                XmlDocument doc = new XmlDocument();
-                XmlNode docNode = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-                XmlNode rootNode = doc.CreateElement("playlist");
-                doc.AppendChild(rootNode);
-                var currentPath = Directory.GetCurrentDirectory();
-                doc.Save(currentPath + @"\Playlists\" + name + ".xml");
-
-                //using (var context = new MusicPlayerContext())
-                //{
-                //    Playlist playlist = context.Albums.Where(x => x.Name == albumName).FirstOrDefault();
-                //    if (album == null)
-                //    {
-                //        context.Albums.Add(new Album(albumName, authorName));
-                //        context.SaveChanges();
-                //    }
-                //}
-
-            } else if (format == PlaylistFormat.JSON)
-            {
-                var currentPath = Directory.GetCurrentDirectory();
-                File.CreateText(currentPath + @"\Playlists\" + name + ".json");
-            }
-            
-
-            return true;
-        }*/
     }
 }
