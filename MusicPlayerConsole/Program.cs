@@ -83,8 +83,8 @@ namespace MusicPlayerConsole
                 }
                 else if (input == "Info")
                 {
-                    Console.WriteLine("Current second: {0}",musicPlayer.currentPossition);
-                    Console.WriteLine("Song length: {0}",musicPlayer.songDuration);
+                    Console.WriteLine("Current second: {0}", musicPlayer.currentPossition);
+                    Console.WriteLine("Song length: {0}", musicPlayer.songDuration);
                 }
                 else
                 {

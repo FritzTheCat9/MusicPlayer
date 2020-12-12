@@ -62,6 +62,7 @@ namespace MusicPlayerConsole
             return _instance;
         }
 
+        // project folders paths (to store songs, playlists, images)
         private string SOLUTION_DIRECTORY;
         private string SONGS_FOLDER;
         private string IMAGES_FOLER;
@@ -69,7 +70,7 @@ namespace MusicPlayerConsole
 
         /* SONG */
 
-            private int getSongLength(string filePath)
+        private int getSongLength(string filePath)
         {
             try
             {
@@ -358,6 +359,8 @@ namespace MusicPlayerConsole
             return Database.GetAllSongPlaylists();
         }
 
+        /* YOUTUBE */
+
         private static string FindTextBetween(string text, string left, string right)
         {
             // Walidacja danych 
@@ -515,6 +518,8 @@ namespace MusicPlayerConsole
             }
         }
 
+        /* IMPORT, EXPORT - PLAYLISTS */
+
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
         {
             XDocument playlistXML = XDocument.Load(xmlFilePath);
@@ -554,11 +559,14 @@ namespace MusicPlayerConsole
             return true;
         }
 
+        /* PLAY MUSIC */
+
         public void LoadSongs(List<Song> _songs)
         {
             songs = _songs;
         }
-        public void PlaySong(string filePath,int _currentPlayedSong)
+
+        public void PlaySong(string filePath, int _currentPlayedSong)
         {
             player.FileName = filePath;
             songLength = (int)player.CurrentPosition;
@@ -566,18 +574,22 @@ namespace MusicPlayerConsole
             player.Play();
             currentPlayedSong = _currentPlayedSong;
         }
+
         public void ResumeSong()
         {
             player.Play();
         }
+
         public void PauseSong()
         {
             player.Pause();
         }
+
         public void StopSong()
         {
             player.Stop();
         }
+
         public void ChangeValue(int value)
         {
             if(value > 0 && value < 4001)
@@ -586,6 +598,7 @@ namespace MusicPlayerConsole
                 volume = -value;
             }
         }
+
         public void NextSong()
         {
             currentPlayedSong++;
@@ -595,6 +608,7 @@ namespace MusicPlayerConsole
             }
             PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
         }
+
         public void PreviousSong()
         {
             currentPlayedSong--;
