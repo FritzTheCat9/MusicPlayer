@@ -21,6 +21,8 @@ namespace MusicPlayerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        IEnumerable<Song> songsList = new List<Song>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -57,6 +59,15 @@ namespace MusicPlayerWPF
             var link = textBox_PlaylistLink.Text;
 
             await MusicPlayer.getInstance().GetVideosFromPlaylistAsync(link);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            songsList = MusicPlayer.getInstance().GetAllSongs();
+            if (listBox_SongsList != null)
+            {
+                listBox_SongsList.ItemsSource = songsList;
+            }
         }
     }
 }

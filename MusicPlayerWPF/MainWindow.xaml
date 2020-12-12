@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
-        Title="MusicPlayer" Height="450" Width="800">
+        Title="MusicPlayer" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
@@ -85,16 +86,7 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1">
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                        <ListBoxItem>Sample song</ListBoxItem>
-                    </ListBox>
+                    <ListBox Grid.Row="1" Name="listBox_SongsList"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">

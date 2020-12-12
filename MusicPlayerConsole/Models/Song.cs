@@ -51,5 +51,10 @@ namespace MusicPlayerConsole
             ImagePath = song.ImagePath;
             Length = song.Length;
         }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
