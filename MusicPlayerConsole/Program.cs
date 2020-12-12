@@ -34,12 +34,12 @@ namespace MusicPlayerConsole
 
 
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv");
-            
+
 
 
             /* TO PONIZEJ DZIAŁA */
             //MusicPlayer.getInstance().GetVideosFromPlaylistAsync("https://www.youtube.com/playlist?list=PLWCniz3RpsZWMfX4vPwIT0y8iA5WYDhwv").Wait();
-            MusicPlayer.getInstance().SaveSongFromYoutubeAsync("https://www.youtube.com/watch?v=5zIXwpDsLF0&ab_channel=Jacu%C5%9B").Wait();
+            //MusicPlayer.getInstance().SaveSongFromYoutubeAsync("https://www.youtube.com/watch?v=5zIXwpDsLF0&ab_channel=Jacu%C5%9B").Wait();
 
 
 
@@ -48,6 +48,51 @@ namespace MusicPlayerConsole
 
             // Nie da się wiecej jak 50 :(
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
+
+            var musicPlayer = MusicPlayer.getInstance();
+            var songs = musicPlayer.GetAllSongs().ToList();
+
+            musicPlayer.LoadSongs(songs);
+            string input = "0";
+            while(true)
+            {
+                input = Console.ReadLine();
+                if(input == "Play")
+                {
+                    musicPlayer.PlaySong(songs[1].FilePath,1);
+                }
+                else if (input == "Resume")
+                {
+                    musicPlayer.ResumeSong();
+                }
+                else if (input == "Pause")
+                {
+                    musicPlayer.PauseSong();
+                }
+                else if( input == "Stop")
+                {
+                    musicPlayer.StopSong();
+                }
+                else if (input == "Next")
+                {
+                    musicPlayer.NextSong();
+                }
+                else if (input == "Previous")
+                {
+                    musicPlayer.PreviousSong();
+                }
+                else if (input == "Info")
+                {
+                    Console.WriteLine("Current second: {0}",musicPlayer.currentPossition);
+                    Console.WriteLine("Song length: {0}",musicPlayer.songDuration);
+                }
+                else
+                {
+                    int value = int.Parse(input);
+                    musicPlayer.ChangeValue(value);
+                }
+
+            }
         }
     }
 }

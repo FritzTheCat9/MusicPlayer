@@ -34,6 +34,14 @@ namespace MusicPlayerConsole
     {
         /* Singleton - one Music Player in application */
         private static MusicPlayer _instance = new MusicPlayer();
+
+        /*Media player for playing music */
+        private MediaPlayer.MediaPlayer player = null;
+        private int songLength = 0;
+        private int volume = -2000;
+        private List<Song> songs = null;
+        private int currentPlayedSong = -1;
+
         private MusicPlayer()
         {
             // This will get the current WORKING directory (i.e. \bin\Debug)
@@ -45,6 +53,9 @@ namespace MusicPlayerConsole
             SONGS_FOLDER = SOLUTION_DIRECTORY + @"\Songs\";
             IMAGES_FOLER = SOLUTION_DIRECTORY + @"\Images\";
             PLAYLISTS_FOLDER = SOLUTION_DIRECTORY + @"\Playlists\";
+
+            /*Initialize MediaPlayer.MediaPlayer */
+            player = new MediaPlayer.MediaPlayer();
         }
         public static MusicPlayer getInstance()
         {
@@ -58,7 +69,7 @@ namespace MusicPlayerConsole
 
         /* SONG */
 
-        private int getSongLength(string filePath)
+            private int getSongLength(string filePath)
         {
             try
             {
@@ -542,5 +553,77 @@ namespace MusicPlayerConsole
 
             return true;
         }
+
+        public void LoadSongs(List<Song> _songs)
+        {
+            songs = _songs;
+        }
+        public void PlaySong(string filePath,int _currentPlayedSong)
+        {
+            player.FileName = filePath;
+            songLength = (int)player.CurrentPosition;
+            player.Volume = volume;
+            player.Play();
+            currentPlayedSong = _currentPlayedSong;
+        }
+        public void ResumeSong()
+        {
+            player.Play();
+        }
+        public void PauseSong()
+        {
+            player.Pause();
+        }
+        public void StopSong()
+        {
+            player.Stop();
+        }
+        public void ChangeValue(int value)
+        {
+            if(value > 0 && value < 4001)
+            {
+                player.Volume = -value;
+                volume = -value;
+            }
+        }
+        public void NextSong()
+        {
+            currentPlayedSong++;
+            if(currentPlayedSong >= songs.Count)
+            {
+                currentPlayedSong = 0;
+            }
+            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
+        }
+        public void PreviousSong()
+        {
+            currentPlayedSong--;
+            if (currentPlayedSong < 0)
+            {
+                currentPlayedSong = songs.Count - 1;
+            }
+            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
+        }
+
+        public int currentPossition
+        {
+            get
+            {
+                return (int)player.CurrentPosition;
+            }
+            set
+            {
+                player.CurrentPosition = value;
+            }
+        }
+
+        public int songDuration
+        {
+            get
+            {
+                return (int)player.Duration;
+            }
+        }
+
     }
 }
