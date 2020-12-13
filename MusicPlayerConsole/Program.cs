@@ -50,7 +50,11 @@ namespace MusicPlayerConsole
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
 
             var musicPlayer = MusicPlayer.getInstance();
+            musicPlayer.ImportPlaylistFromJSON(@"C:\Users\tomki\Desktop\Test.json", @"C:\Users\tomki\Desktop\PROJEKT WPF\Songs", @"C:\Users\tomki\Desktop\PROJEKT WPF\Images");
+            musicPlayer.ExportPlaylistFromJSON("Nazwa", @"C:\Users\tomki\Desktop");
             var songs = musicPlayer.GetAllSongs().ToList();
+
+            
 
             musicPlayer.LoadSongs(songs);
             string input = "0";

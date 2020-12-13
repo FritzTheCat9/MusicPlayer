@@ -141,10 +141,10 @@ namespace MusicPlayerConsole
         {
             var songToRemove = Database.GetSong(title);
 
-            if(songToRemove != null)
+            if (songToRemove != null)
             {
                 // Delete from Images Folder
-                if(songToRemove.ImagePath != IMAGES_FOLER + "DefaultImage.png")
+                if (songToRemove.ImagePath != IMAGES_FOLER + "DefaultImage.png")
                 {
                     if (File.Exists(songToRemove.ImagePath))
                     {
@@ -577,7 +577,7 @@ namespace MusicPlayerConsole
             {
 
                 string jsonFromFile;
-                using(var reader = new StreamReader(jsonFilePath))
+                using (var reader = new StreamReader(jsonFilePath))
                 {
                     jsonFromFile = reader.ReadToEnd();
                 }
@@ -613,6 +613,7 @@ namespace MusicPlayerConsole
                     string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
 
                     AddSong(title, songPATH, imagePATH, author, album);
+                    AddSongPlaylist(title, playlistName);
                 }
 
             }
@@ -622,6 +623,54 @@ namespace MusicPlayerConsole
             }
             return true;
         }
+
+        public bool ExportPlaylistFromJSON(string playListName,string _path)
+        {
+            try
+            {
+                bool flag = false;
+                var playList = GetAllPlaylists();
+
+                var songsA = GetAllSongsFromPlaylist(playListName);
+
+               
+                JsonDataPlayList jsonDataPlayList = new JsonDataPlayList();
+                jsonDataPlayList.Name = playListName;
+
+                List<JsonDataSong> jsonDataSongs = new List<JsonDataSong>();
+
+                foreach (var item in songsA)
+                {
+                        JsonDataSong jsonDataSong = new JsonDataSong();
+                        jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
+                        jsonDataSong.Autor = item.Author == null ? "" : item.Author.Name;
+                        jsonDataSong.Title = item.Title;
+
+                        jsonDataSongs.Add(jsonDataSong);
+                }
+                jsonDataPlayList.Songs = jsonDataSongs;
+                var jsonToWrite = JsonConvert.SerializeObject(jsonDataPlayList, Newtonsoft.Json.Formatting.Indented);
+
+                string path = _path + @"\" + playListName + ".json";
+
+                using(var writer = new StreamWriter(path))
+                {
+                    writer.Write(jsonToWrite);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
+        {
+            return Database.GetAllSongsFromPlaylist(playListName);
+        }
+
         /* PLAY MUSIC */
 
         public void LoadSongs(List<Song> _songs)
@@ -655,7 +704,7 @@ namespace MusicPlayerConsole
 
         public void ChangeValue(int value)
         {
-            if(value > 0 && value < 4001)
+            if (value > 0 && value < 4001)
             {
                 player.Volume = -value;
                 volume = -value;
@@ -665,7 +714,7 @@ namespace MusicPlayerConsole
         public void NextSong()
         {
             currentPlayedSong++;
-            if(currentPlayedSong >= songs.Count)
+            if (currentPlayedSong >= songs.Count)
             {
                 currentPlayedSong = 0;
             }
