@@ -21,6 +21,7 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using System.Threading;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace MusicPlayerConsole
 {
@@ -559,6 +560,68 @@ namespace MusicPlayerConsole
             return true;
         }
 
+        struct JsonDataPlayList
+        {
+            public string Name;
+            public List<JsonDataSong> Songs;
+        }
+        struct JsonDataSong
+        {
+            public string Title;
+            public string Autor;
+            public string Album;
+        }
+        public bool ImportPlaylistFromJSON(string jsonFilePath, string songsFolderPath, string imagesFolderPath)
+        {
+            try
+            {
+
+                string jsonFromFile;
+                using(var reader = new StreamReader(jsonFilePath))
+                {
+                    jsonFromFile = reader.ReadToEnd();
+                }
+
+                var dane = JsonConvert.DeserializeObject<JsonDataPlayList>(jsonFromFile);
+
+                string playlistName = dane.Name;
+                string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".json";
+
+                Playlist newPlaylist = null;
+
+                if (File.Exists(jsonFilePath))
+                {
+                    if (!File.Exists(playlistFilePath))
+                    {
+                        File.Copy(jsonFilePath, playlistFilePath);
+                        newPlaylist = new Playlist(playlistName, playlistFilePath);
+                        Database.AddPlaylist(playlistName, playlistFilePath);
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < dane.Songs.Count; i++)
+                {
+                    string album = dane.Songs[i].Album == "" ? null : dane.Songs[i].Album;
+                    string author = dane.Songs[i].Autor == "" ? null : dane.Songs[i].Autor;
+                    string title = dane.Songs[i].Title;
+
+                    string songPATH = songsFolderPath + @"\" + title + ".mp3";
+                    string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
+
+                    AddSong(title, songPATH, imagePATH, author, album);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
         /* PLAY MUSIC */
 
         public void LoadSongs(List<Song> _songs)
