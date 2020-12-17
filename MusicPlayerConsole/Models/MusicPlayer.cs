@@ -13,17 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VideoLibrary;
-
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
-using Google.Apis.Upload;
-using Google.Apis.Util.Store;
-using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
-using System.Threading;
-using System.Reflection;
-using Newtonsoft.Json;
-using System.Windows.Forms;
+using System.Linq;
 
 namespace MusicPlayerConsole
 {
