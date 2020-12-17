@@ -50,53 +50,54 @@ namespace MusicPlayerConsole
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
 
             var musicPlayer = MusicPlayer.getInstance();
-            musicPlayer.ImportPlaylistFromJSON(@"C:\Users\tomki\Desktop\Test.json", @"C:\Users\tomki\Desktop\PROJEKT WPF\Songs", @"C:\Users\tomki\Desktop\PROJEKT WPF\Images");
-            musicPlayer.ExportPlaylistFromJSON("Nazwa", @"C:\Users\tomki\Desktop");
-            var songs = musicPlayer.GetAllSongs().ToList();
+            //musicPlayer.ImportPlaylistFromJSON(@"C:\Users\tomki\Desktop\Test.json", @"C:\Users\tomki\Desktop\PROJEKT WPF\Songs", @"C:\Users\tomki\Desktop\PROJEKT WPF\Images");
+            //musicPlayer.ExportPlaylistFromJSON("Nazwa", @"C:\Users\tomki\Desktop");
+            //var songs = musicPlayer.GetAllSongs().ToList();
 
-            
 
-            musicPlayer.LoadSongs(songs);
-            string input = "0";
-            while(true)
-            {
-                input = Console.ReadLine();
-                if(input == "Play")
-                {
-                    musicPlayer.PlaySong(songs[1].FilePath,1);
-                }
-                else if (input == "Resume")
-                {
-                    musicPlayer.ResumeSong();
-                }
-                else if (input == "Pause")
-                {
-                    musicPlayer.PauseSong();
-                }
-                else if( input == "Stop")
-                {
-                    musicPlayer.StopSong();
-                }
-                else if (input == "Next")
-                {
-                    musicPlayer.NextSong();
-                }
-                else if (input == "Previous")
-                {
-                    musicPlayer.PreviousSong();
-                }
-                else if (input == "Info")
-                {
-                    Console.WriteLine("Current second: {0}", musicPlayer.currentPossition);
-                    Console.WriteLine("Song length: {0}", musicPlayer.songDuration);
-                }
-                else
-                {
-                    int value = int.Parse(input);
-                    musicPlayer.ChangeValue(value);
-                }
 
-            }
+            //musicPlayer.LoadSongs(songs);
+            //string input = "0";
+            //while(true)
+            //{
+            //    input = Console.ReadLine();
+            //    if(input == "Play")
+            //    {
+            //        musicPlayer.PlaySong(songs[1].FilePath,1);
+            //    }
+            //    else if (input == "Resume")
+            //    {
+            //        musicPlayer.ResumeSong();
+            //    }
+            //    else if (input == "Pause")
+            //    {
+            //        musicPlayer.PauseSong();
+            //    }
+            //    else if( input == "Stop")
+            //    {
+            //        musicPlayer.StopSong();
+            //    }
+            //    else if (input == "Next")
+            //    {
+            //        musicPlayer.NextSong();
+            //    }
+            //    else if (input == "Previous")
+            //    {
+            //        musicPlayer.PreviousSong();
+            //    }
+            //    else if (input == "Info")
+            //    {
+            //        Console.WriteLine("Current second: {0}", musicPlayer.currentPossition);
+            //        Console.WriteLine("Song length: {0}", musicPlayer.songDuration);
+            //    }
+            //    else
+            //    {
+            //        int value = int.Parse(input);
+            //        musicPlayer.ChangeValue(value);
+            //    }
+
+            //}
+            musicPlayer.display(0);
         }
     }
 }

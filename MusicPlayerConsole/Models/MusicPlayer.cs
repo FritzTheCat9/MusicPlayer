@@ -22,6 +22,7 @@ using Google.Apis.YouTube.v3.Data;
 using System.Threading;
 using System.Reflection;
 using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace MusicPlayerConsole
 {
@@ -42,6 +43,9 @@ namespace MusicPlayerConsole
         private int volume = -2000;
         private List<Song> songs = null;
         private int currentPlayedSong = -1;
+        private List<Playlist> playlists = null;
+        private List<Author> authors = null;
+        private List<Album> albums = null;
 
         private MusicPlayer()
         {
@@ -704,7 +708,7 @@ namespace MusicPlayerConsole
 
         public void ChangeValue(int value)
         {
-            if (value > 0 && value < 4001)
+            if (value > 0 && value <= 4001)
             {
                 player.Volume = -value;
                 volume = -value;
@@ -751,5 +755,603 @@ namespace MusicPlayerConsole
             }
         }
 
+        public void display(int display)
+        {
+            if(display == 0)
+            {
+                consoleDisplay();
+            }
+        }
+        private void consoleDisplay()
+        {
+            short chosenValue = 0;
+            while(true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("MP3 MUSIC PLAYER");
+                Console.ForegroundColor = ConsoleColor.White;
+                if (chosenValue == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Show all songs");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Show all songs");
+                }
+                if (chosenValue == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Show all playlists");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Show all playlists");
+
+                }
+                if (chosenValue == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Youtube");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Youtube");
+
+                }
+                if (chosenValue == 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Show albums");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Show albums");
+
+                }
+                if (chosenValue == 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Show authors");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Show authors");
+                }
+                
+                if (chosenValue == 5)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Settings");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Settings");
+
+                }
+                if (chosenValue == 6)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Show control");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Show control");
+                }
+                if (chosenValue == 7)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("Exit");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("Exit");
+                }
+                Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = 7;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue > 7)
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if(input.Key == ConsoleKey.Enter)
+                {
+                    switch (chosenValue)
+                    {
+                        case 0:
+                            showAllSongs();
+                            break;
+                        case 1:
+                            showAllPlaylists();
+                            break;
+                        case 2:
+                            youtube();
+                            break;
+                        case 3:
+                            showAllAlbums();
+                            break;
+                        case 4:
+                            showAllAuthors();
+                            break;
+                        case 5:
+                            setthing();
+
+                            break;
+                        case 6:
+                            showControl();
+                            break;
+                        case 7:
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+        }
+
+        private void showControl()
+        {
+            Console.Clear();
+
+            Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+            Console.WriteLine("CONTROL");
+            Console.WriteLine("USER ARROWS TO NAVIGATE THROUGH MUSIC PLAYER");
+            Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("PRESS ANY KEY TO GO BACK");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ReadKey();
+            consoleDisplay();
+        }
+
+        private void setthing()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void showAllAuthors()
+        {
+            authors = GetAllAuthors().ToList();
+            int chosenValue = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("List of authors:");
+
+                for (int i = 0; i < authors.Count(); i++)
+                {
+                    if (chosenValue == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Name: {0}", authors[i].Name);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Name: {0}", authors[i].Name);
+                    }
+
+                }
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = authors.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue >= authors.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    consoleDisplay();
+                }
+            }
+        }
+
+        private void showAllAlbums()
+        {
+            albums = GetAllAlbums().ToList();
+            int chosenValue = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("List of albums:");
+
+                for (int i = 0; i < albums.Count(); i++)
+                {
+                    if (chosenValue == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Album: {0}", albums[i].Name);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Album: {0}", albums[i].Name);
+                    }
+
+                }
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = albums.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue >= albums.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    consoleDisplay();
+                }
+            }
+        }
+
+        private void youtube()
+        {
+            int chosenValue = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("DOWNLOAD SONG/PLAYLIST FROM YOUTUBE:");
+                Console.WriteLine("Enter url to song or playlist which you would like to download:");
+                string URL = Console.ReadLine();
+
+                var input = Console.ReadKey();
+
+                if (input.Key == ConsoleKey.Escape)
+                {
+                    consoleDisplay();
+                }
+            }
+        }
+
+        private void showAllPlaylists()
+        {
+            playlists = GetAllPlaylists().ToList();
+            int chosenValue = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Show playlist - click enter");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("List of songs:");
+
+                for (int i = 0; i < playlists.Count(); i++)
+                {
+                    if (chosenValue == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Playlist: {0}", playlists[i].Name);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Playlist: {0}", playlists[i].Name);
+                    }
+
+                }
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = playlists.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue >= playlists.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    showAllSongsFromPlayList(playlists[chosenValue].Name);
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    consoleDisplay();
+                }
+            }
+        }
+
+        private void showAllSongsFromPlayList(string playListName)
+        {
+            var songs = GetAllSongsFromPlaylist(playListName).ToList();
+            int chosenValue = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Play - click enter");
+                Console.WriteLine("Pause - click P");
+                Console.WriteLine("Stop - click S");
+                Console.WriteLine("Next - click N");
+                Console.WriteLine("Previous - click M");
+                Console.WriteLine("Shuffle - click Q");
+                Console.WriteLine("Volume Up - click U");
+                Console.WriteLine("Volume Down - click D");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("List of songs:");
+
+                for (int i = 0; i < songs.Count(); i++)
+                {
+                    if (chosenValue == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Author: {0} Tytuł: {1}", songs[i].Author == null ? "" : songs[i].Author.Name, songs[i].Title);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Author: {0} Tytuł: {1}", songs[i].Author == null ? "" : songs[i].Author.Name, songs[i].Title);
+                    }
+
+                }
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = songs.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue >= songs.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    PlaySong(songs[chosenValue].FilePath, chosenValue);
+                }
+                else if (input.Key == ConsoleKey.N)
+                {
+                    NextSong();
+                    chosenValue++;
+                    if (chosenValue >= songs.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.M)
+                {
+                    PreviousSong();
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = songs.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.P)
+                {
+                    PauseSong();
+                }
+                else if (input.Key == ConsoleKey.R)
+                {
+                    ResumeSong();
+                }
+                else if (input.Key == ConsoleKey.S)
+                {
+                    StopSong();
+                }
+                else if (input.Key == ConsoleKey.Q)
+                {
+                    throw new Exception();
+                }
+                else if (input.Key == ConsoleKey.U)
+                {
+                    volume += 500;
+                    if (volume < -4000)
+                    {
+                        volume = -4001;
+                    }
+                    else if (volume > -1)
+                    {
+                        volume = -1;
+                    }
+                    ChangeValue(-volume);
+                }
+                else if (input.Key == ConsoleKey.D)
+                {
+                    volume -= 500;
+                    if (volume < -4000)
+                    {
+                        volume = -4001;
+                    }
+                    else if (volume > -1)
+                    {
+                        volume = -1;
+                    }
+                    ChangeValue(-volume);
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    showAllPlaylists();
+                }
+            }
+        }
+
+        private void showAllSongs()
+        {
+            songs = GetAllSongs().ToList();
+            int chosenValue = 0;
+            while(true)
+            {
+                Console.Clear();
+                Console.WriteLine("Controls:");
+                Console.WriteLine("Play - click enter");
+                Console.WriteLine("Pause - click P");
+                Console.WriteLine("Stop - click S");
+                Console.WriteLine("Next - click N");
+                Console.WriteLine("Previous - click M");
+                Console.WriteLine("Shuffle - click Q");
+                Console.WriteLine("Volume Up - click U");
+                Console.WriteLine("Volume Down - click D");
+                Console.WriteLine("Go back - click ESC");
+                Console.WriteLine();
+                Console.WriteLine("List of songs:");
+
+                for (int i = 0; i < songs.Count(); i++)
+                {
+                    if (chosenValue == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Author: {0} Tytuł: {1}", songs[i].Author == null ? "" : songs[i].Author.Name, songs[i].Title);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Author: {0} Tytuł: {1}", songs[i].Author == null ? "" : songs[i].Author.Name, songs[i].Title);
+                    }
+
+                }
+                var input = Console.ReadKey();
+                if (input.Key == ConsoleKey.UpArrow)
+                {
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = songs.Count()-1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.DownArrow)
+                {
+                    chosenValue++;
+                    if (chosenValue >= songs.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.Enter)
+                {
+                    PlaySong(songs[chosenValue].FilePath, chosenValue);
+                }
+                else if (input.Key == ConsoleKey.N)
+                {
+                    NextSong();
+                    chosenValue++;
+                    if (chosenValue >= songs.Count())
+                    {
+                        chosenValue = 0;
+                    }
+                }
+                else if (input.Key == ConsoleKey.M)
+                {
+                    PreviousSong();
+                    chosenValue--;
+                    if (chosenValue < 0)
+                    {
+                        chosenValue = songs.Count() - 1;
+                    }
+                }
+                else if (input.Key == ConsoleKey.P)
+                {
+                    PauseSong();
+                }
+                else if (input.Key == ConsoleKey.R)
+                {
+                    ResumeSong();
+                }
+                else if (input.Key == ConsoleKey.S)
+                {
+                    StopSong();
+                }
+                else if (input.Key == ConsoleKey.Q)
+                {
+                    throw new Exception();
+                }
+                else if (input.Key == ConsoleKey.U)
+                {
+                    volume += 500;
+                    if(volume < -4000)
+                    {
+                        volume = -4001;
+                    }
+                    else if( volume > -1)
+                    {
+                        volume = -1;
+                    }
+                    ChangeValue(-volume);
+                }
+                else if (input.Key == ConsoleKey.D)
+                {
+                    volume -= 500;
+                    if (volume < -4000)
+                    {
+                        volume = -4001;
+                    }
+                    else if (volume > -1)
+                    {
+                        volume = -1;
+                    }
+                    ChangeValue(-volume);
+                }
+                else if (input.Key == ConsoleKey.Escape)
+                {
+                    consoleDisplay();
+                }
+            }
+        }
     }
 }
