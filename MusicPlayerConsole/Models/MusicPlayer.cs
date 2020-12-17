@@ -577,15 +577,25 @@ namespace MusicPlayerConsole
             string playlistName = root.Attribute("name").Value;
             string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".xml";
 
-            Playlist newPlaylist = null;
-
             if (File.Exists(xmlFilePath))
             {
                 if (!File.Exists(playlistFilePath))
                 {
                     File.Copy(xmlFilePath, playlistFilePath);
-                    newPlaylist = new Playlist(playlistName, playlistFilePath);
-                    Database.AddPlaylist(playlistName, playlistFilePath);
+                    AddPlaylist(playlistName, playlistFilePath);
+
+                    foreach (var song in playlistXML.Descendants("song"))
+                    {
+                        string album = song.Attribute("album").Value == "" ? null : song.Attribute("album").Value;
+                        string author = song.Attribute("author").Value == "" ? null : song.Attribute("author").Value;
+                        string title = song.Attribute("title").Value;
+
+                        string songPATH = songsFolderPath + @"\" + title + ".mp3";
+                        string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
+
+                        AddSong(title, songPATH, imagePATH, author, album);
+                        AddSongPlaylist(title, playlistName);
+                    }
                 }
             }
             else
@@ -593,17 +603,24 @@ namespace MusicPlayerConsole
                 return false;
             }
 
-            foreach (var song in playlistXML.Descendants("song"))
-            {
-                string album = song.Attribute("album").Value == "" ? null : song.Attribute("album").Value;
-                string author = song.Attribute("author").Value;
-                string title = song.Attribute("title").Value;
+            return true;
+        }
+        public bool ExportPlaylistToXML(string playlistName, string savePath)
+        {
+            var playlist = GetPlaylist(playlistName);
+            var songs = GetAllSongsFromPlaylist(playlistName);
 
-                string songPATH = songsFolderPath + @"\" + title + ".mp3";
-                string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
-
-                AddSong(title, songPATH, imagePATH, author, album);
-            }
+            XDocument playlistXML =
+              new XDocument(
+                new XElement("playlist", new XAttribute("name", playlist.Name),
+                    songs.Select(x => new XElement("song",
+                    new XAttribute("album", x.Album == null ? "" : x.Album.Name),
+                    new XAttribute("author", x.Author == null ? "" : x.Author.Name),
+                    new XAttribute("title", x.Title)
+                    ))
+                  )
+            );
+            playlistXML.Save(savePath + @"\" + playlistName + @".xml");
 
             return true;
         }
@@ -672,7 +689,7 @@ namespace MusicPlayerConsole
             return true;
         }
 
-        public bool ExportPlaylistFromJSON(string playListName,string _path)
+        public bool ExportPlaylistFromJSON(string playListName, string _path)
         {
             try
             {
@@ -680,7 +697,7 @@ namespace MusicPlayerConsole
 
                 var songsA = GetAllSongsFromPlaylist(playListName);
 
-               
+
                 JsonDataPlayList jsonDataPlayList = new JsonDataPlayList();
                 jsonDataPlayList.Name = playListName;
 
@@ -688,19 +705,19 @@ namespace MusicPlayerConsole
 
                 foreach (var item in songsA)
                 {
-                        JsonDataSong jsonDataSong = new JsonDataSong();
-                        jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
-                        jsonDataSong.Autor = item.Author == null ? "" : item.Author.Name;
-                        jsonDataSong.Title = item.Title;
+                    JsonDataSong jsonDataSong = new JsonDataSong();
+                    jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
+                    jsonDataSong.Autor = item.Author == null ? "" : item.Author.Name;
+                    jsonDataSong.Title = item.Title;
 
-                        jsonDataSongs.Add(jsonDataSong);
+                    jsonDataSongs.Add(jsonDataSong);
                 }
                 jsonDataPlayList.Songs = jsonDataSongs;
                 var jsonToWrite = JsonConvert.SerializeObject(jsonDataPlayList, Newtonsoft.Json.Formatting.Indented);
 
                 string path = _path + @"\" + playListName + ".json";
 
-                using(var writer = new StreamWriter(path))
+                using (var writer = new StreamWriter(path))
                 {
                     writer.Write(jsonToWrite);
                 }
@@ -792,7 +809,7 @@ namespace MusicPlayerConsole
 
         public void display(int display)
         {
-            if(display == 0)
+            if (display == 0)
             {
                 consoleDisplay();
             }
@@ -800,7 +817,7 @@ namespace MusicPlayerConsole
         private void consoleDisplay()
         {
             short chosenValue = 0;
-            while(true)
+            while (true)
             {
                 Console.Clear();
 
@@ -861,7 +878,7 @@ namespace MusicPlayerConsole
                 {
                     Console.WriteLine("Show authors");
                 }
-                
+
                 if (chosenValue == 5)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -911,7 +928,7 @@ namespace MusicPlayerConsole
                         chosenValue = 0;
                     }
                 }
-                else if(input.Key == ConsoleKey.Enter)
+                else if (input.Key == ConsoleKey.Enter)
                 {
                     switch (chosenValue)
                     {
@@ -1271,7 +1288,7 @@ namespace MusicPlayerConsole
         {
             songs = GetAllSongs().ToList();
             int chosenValue = 0;
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Controls:");
@@ -1307,7 +1324,7 @@ namespace MusicPlayerConsole
                     chosenValue--;
                     if (chosenValue < 0)
                     {
-                        chosenValue = songs.Count()-1;
+                        chosenValue = songs.Count() - 1;
                     }
                 }
                 else if (input.Key == ConsoleKey.DownArrow)
@@ -1359,11 +1376,11 @@ namespace MusicPlayerConsole
                 else if (input.Key == ConsoleKey.U)
                 {
                     volume += 500;
-                    if(volume < -4000)
+                    if (volume < -4000)
                     {
                         volume = -4001;
                     }
-                    else if( volume > -1)
+                    else if (volume > -1)
                     {
                         volume = -1;
                     }

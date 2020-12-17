@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <playlist name="playlist1">
-    <song album="" author="Jacuś" title="Jacuś - Rakieta"/>
-    <song album="" author="chillwagon" title="chillwagon - jumper"/>
+  <song album="" author="" title="Jacuś - Rakieta" />
+  <song album="" author="" title="chillwagon - jumper" />
 </playlist>

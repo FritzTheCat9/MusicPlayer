@@ -50,6 +50,11 @@ namespace MusicPlayerConsole
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
 
             var musicPlayer = MusicPlayer.getInstance();
+            /*musicPlayer.ImportPlaylistFromXML(@"C:\Users\bartl\Desktop\playlist1.xml",
+                @"C:\Users\bartl\Desktop\piosenki i obrazki", @"C:\Users\bartl\Desktop\piosenki i obrazki");*/
+            //musicPlayer.ExportPlaylistToXML("playlist1", @"C:\Users\bartl\Desktop");
+
+
             //musicPlayer.ImportPlaylistFromJSON(@"C:\Users\tomki\Desktop\Test.json", @"C:\Users\tomki\Desktop\PROJEKT WPF\Songs", @"C:\Users\tomki\Desktop\PROJEKT WPF\Images");
             //musicPlayer.ExportPlaylistFromJSON("Nazwa", @"C:\Users\tomki\Desktop");
             //var songs = musicPlayer.GetAllSongs().ToList();
@@ -97,7 +102,8 @@ namespace MusicPlayerConsole
             //    }
 
             //}
-            musicPlayer.display(0);
+
+            //musicPlayer.display(0);
         }
     }
 }
