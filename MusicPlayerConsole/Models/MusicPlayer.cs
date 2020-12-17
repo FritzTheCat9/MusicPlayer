@@ -628,7 +628,7 @@ namespace MusicPlayerConsole
             return true;
         }
 
-        public bool ExportPlaylistFromJSON(string playListName,string _path)
+        public bool ExportPlaylistFromJSON(string playListName, string _path)
         {
             try
             {
@@ -637,7 +637,7 @@ namespace MusicPlayerConsole
 
                 var songsA = GetAllSongsFromPlaylist(playListName);
 
-               
+
                 JsonDataPlayList jsonDataPlayList = new JsonDataPlayList();
                 jsonDataPlayList.Name = playListName;
 
@@ -645,19 +645,19 @@ namespace MusicPlayerConsole
 
                 foreach (var item in songsA)
                 {
-                        JsonDataSong jsonDataSong = new JsonDataSong();
-                        jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
-                        jsonDataSong.Autor = item.Author == null ? "" : item.Author.Name;
-                        jsonDataSong.Title = item.Title;
+                    JsonDataSong jsonDataSong = new JsonDataSong();
+                    jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
+                    jsonDataSong.Autor = item.Author == null ? "" : item.Author.Name;
+                    jsonDataSong.Title = item.Title;
 
-                        jsonDataSongs.Add(jsonDataSong);
+                    jsonDataSongs.Add(jsonDataSong);
                 }
                 jsonDataPlayList.Songs = jsonDataSongs;
                 var jsonToWrite = JsonConvert.SerializeObject(jsonDataPlayList, Newtonsoft.Json.Formatting.Indented);
 
                 string path = _path + @"\" + playListName + ".json";
 
-                using(var writer = new StreamWriter(path))
+                using (var writer = new StreamWriter(path))
                 {
                     writer.Write(jsonToWrite);
                 }
@@ -757,7 +757,7 @@ namespace MusicPlayerConsole
 
         public void display(int display)
         {
-            if(display == 0)
+            if (display == 0)
             {
                 consoleDisplay();
             }
@@ -765,7 +765,7 @@ namespace MusicPlayerConsole
         private void consoleDisplay()
         {
             short chosenValue = 0;
-            while(true)
+            while (true)
             {
                 Console.Clear();
 
@@ -826,7 +826,7 @@ namespace MusicPlayerConsole
                 {
                     Console.WriteLine("Show authors");
                 }
-                
+
                 if (chosenValue == 5)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -876,7 +876,7 @@ namespace MusicPlayerConsole
                         chosenValue = 0;
                     }
                 }
-                else if(input.Key == ConsoleKey.Enter)
+                else if (input.Key == ConsoleKey.Enter)
                 {
                     switch (chosenValue)
                     {
@@ -919,7 +919,7 @@ namespace MusicPlayerConsole
 
             Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
             Console.WriteLine("CONTROL");
-            Console.WriteLine("USER ARROWS TO NAVIGATE THROUGH MUSIC PLAYER");
+            Console.WriteLine("USE ARROWS TO NAVIGATE THROUGH MUSIC PLAYER");
             Console.WriteLine("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("PRESS ANY KEY TO GO BACK");
@@ -941,6 +941,9 @@ namespace MusicPlayerConsole
             {
                 Console.Clear();
                 Console.WriteLine("Controls:");
+                Console.WriteLine("Add author - click A");
+                Console.WriteLine("Update author data - click S");
+                Console.WriteLine("Delete author - click D");
                 Console.WriteLine("Go back - click ESC");
                 Console.WriteLine();
                 Console.WriteLine("List of authors:");
@@ -976,13 +979,65 @@ namespace MusicPlayerConsole
                         chosenValue = 0;
                     }
                 }
+                else if (input.Key == ConsoleKey.A)
+                {
+                    AddNewAuthor();
+                }
+                else if (input.Key == ConsoleKey.S)
+                {
+                    UpdateNewAuthor(authors[chosenValue].Name);
+                }
+                else if (input.Key == ConsoleKey.D)
+                {
+                    DeleteNewAuthor(authors[chosenValue].Name);
+                }
                 else if (input.Key == ConsoleKey.Escape)
                 {
                     consoleDisplay();
                 }
             }
         }
+        private void AddNewAuthor()
+        {
+            Console.WriteLine("ADD NEW AUTHOR");
+            Console.WriteLine("Enter author name:");
+            string authorName = Console.ReadLine();
 
+            AddAuthor(authorName);
+            Console.WriteLine("New author has been added");
+            Console.WriteLine("Click any button");
+            Console.ReadKey();
+            authors = GetAllAuthors().ToList();
+        }
+        private void UpdateNewAuthor(string name)
+        {
+            Console.WriteLine("UPDATE AUTHOR");
+            Console.WriteLine("Enter new author name:");
+            string authorName = Console.ReadLine();
+
+            UpdateAuthor(name, authorName);
+            Console.WriteLine("Author has been updated");
+            Console.WriteLine("Click any button");
+            Console.ReadKey();
+            authors = GetAllAuthors().ToList();
+        }
+        private void DeleteNewAuthor(string name)
+        {
+            if (!RemoveAuthor(name))
+            {
+
+                Console.WriteLine("Unable to delete author");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("Author has been removed");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+            }
+            authors = GetAllAuthors().ToList();
+        }
         private void showAllAlbums()
         {
             albums = GetAllAlbums().ToList();
@@ -991,6 +1046,9 @@ namespace MusicPlayerConsole
             {
                 Console.Clear();
                 Console.WriteLine("Controls:");
+                Console.WriteLine("Add album - click A");
+                Console.WriteLine("Update album data - click S");
+                Console.WriteLine("Delete album - click D");
                 Console.WriteLine("Go back - click ESC");
                 Console.WriteLine();
                 Console.WriteLine("List of albums:");
@@ -1026,12 +1084,69 @@ namespace MusicPlayerConsole
                         chosenValue = 0;
                     }
                 }
+                else if (input.Key == ConsoleKey.A)
+                {
+                    AddNewAlbum();
+                }
+                else if (input.Key == ConsoleKey.S)
+                {
+                    UpdateNewAlbum(albums[chosenValue].Name);
+                }
+                else if (input.Key == ConsoleKey.D)
+                {
+                    DeleteNewAlbum(albums[chosenValue].Name);
+                }
                 else if (input.Key == ConsoleKey.Escape)
                 {
-                    consoleDisplay();
+                    return;
                 }
             }
         }
+        private void AddNewAlbum()
+        {
+            Console.WriteLine("ADD NEW ALBUM");
+            Console.WriteLine("Enter album name:");
+            string albumName = Console.ReadLine();
+            Console.WriteLine("Enter author name:");
+            string authorName = Console.ReadLine();
+
+            AddAlbum(albumName, authorName);
+            Console.WriteLine("New album has been added");
+            Console.WriteLine("Click any button");
+            Console.ReadKey();
+            albums = GetAllAlbums().ToList();
+        }
+        private void UpdateNewAlbum(string _albumName)
+        {
+            Console.WriteLine("UPDATE ALBUM");
+            Console.WriteLine("Enter new album name:");
+            string albumName = Console.ReadLine();
+            Console.WriteLine("Enter new author name:");
+            string authorName = Console.ReadLine();
+
+            UpdateAlbum(_albumName, albumName, authorName);
+            Console.WriteLine("Album has been updated");
+            Console.WriteLine("Click any button");
+            Console.ReadKey();
+            albums = GetAllAlbums().ToList();
+        }
+        private void DeleteNewAlbum(string name)
+        {
+            if (!RemoveAlbum(name))
+            {
+                Console.WriteLine("Unable to delete album");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("Album has been removed");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+            }
+            albums = GetAllAlbums().ToList();
+        }
+
 
         private void youtube()
         {
@@ -1046,6 +1161,8 @@ namespace MusicPlayerConsole
                 Console.WriteLine("Enter url to song or playlist which you would like to download:");
                 string URL = Console.ReadLine();
 
+                //SaveSongFromYoutubeAsync();
+                //GetVideosFromPlaylistAsynch();
                 var input = Console.ReadKey();
 
                 if (input.Key == ConsoleKey.Escape)
@@ -1118,11 +1235,12 @@ namespace MusicPlayerConsole
             {
                 Console.Clear();
                 Console.WriteLine("Controls:");
-                Console.WriteLine("Play - click enter");
-                Console.WriteLine("Pause - click P");
-                Console.WriteLine("Stop - click S");
-                Console.WriteLine("Next - click N");
-                Console.WriteLine("Previous - click M");
+                Console.WriteLine("Play - click enter               Add song to this playlist - click X");
+                Console.WriteLine("Pause - click P                  Delete song from playlist - click Z");
+                Console.WriteLine("Resume - click R                 Change song title - click C");
+                Console.WriteLine("Stop - click S                   Change song author - click V");
+                Console.WriteLine("Next - click N                   Change song mp3 path - click E");
+                Console.WriteLine("Previous - click M               Change song image path - click T");
                 Console.WriteLine("Shuffle - click Q");
                 Console.WriteLine("Volume Up - click U");
                 Console.WriteLine("Volume Down - click D");
@@ -1165,6 +1283,35 @@ namespace MusicPlayerConsole
                 {
                     PlaySong(songs[chosenValue].FilePath, chosenValue);
                 }
+                /////////////////////////////////////////////////////////
+                else if (input.Key == ConsoleKey.X)
+                {
+                    AddSongToPlaylist(playlists[chosenValue].Name);
+                    songs = GetAllSongsFromPlaylist(playListName).ToList();
+                }
+                else if (input.Key == ConsoleKey.Z)
+                {
+                    Database.RemoveSongPlaylist(songs[chosenValue].Title, playListName);
+                    StopSong();
+                    songs = GetAllSongsFromPlaylist(playListName).ToList();
+                }
+                else if (input.Key == ConsoleKey.C)
+                {
+                    ChangeSongName(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.V)
+                {
+                    ChangeSongAutor(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.E)
+                {
+                    ChangeSongMp3Path(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.T)
+                {
+                    ChangeSongImagePath(chosenValue);
+                }
+                ///////////////////////////////////////////////////////
                 else if (input.Key == ConsoleKey.N)
                 {
                     NextSong();
@@ -1236,15 +1383,16 @@ namespace MusicPlayerConsole
         {
             songs = GetAllSongs().ToList();
             int chosenValue = 0;
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Controls:");
-                Console.WriteLine("Play - click enter");
-                Console.WriteLine("Pause - click P");
-                Console.WriteLine("Stop - click S");
-                Console.WriteLine("Next - click N");
-                Console.WriteLine("Previous - click M");
+                Console.WriteLine("Play - click enter               Add song - click X");
+                Console.WriteLine("Pause - click P                  Delete song - click Z");
+                Console.WriteLine("Resume - click R                 Change song title - click C");
+                Console.WriteLine("Stop - click S                   Change song author - click V");
+                Console.WriteLine("Next - click N                   Change song mp3 path - click E");
+                Console.WriteLine("Previous - click M               Change song image path - click T");
                 Console.WriteLine("Shuffle - click Q");
                 Console.WriteLine("Volume Up - click U");
                 Console.WriteLine("Volume Down - click D");
@@ -1272,7 +1420,7 @@ namespace MusicPlayerConsole
                     chosenValue--;
                     if (chosenValue < 0)
                     {
-                        chosenValue = songs.Count()-1;
+                        chosenValue = songs.Count() - 1;
                     }
                 }
                 else if (input.Key == ConsoleKey.DownArrow)
@@ -1286,6 +1434,32 @@ namespace MusicPlayerConsole
                 else if (input.Key == ConsoleKey.Enter)
                 {
                     PlaySong(songs[chosenValue].FilePath, chosenValue);
+                }
+                else if (input.Key == ConsoleKey.X)
+                {
+                    AddSong();
+                }
+                else if (input.Key == ConsoleKey.Z)
+                {
+                    Database.DeleteSongFromPlayList(songs[chosenValue].Title);
+                    StopSong();
+                    songs = GetAllSongs().ToList();
+                }
+                else if (input.Key == ConsoleKey.C)
+                {
+                    ChangeSongName(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.V)
+                {
+                    ChangeSongAutor(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.E)
+                {
+                    ChangeSongMp3Path(chosenValue);
+                }
+                else if (input.Key == ConsoleKey.T)
+                {
+                    ChangeSongImagePath(chosenValue);
                 }
                 else if (input.Key == ConsoleKey.N)
                 {
@@ -1324,11 +1498,11 @@ namespace MusicPlayerConsole
                 else if (input.Key == ConsoleKey.U)
                 {
                     volume += 500;
-                    if(volume < -4000)
+                    if (volume < -4000)
                     {
                         volume = -4001;
                     }
-                    else if( volume > -1)
+                    else if (volume > -1)
                     {
                         volume = -1;
                     }
@@ -1351,6 +1525,154 @@ namespace MusicPlayerConsole
                 {
                     consoleDisplay();
                 }
+            }
+        }
+
+        private void ChangeSongMp3Path(int chosenValue)
+        {
+            Console.WriteLine("CHANGE SONG MP3 FILE PATH");
+            Console.WriteLine("Enter new path:");
+            string newMp3Path = Console.ReadLine();
+            if (!Database.ChangeMp3Path(songs[chosenValue].SongID, newMp3Path))
+            {
+                Console.WriteLine("Unable to change mp3 path");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Mp3 path was changed");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            songs = GetAllSongs().ToList();
+        }
+        private void ChangeSongImagePath(int chosenValue)
+        {
+            Console.WriteLine("CHANGE SONG IMAGE FILE PATH");
+            Console.WriteLine("Enter new path:");
+            string newImahePath = Console.ReadLine();
+            if (!Database.ChangeImagePath(songs[chosenValue].SongID, newImahePath))
+            {
+                Console.WriteLine("Unable to change image path");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Image path was changed");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            songs = GetAllSongs().ToList();
+        }
+
+        private void ChangeSongName(int chosenValue)
+        {
+            Console.WriteLine("CHANGE SONG TITLE");
+            Console.WriteLine("Enter new title:");
+            string newTitle = Console.ReadLine();
+            if (!Database.ChangeSongTitle(songs[chosenValue].SongID, newTitle))
+            {
+                Console.WriteLine("Unable to change song title");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Title was changed");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            songs = GetAllSongs().ToList();
+        }
+
+        private void ChangeSongAutor(int chosenValue)
+        {
+            Console.WriteLine("CHANGE SONG AUTHOR");
+            Console.WriteLine("Enter new author:");
+            string newAuthor = Console.ReadLine();
+            if (!Database.ChangeSongAuthor(songs[chosenValue].SongID, newAuthor))
+            {
+                Console.WriteLine("Unable to change song author");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Author was changed");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+
+            }
+            songs = GetAllSongs().ToList();
+        }
+        private void AddSong()
+        {
+            Console.WriteLine("ADD SONG");
+            Console.WriteLine("Song title: ");
+            string songName = Console.ReadLine();
+            Console.WriteLine("Song author: ");
+            string songAuthor = Console.ReadLine();
+            Console.WriteLine("Path to MP3 file:");
+            string songMp3Path = Console.ReadLine();
+            Console.WriteLine("Path to image file:");
+            string songImagePath = Console.ReadLine();
+            Console.WriteLine("Album name:");
+            string songAlbumName = Console.ReadLine();
+
+            if (!AddSong(songName, songMp3Path, songImagePath, songAuthor, songAlbumName))
+            {
+                Console.WriteLine("Unable to add song");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Song was added");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                songs = GetAllSongs().ToList();
+                return;
+            }
+        }
+        private void AddSongToPlaylist(string playListName)
+        {
+            Console.WriteLine("ADD SONG");
+            Console.WriteLine("Song title: ");
+            string songName = Console.ReadLine();
+            Console.WriteLine("Song author: ");
+            string songAuthor = Console.ReadLine();
+            Console.WriteLine("Path to MP3 file:");
+            string songMp3Path = Console.ReadLine();
+            Console.WriteLine("Path to image file:");
+            string songImagePath = Console.ReadLine();
+            Console.WriteLine("Album name:");
+            string songAlbumName = Console.ReadLine();
+
+            if (!AddSong(songName, songMp3Path, songImagePath, songAuthor, songAlbumName))
+            {
+                Console.WriteLine("Unable to add song");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                AddSongPlaylist(songName, playListName);
+                Console.WriteLine("Song was added");
+                Console.WriteLine("Click any key to go back");
+                Console.ReadKey();
+                songs = GetAllSongs().ToList();
+                return;
             }
         }
     }
