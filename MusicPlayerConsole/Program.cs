@@ -1,13 +1,4 @@
-﻿using Google.Apis.Services;
-using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MusicPlayerConsole
+﻿namespace MusicPlayerConsole
 {
     class Program
     {
@@ -50,10 +41,14 @@ namespace MusicPlayerConsole
             //MusicPlayer.getInstance().GetVideosFromPlaylist("https://www.youtube.com/playlist?list=PLWCniz3RpsZV-cVnNRa58ykVAq2Rs2Hb6");
 
             var musicPlayer = MusicPlayer.getInstance();
-            /*musicPlayer.ImportPlaylistFromXML(@"C:\Users\bartl\Desktop\playlist1.xml",
-                @"C:\Users\bartl\Desktop\piosenki i obrazki", @"C:\Users\bartl\Desktop\piosenki i obrazki");*/
-            //musicPlayer.ExportPlaylistToXML("playlist1", @"C:\Users\bartl\Desktop");
+            /*musicPlayer.ImportPlaylistFromJSON(@"C:\Users\bartl\Desktop\jsonPlaylist\playlist2.json",
+                @"C:\Users\bartl\Desktop\jsonPlaylist", @"C:\Users\bartl\Desktop\jsonPlaylist");
+            musicPlayer.ExportPlaylistToJSON("playlist2", @"C:\Users\bartl\Desktop");*/
+            /*musicPlayer.ImportPlaylistFromXML(@"C:\Users\bartl\Desktop\playlist2.xml",
+                @"C:\Users\bartl\Desktop\jsonPlaylist", @"C:\Users\bartl\Desktop\jsonPlaylist");*/
 
+
+            //musicPlayer.ExportPlaylistFromJSON("playlist1", @"C:\Users\bartl\Desktop");
 
             //musicPlayer.ImportPlaylistFromJSON(@"C:\Users\tomki\Desktop\Test.json", @"C:\Users\tomki\Desktop\PROJEKT WPF\Songs", @"C:\Users\tomki\Desktop\PROJEKT WPF\Images");
             //musicPlayer.ExportPlaylistFromJSON("Nazwa", @"C:\Users\tomki\Desktop");
@@ -103,7 +98,7 @@ namespace MusicPlayerConsole
 
             //}
 
-            //musicPlayer.display(0);
+            musicPlayer.display(0);
         }
     }
 }

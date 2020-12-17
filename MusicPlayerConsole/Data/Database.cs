@@ -365,9 +365,7 @@ namespace MusicPlayerConsole.Data
                 return songs;
             }
         }
-        #endregion
-
-        public static bool ChangeSongTitle(int songID,string newTitle)
+        public static bool ChangeSongTitle(int songID, string newTitle)
         {
             using (var context = new MusicPlayerContext())
             {
@@ -379,17 +377,17 @@ namespace MusicPlayerConsole.Data
                     return true;
                 }
 
-                return false ;
+                return false;
             }
         }
-        public static bool ChangeSongAuthor(int songID,string newAuthor)
+        public static bool ChangeSongAuthor(int songID, string newAuthor)
         {
             using (var context = new MusicPlayerContext())
             {
-                var song = context.Songs.Where(x => x.SongID == songID).Include(x=>x.Author).FirstOrDefault();
+                var song = context.Songs.Where(x => x.SongID == songID).Include(x => x.Author).FirstOrDefault();
                 if (song != null)
                 {
-                    if(song.Author != null)
+                    if (song.Author != null)
                     {
                         song.Author.Name = newAuthor;
 
@@ -406,7 +404,7 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-        public static bool ChangeMp3Path(int songID, string newPath)
+        public static bool ChangeSongFilenamePath(int songID, string newPath)
         {
             using (var context = new MusicPlayerContext())
             {
@@ -421,8 +419,7 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
-        public static bool ChangeImagePath(int songID, string newPath)
+        public static bool ChangeSongImagePath(int songID, string newPath)
         {
             using (var context = new MusicPlayerContext())
             {
@@ -437,6 +434,7 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
+        #endregion
 
         /* SONGPLAYLIST */
         #region SONGPLAYLIST
@@ -446,7 +444,9 @@ namespace MusicPlayerConsole.Data
             {
                 var song = context.Songs.Where(x => x.Title == songTitle).Include(x => x.Author).Include(x => x.Album).FirstOrDefault();
                 var playlist = context.Playlists.Where(x => x.Name == playlistName).FirstOrDefault();
-                if (playlist != null && song != null)
+                var IsAnySongPlaylist = context.SongPlaylists.Where(x => x.Song.Title == songTitle).Where(x => x.Playlist.Name == playlistName)
+                    .Include(x => x.Song).Include(x => x.Playlist).FirstOrDefault();
+                if (IsAnySongPlaylist == null && playlist != null && song != null)
                 {
                     var songPlaylist = new SongPlaylist();
                     songPlaylist.SongID = song.SongID;
@@ -524,15 +524,15 @@ namespace MusicPlayerConsole.Data
                 return songList;
             }
         }
-        public static bool DeleteSongFromPlayList(string songName)
+        public static bool DeleteSongFromPlaylistsAndProgram(string songName)
         {
             using (var context = new MusicPlayerContext())
             {
                 var playLists = context.Playlists;
 
-                foreach (var item in playLists)
+                foreach (var playlist in playLists)
                 {
-                    RemoveSongPlaylist(songName, item.Name);
+                    RemoveSongPlaylist(songName, playlist.Name);
                 }
                 RemoveSong(songName);
                 return true;

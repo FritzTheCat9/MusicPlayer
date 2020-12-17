@@ -287,6 +287,22 @@ namespace MusicPlayerConsole
         {
             return Database.GetAllSongs();
         }
+        public static bool ChangeSongTitle(int songID, string newTitle)
+        {
+            return Database.ChangeSongTitle(songID, newTitle);
+        }
+        public static bool ChangeSongAuthor(int songID, string newAuthor)
+        {
+            return Database.ChangeSongAuthor(songID, newAuthor);
+        }
+        public static bool ChangeSongFilenamePath(int songID, string newPath)
+        {
+            return Database.ChangeSongFilenamePath(songID, newPath);
+        }
+        public static bool ChangeSongImagePath(int songID, string newPath)
+        {
+            return Database.ChangeSongImagePath(songID, newPath);
+        }
         #endregion
 
         /* AUTHOR */
@@ -386,6 +402,10 @@ namespace MusicPlayerConsole
         private IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
         {
             return Database.GetAllSongsFromPlaylist(playListName);
+        }
+        public static bool DeleteSongFromPlaylistsAndProgram(string songName)
+        {
+            return Database.DeleteSongFromPlaylistsAndProgram(songName);
         }
         #endregion
 
@@ -568,6 +588,7 @@ namespace MusicPlayerConsole
         #endregion
 
         /* IMPORT, EXPORT - PLAYLISTS */
+        #region Playlists import and export to XML and JSON
 
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
         {
@@ -607,12 +628,11 @@ namespace MusicPlayerConsole
         }
         public bool ExportPlaylistToXML(string playlistName, string savePath)
         {
-            var playlist = GetPlaylist(playlistName);
             var songs = GetAllSongsFromPlaylist(playlistName);
 
             XDocument playlistXML =
               new XDocument(
-                new XElement("playlist", new XAttribute("name", playlist.Name),
+                new XElement("playlist", new XAttribute("name", playlistName),
                     songs.Select(x => new XElement("song",
                     new XAttribute("album", x.Album == null ? "" : x.Album.Name),
                     new XAttribute("author", x.Author == null ? "" : x.Author.Name),
@@ -624,23 +644,10 @@ namespace MusicPlayerConsole
 
             return true;
         }
-
-        struct JsonDataPlayList
-        {
-            public string Name;
-            public List<JsonDataSong> Songs;
-        }
-        struct JsonDataSong
-        {
-            public string Title;
-            public string Autor;
-            public string Album;
-        }
         public bool ImportPlaylistFromJSON(string jsonFilePath, string songsFolderPath, string imagesFolderPath)
         {
             try
             {
-
                 string jsonFromFile;
                 using (var reader = new StreamReader(jsonFilePath))
                 {
@@ -652,15 +659,12 @@ namespace MusicPlayerConsole
                 string playlistName = dane.Name;
                 string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".json";
 
-                Playlist newPlaylist = null;
-
                 if (File.Exists(jsonFilePath))
                 {
                     if (!File.Exists(playlistFilePath))
                     {
                         File.Copy(jsonFilePath, playlistFilePath);
-                        newPlaylist = new Playlist(playlistName, playlistFilePath);
-                        Database.AddPlaylist(playlistName, playlistFilePath);
+                        AddPlaylist(playlistName, playlistFilePath);
                     }
                 }
                 else
@@ -680,7 +684,6 @@ namespace MusicPlayerConsole
                     AddSong(title, songPATH, imagePATH, author, album);
                     AddSongPlaylist(title, playlistName);
                 }
-
             }
             catch (Exception ex)
             {
@@ -688,22 +691,18 @@ namespace MusicPlayerConsole
             }
             return true;
         }
-
-        public bool ExportPlaylistFromJSON(string playListName, string _path)
+        public bool ExportPlaylistToJSON(string playlistName, string savePath)
         {
             try
             {
-                var playList = GetAllPlaylists();
-
-                var songsA = GetAllSongsFromPlaylist(playListName);
-
+                var songs = GetAllSongsFromPlaylist(playlistName);
 
                 JsonDataPlayList jsonDataPlayList = new JsonDataPlayList();
-                jsonDataPlayList.Name = playListName;
+                jsonDataPlayList.Name = playlistName;
 
                 List<JsonDataSong> jsonDataSongs = new List<JsonDataSong>();
 
-                foreach (var item in songsA)
+                foreach (var item in songs)
                 {
                     JsonDataSong jsonDataSong = new JsonDataSong();
                     jsonDataSong.Album = item.Album == null ? "" : item.Album.Name;
@@ -713,9 +712,10 @@ namespace MusicPlayerConsole
                     jsonDataSongs.Add(jsonDataSong);
                 }
                 jsonDataPlayList.Songs = jsonDataSongs;
-                var jsonToWrite = JsonConvert.SerializeObject(jsonDataPlayList, Newtonsoft.Json.Formatting.Indented);
 
-                string path = _path + @"\" + playListName + ".json";
+                var jsonToWrite = JsonConvert.SerializeObject(jsonDataPlayList, Formatting.Indented);
+
+                string path = savePath + @"\" + playlistName + ".json";
 
                 using (var writer = new StreamWriter(path))
                 {
@@ -729,6 +729,21 @@ namespace MusicPlayerConsole
             }
             return true;
         }
+
+        struct JsonDataPlayList
+        {
+            public string Name;
+            public List<JsonDataSong> Songs;
+        }
+
+        struct JsonDataSong
+        {
+            public string Title;
+            public string Autor;
+            public string Album;
+        }
+
+        #endregion
 
         /* PLAY MUSIC - Media Player */
         #region MediaPlayer
@@ -807,6 +822,8 @@ namespace MusicPlayerConsole
 
         #endregion
 
+        /* Console Version */
+        #region Console Version
         public void display(int display)
         {
             if (display == 0)
@@ -1343,7 +1360,7 @@ namespace MusicPlayerConsole
                 }
                 else if (input.Key == ConsoleKey.Z)
                 {
-                    Database.RemoveSongPlaylist(songs[chosenValue].Title, playListName);
+                    RemoveSongPlaylist(songs[chosenValue].Title, playListName);
                     StopSong();
                     songs = GetAllSongsFromPlaylist(playListName).ToList();
                 }
@@ -1493,7 +1510,7 @@ namespace MusicPlayerConsole
                 }
                 else if (input.Key == ConsoleKey.Z)
                 {
-                    Database.DeleteSongFromPlayList(songs[chosenValue].Title);
+                    DeleteSongFromPlaylistsAndProgram(songs[chosenValue].Title);
                     StopSong();
                     songs = GetAllSongs().ToList();
                 }
@@ -1585,7 +1602,7 @@ namespace MusicPlayerConsole
             Console.WriteLine("CHANGE SONG MP3 FILE PATH");
             Console.WriteLine("Enter new path:");
             string newMp3Path = Console.ReadLine();
-            if (!Database.ChangeMp3Path(songs[chosenValue].SongID, newMp3Path))
+            if (!ChangeSongFilenamePath(songs[chosenValue].SongID, newMp3Path))
             {
                 Console.WriteLine("Unable to change mp3 path");
                 Console.WriteLine("Click any key to go back");
@@ -1606,7 +1623,7 @@ namespace MusicPlayerConsole
             Console.WriteLine("CHANGE SONG IMAGE FILE PATH");
             Console.WriteLine("Enter new path:");
             string newImahePath = Console.ReadLine();
-            if (!Database.ChangeImagePath(songs[chosenValue].SongID, newImahePath))
+            if (!ChangeSongImagePath(songs[chosenValue].SongID, newImahePath))
             {
                 Console.WriteLine("Unable to change image path");
                 Console.WriteLine("Click any key to go back");
@@ -1628,7 +1645,7 @@ namespace MusicPlayerConsole
             Console.WriteLine("CHANGE SONG TITLE");
             Console.WriteLine("Enter new title:");
             string newTitle = Console.ReadLine();
-            if (!Database.ChangeSongTitle(songs[chosenValue].SongID, newTitle))
+            if (!ChangeSongTitle(songs[chosenValue].SongID, newTitle))
             {
                 Console.WriteLine("Unable to change song title");
                 Console.WriteLine("Click any key to go back");
@@ -1650,7 +1667,7 @@ namespace MusicPlayerConsole
             Console.WriteLine("CHANGE SONG AUTHOR");
             Console.WriteLine("Enter new author:");
             string newAuthor = Console.ReadLine();
-            if (!Database.ChangeSongAuthor(songs[chosenValue].SongID, newAuthor))
+            if (!ChangeSongAuthor(songs[chosenValue].SongID, newAuthor))
             {
                 Console.WriteLine("Unable to change song author");
                 Console.WriteLine("Click any key to go back");
@@ -1727,5 +1744,7 @@ namespace MusicPlayerConsole
                 return;
             }
         }
+
+        #endregion
     }
 }
