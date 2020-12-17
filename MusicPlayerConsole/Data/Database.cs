@@ -367,6 +367,77 @@ namespace MusicPlayerConsole.Data
         }
         #endregion
 
+        public static bool ChangeSongTitle(int songID,string newTitle)
+        {
+            using (var context = new MusicPlayerContext())
+            {
+                var song = context.Songs.Where(x => x.SongID == songID).FirstOrDefault();
+                if (song != null)
+                {
+                    song.Title = newTitle;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false ;
+            }
+        }
+        public static bool ChangeSongAuthor(int songID,string newAuthor)
+        {
+            using (var context = new MusicPlayerContext())
+            {
+                var song = context.Songs.Where(x => x.SongID == songID).Include(x=>x.Author).FirstOrDefault();
+                if (song != null)
+                {
+                    if(song.Author != null)
+                    {
+                        song.Author.Name = newAuthor;
+
+                    }
+                    else
+                    {
+                        Author author = new Author { Name = newAuthor };
+                        song.Author = author;
+                    }
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+        public static bool ChangeMp3Path(int songID, string newPath)
+        {
+            using (var context = new MusicPlayerContext())
+            {
+                var song = context.Songs.Where(x => x.SongID == songID).FirstOrDefault();
+                if (song != null)
+                {
+                    song.FilePath = newPath;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public static bool ChangeImagePath(int songID, string newPath)
+        {
+            using (var context = new MusicPlayerContext())
+            {
+                var song = context.Songs.Where(x => x.SongID == songID).FirstOrDefault();
+                if (song != null)
+                {
+                    song.ImagePath = newPath;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         /* SONGPLAYLIST */
         #region SONGPLAYLIST
         public static SongPlaylist AddSongPlaylist(string songTitle, string playlistName)
@@ -395,6 +466,7 @@ namespace MusicPlayerConsole.Data
             {
                 var songPlaylist = context.SongPlaylists.Where(x => x.Song.Title == songTitle).Where(x => x.Playlist.Name == playlistName)
                     .Include(x => x.Song).Include(x => x.Playlist).FirstOrDefault();
+
 
                 if (songPlaylist != null)
                 {
@@ -450,6 +522,20 @@ namespace MusicPlayerConsole.Data
                 }
 
                 return songList;
+            }
+        }
+        public static bool DeleteSongFromPlayList(string songName)
+        {
+            using (var context = new MusicPlayerContext())
+            {
+                var playLists = context.Playlists;
+
+                foreach (var item in playLists)
+                {
+                    RemoveSongPlaylist(songName, item.Name);
+                }
+                RemoveSong(songName);
+                return true;
             }
         }
         #endregion
