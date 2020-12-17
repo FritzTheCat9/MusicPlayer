@@ -32,8 +32,8 @@ namespace MusicPlayerConsole
         private MediaPlayer.MediaPlayer player = null;
         private int songLength = 0;
         private int volume = -2000;
-        private List<Song> songs = null;
-        private int currentPlayedSong = -1;
+        public List<Song> songs = null;
+        public int currentPlayedSong = -1;
         private List<Playlist> playlists = null;
         private List<Author> authors = null;
         private List<Album> albums = null;
