@@ -10,7 +10,7 @@ namespace MusicPlayerConsole.Data
     public static class Database
     {
         /* AUTHOR */
-
+        #region AUTHOR
         public static Author AddAuthor(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -26,7 +26,6 @@ namespace MusicPlayerConsole.Data
                 return author;
             }
         }
-
         public static bool RemoveAuthor(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -42,7 +41,6 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
         public static Author UpdateAuthor(string name, string newName)
         {
             using (var context = new MusicPlayerContext())
@@ -59,7 +57,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static Author GetAuthor(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -73,7 +70,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static IEnumerable<Author> GetAllAuthors()
         {
             using (var context = new MusicPlayerContext())
@@ -82,9 +78,10 @@ namespace MusicPlayerConsole.Data
                 return authors;
             }
         }
+        #endregion
 
         /* ALBUM */
-
+        #region ALBUM
         public static Album AddAlbum(string albumName, string authorName)
         {
             using (var context = new MusicPlayerContext())
@@ -104,7 +101,6 @@ namespace MusicPlayerConsole.Data
                 return album;
             }
         }
-
         public static bool RemoveAlbum(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -120,7 +116,6 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
         public static Album UpdateAlbum(string name, string newName, string newAuthor)
         {
             using (var context = new MusicPlayerContext())
@@ -141,7 +136,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static Album GetAlbum(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -155,7 +149,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static IEnumerable<Album> GetAllAlbums()
         {
             using (var context = new MusicPlayerContext())
@@ -164,9 +157,10 @@ namespace MusicPlayerConsole.Data
                 return albums;
             }
         }
+        #endregion
 
         /* PLAYLIST */
-
+        #region PLAYLIST
         public static Playlist AddPlaylist(string name, string filePath)
         {
             using (var context = new MusicPlayerContext())
@@ -182,7 +176,6 @@ namespace MusicPlayerConsole.Data
                 return playlist;
             }
         }
-
         public static bool RemovePlaylist(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -198,7 +191,6 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
         public static Playlist UpdatePlaylist(string name, string newName, string newFilePath)
         {
             using (var context = new MusicPlayerContext())
@@ -216,7 +208,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static Playlist GetPlaylist(string name)
         {
             using (var context = new MusicPlayerContext())
@@ -230,7 +221,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static IEnumerable<Playlist> GetAllPlaylists()
         {
             using (var context = new MusicPlayerContext())
@@ -239,9 +229,10 @@ namespace MusicPlayerConsole.Data
                 return playlist;
             }
         }
+        #endregion
 
         /* SONG */
-
+        #region SONG
         public static Song AddSong(string title, string filePath, string imagePath, int length, string authorName = null, string albumName = null)
         {
             using (var context = new MusicPlayerContext())
@@ -288,7 +279,6 @@ namespace MusicPlayerConsole.Data
                 return song;
             }
         }
-
         public static bool RemoveSong(string title)
         {
             using (var context = new MusicPlayerContext())
@@ -304,7 +294,6 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
         public static Song UpdateSong(string title, string newTitle, string newFilePath, string newImagePath, int newLength, string newAuthorName, string newAlbumName = null)
         {
             using (var context = new MusicPlayerContext())
@@ -355,7 +344,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static Song GetSong(string title)
         {
             using (var context = new MusicPlayerContext())
@@ -369,7 +357,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static IEnumerable<Song> GetAllSongs()
         {
             using (var context = new MusicPlayerContext())
@@ -378,6 +365,7 @@ namespace MusicPlayerConsole.Data
                 return songs;
             }
         }
+        #endregion
 
         public static bool ChangeSongTitle(int songID,string newTitle)
         {
@@ -451,7 +439,7 @@ namespace MusicPlayerConsole.Data
         }
 
         /* SONGPLAYLIST */
-
+        #region SONGPLAYLIST
         public static SongPlaylist AddSongPlaylist(string songTitle, string playlistName)
         {
             using (var context = new MusicPlayerContext())
@@ -472,7 +460,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static bool RemoveSongPlaylist(string songTitle, string playlistName)
         {
             using (var context = new MusicPlayerContext())
@@ -491,7 +478,6 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-
         public static SongPlaylist GetSongPlaylist(string songTitle, string playlistName)
         {
             using (var context = new MusicPlayerContext())
@@ -507,7 +493,6 @@ namespace MusicPlayerConsole.Data
                 return null;
             }
         }
-
         public static IEnumerable<SongPlaylist> GetAllSongPlaylists()
         {
             using (var context = new MusicPlayerContext())
@@ -516,9 +501,10 @@ namespace MusicPlayerConsole.Data
                 return songPlaylist;
             }
         }
+        #endregion
 
         /* OTHER */
-
+        #region OTHER
         public static IEnumerable<Song> GetAllSongsFromPlaylist(string playlistName)
         {
             using (var context = new MusicPlayerContext())
