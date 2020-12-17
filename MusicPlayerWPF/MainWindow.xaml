@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
+        xmlns:musicPlayer="clr-namespace:MusicPlayerConsole;assembly=MusicPlayerConsole"
         mc:Ignorable="d"
         Title="MusicPlayer" Height="450" Width="800"
         Loaded="Window_Loaded">
@@ -86,7 +87,7 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList"/>
+                    <ListBox Grid.Row="1" Name="listBox_SongsList" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">
@@ -100,6 +101,8 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Content="Link to video"/>
@@ -108,6 +111,8 @@
                     <Label Content="Link to playlist" Grid.Row="2"/>
                     <TextBox Name="textBox_PlaylistLink" Grid.Row="2" Grid.Column="1" Text="link"/>
                     <Button Name="button_DownloadPlaylist" Grid.Row="3" Content="Download" Click="button_DownloadPlaylist_Click"/>
+                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Grid.ColumnSpan="2" Height="25" Minimum="0" Maximum="6" Value="{Binding Path=(musicPlayer:MusicPlayer.WorkerState)}"/>
+                    <Button Name="SIEMA" Grid.Row="5" Content="SIEMA" Click="SIEMA_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Albums">
@@ -212,6 +217,7 @@
 
             <!-- Current song -->
             <StackPanel Grid.Row="0">
+                <!--<Grid Grid.Row="0" DataContext="{Binding ElementName=listBox_SongsList, Path=SelectedItem}">-->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -221,7 +227,8 @@
                         <RowDefinition/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Image Grid.Column="0" Grid.RowSpan="2" Source="img/DefaultImage.png" Width="320" Height="180"/>
+                    <!--<Image Grid.Column="0" Grid.RowSpan="2" Source="img/DefaultImage.png" Width="320" Height="180"/>-->
+                    <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" Source="img/DefaultImage.png"/>
                     <Slider Grid.Column="1" Orientation="Vertical"/>
                     <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30"/>
                 </Grid>
@@ -230,14 +237,14 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Slider/>
-                    <Label Grid.Column="1" Content="TIME"/>
+                    <Slider Name="slider_SongDuration" Minimum="0" Value="0" ValueChanged="slider_SongDuration_ValueChanged"/>
+                    <Label Name="label_SongDuration" Grid.Column="1"/>
                 </Grid>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Previous"/>
-                    <Button Content="Play"/>
-                    <Button Content="Next"/>
-                    <Button Content="Shuffle"/>
+                    <Button Name="buttonPreviousSong" Content="Previous" Click="buttonPreviousSong_Click"/>
+                    <Button Name="buttonPlaySong" Content="Play" Click="buttonPlaySong_Click"/>
+                    <Button Name="buttonNextSong" Content="Next" Click="buttonNextSong_Click"/>
+                    <Button Name="buttonShuffleSong" Content="Shuffle" Click="buttonShuffleSong_Click"/>
                 </StackPanel>
             </StackPanel>
 

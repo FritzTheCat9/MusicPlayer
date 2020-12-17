@@ -1,27 +1,18 @@
-﻿using MediaToolkit;
+﻿using Google.Apis.Services;
+using Google.Apis.YouTube.v3;
+using MediaToolkit;
 using MediaToolkit.Model;
 using MusicPlayerConsole.Data;
 using NAudio.Wave;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 using VideoLibrary;
-
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
-using Google.Apis.Upload;
-using Google.Apis.Util.Store;
-using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
-using System.Threading;
-using System.Reflection;
-using Newtonsoft.Json;
 
 namespace MusicPlayerConsole
 {
@@ -31,7 +22,7 @@ namespace MusicPlayerConsole
         JSON
     }
 
-    public class MusicPlayer
+    public class MusicPlayer : INotifyPropertyChanged
     {
         /* Singleton - one Music Player in application */
         private static MusicPlayer _instance = new MusicPlayer();
@@ -40,8 +31,8 @@ namespace MusicPlayerConsole
         private MediaPlayer.MediaPlayer player = null;
         private int songLength = 0;
         private int volume = -2000;
-        private List<Song> songs = null;
-        private int currentPlayedSong = -1;
+        public List<Song> songs = null;
+        public int currentPlayedSong = -1;
 
         private MusicPlayer()
         {
@@ -68,6 +59,24 @@ namespace MusicPlayerConsole
         private string SONGS_FOLDER;
         private string IMAGES_FOLER;
         private string PLAYLISTS_FOLDER;
+
+
+        public BackgroundWorker backgroundWorker = new BackgroundWorker();
+        private int _workerState;
+        public int WorkerState
+        {
+            get { return _workerState; }
+            set
+            {
+                _workerState = value; OnPropertyChanged("WorkerState");
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
 
         /* SONG */
 
@@ -492,6 +501,32 @@ namespace MusicPlayerConsole
             });
         }
 
+        public int CountVideosInYoutubePlaylist(string url)
+        {
+            string list = "list=";
+            string playlistId = url.Substring(url.IndexOf(list) + list.Length);
+
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
+            });
+
+            var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+            playlistItemsListRequest.MaxResults = 50;
+            playlistItemsListRequest.PlaylistId = playlistId;
+
+            var playlistItemsListResponse = playlistItemsListRequest.Execute();
+
+            int videosCount = 0;
+
+            foreach (var playlistItem in playlistItemsListResponse.Items)
+            {
+                videosCount++;
+            }
+
+            return videosCount;
+        }
+
         public void GetVideosFromPlaylist(string url)
         {
             string list = "list=";
@@ -514,6 +549,8 @@ namespace MusicPlayerConsole
                 var SongId = playlistItem.Snippet.ResourceId.VideoId;
 
                 SaveSongFromYoutube2("https://www.youtube.com/watch?v=" + SongId, SongId);
+
+                WorkerState++;
 
                 Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
             }
@@ -628,7 +665,6 @@ namespace MusicPlayerConsole
         {
             try
             {
-                bool flag = false;
                 var playList = GetAllPlaylists();
 
                 var songsA = GetAllSongsFromPlaylist(playListName);
