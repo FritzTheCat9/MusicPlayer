@@ -18,7 +18,7 @@
             <TabItem Header="Play song">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -91,9 +91,9 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">
-                <Grid>
+                <Grid Name="grid_YouTube">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -111,8 +111,8 @@
                     <Label Content="Link to playlist" Grid.Row="2"/>
                     <TextBox Name="textBox_PlaylistLink" Grid.Row="2" Grid.Column="1" Text="link"/>
                     <Button Name="button_DownloadPlaylist" Grid.Row="3" Content="Download" Click="button_DownloadPlaylist_Click"/>
-                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Grid.ColumnSpan="2" Height="25" Minimum="0" Maximum="6" Value="{Binding Path=(musicPlayer:MusicPlayer.WorkerState)}"/>
-                    <Button Name="SIEMA" Grid.Row="5" Content="SIEMA" Click="SIEMA_Click"/>
+                    <Label Content="Downloading progress:" Grid.Row="4"/>
+                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Grid.Column="1" Height="25" Minimum="0" Maximum="1" Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Albums">

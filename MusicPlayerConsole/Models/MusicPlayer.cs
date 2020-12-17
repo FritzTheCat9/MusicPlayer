@@ -26,9 +26,20 @@ namespace MusicPlayerConsole
     public class MusicPlayer : INotifyPropertyChanged
     {
         /* Singleton - one Music Player in application */
+        #region Singleton
+
         private static MusicPlayer _instance = new MusicPlayer();
 
-        /*Media player for playing music */
+        public static MusicPlayer getInstance()
+        {
+            return _instance;
+        }
+
+        #endregion
+
+        /* Media player for playing music */
+        #region Player Variables
+
         private MediaPlayer.MediaPlayer player = null;
         private int songLength = 0;
         private int volume = -2000;
@@ -38,34 +49,42 @@ namespace MusicPlayerConsole
         private List<Author> authors = null;
         private List<Album> albums = null;
 
+        #endregion
+
         private MusicPlayer()
         {
+            #region Setting Project Directories
+
             // This will get the current WORKING directory (i.e. \bin\Debug)
             string workingDirectory = Environment.CurrentDirectory;
 
             // This will get the current SOLUTION directory
-            string solutionDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            SOLUTION_DIRECTORY = solutionDirectory;
+            SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             SONGS_FOLDER = SOLUTION_DIRECTORY + @"\Songs\";
             IMAGES_FOLER = SOLUTION_DIRECTORY + @"\Images\";
             PLAYLISTS_FOLDER = SOLUTION_DIRECTORY + @"\Playlists\";
 
+            #endregion
+
             /*Initialize MediaPlayer.MediaPlayer */
             player = new MediaPlayer.MediaPlayer();
         }
-        public static MusicPlayer getInstance()
-        {
-            return _instance;
-        }
 
-        // project folders paths (to store songs, playlists, images)
+        /* Project folders paths (to store songs, playlists, images) */
+        #region ProjectPaths
+
         private string SOLUTION_DIRECTORY;
         private string SONGS_FOLDER;
         private string IMAGES_FOLER;
         private string PLAYLISTS_FOLDER;
 
+        #endregion
+
+        /* BackgroundWorker - progressbar WPF */
+        #region BackgroundWorker
 
         public BackgroundWorker backgroundWorker = new BackgroundWorker();
+
         private int _workerState;
         public int WorkerState
         {
@@ -75,15 +94,19 @@ namespace MusicPlayerConsole
                 _workerState = value; OnPropertyChanged("WorkerState");
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(string property)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
-        /* SONG */
+        #endregion
 
+        /* SONG */
+        #region SONG
         private int getSongLength(string filePath)
         {
             try
@@ -97,7 +120,6 @@ namespace MusicPlayerConsole
                 return 0;
             }
         }
-
         /// <summary>
         /// Add song to database, Songs folder and Images folder
         /// </summary>
@@ -144,7 +166,6 @@ namespace MusicPlayerConsole
 
             return true;
         }
-
         /// <summary>
         /// Delete song from database, Songs folder and Images folder
         /// </summary>
@@ -179,7 +200,6 @@ namespace MusicPlayerConsole
 
             return false;
         }
-
         /// <summary>
         /// Edit song in database, Songs folder and Images folder
         /// </summary>
@@ -259,122 +279,118 @@ namespace MusicPlayerConsole
                 return false;
             }
         }
-
         public Song GetSong(string title)
         {
             return Database.GetSong(title);
         }
-
         public IEnumerable<Song> GetAllSongs()
         {
             return Database.GetAllSongs();
         }
+        #endregion
 
         /* AUTHOR */
-
+        #region AUTHOR
         public Author AddAuthor(string name)
         {
             return Database.AddAuthor(name);
         }
-
         public bool RemoveAuthor(string name)
         {
             return Database.RemoveAuthor(name);
         }
-
         public Author UpdateAuthor(string name, string newName)
         {
             return Database.UpdateAuthor(name, newName);
         }
-
         public Author GetAuthor(string name)
         {
             return Database.GetAuthor(name);
         }
-
         public IEnumerable<Author> GetAllAuthors()
         {
             return Database.GetAllAuthors();
         }
+        #endregion
 
         /* PLAYLIST */
-
+        #region PLAYLIST
         public Playlist AddPlaylist(string name, string filePath)
         {
             return Database.AddPlaylist(name, filePath);
         }
-
         public bool RemovePlaylist(string name)
         {
             return Database.RemovePlaylist(name);
         }
-
         public Playlist UpdatePlaylist(string name, string newName, string newFilePath)
         {
             return Database.UpdatePlaylist(name, newName, newFilePath);
         }
-
         public Playlist GetPlaylist(string name)
         {
             return Database.GetPlaylist(name);
         }
-
         public IEnumerable<Playlist> GetAllPlaylists()
         {
             return Database.GetAllPlaylists();
         }
+        #endregion
 
         /* ALBUM */
-
+        #region ALBUM
         public Album AddAlbum(string albumName, string authorName)
         {
             return Database.AddAlbum(albumName, authorName);
         }
-
         public bool RemoveAlbum(string name)
         {
             return Database.RemoveAlbum(name);
         }
-
         public Album UpdateAlbum(string name, string newName, string newAuthor)
         {
             return Database.UpdateAlbum(name, newName, newAuthor);
         }
-
         public Album GetAlbum(string name)
         {
             return Database.GetAlbum(name);
         }
-
         public IEnumerable<Album> GetAllAlbums()
         {
             return Database.GetAllAlbums();
         }
+        #endregion
 
         /* SONGPLAYLIST */
-
+        #region SONGPLAYLIST
         public SongPlaylist AddSongPlaylist(string songTitle, string playlistName)
         {
             return Database.AddSongPlaylist(songTitle, playlistName);
         }
-
         public bool RemoveSongPlaylist(string songTitle, string playlistName)
         {
             return Database.RemoveSongPlaylist(songTitle, playlistName);
         }
-
         public SongPlaylist GetSongPlaylist(string songTitle, string playlistName)
         {
             return Database.GetSongPlaylist(songTitle, playlistName);
         }
-
         public IEnumerable<SongPlaylist> GetAllSongPlaylists()
         {
             return Database.GetAllSongPlaylists();
         }
+        #endregion
+
+        /* OTHER */
+        #region OTHER
+        private IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
+        {
+            return Database.GetAllSongsFromPlaylist(playListName);
+        }
+        #endregion
 
         /* YOUTUBE */
-
+        #region YOUTUBE
         private static string FindTextBetween(string text, string left, string right)
         {
             // Walidacja danych 
@@ -397,7 +413,6 @@ namespace MusicPlayerConsole
 
             return text.Substring(beginIndex, endIndex - beginIndex).Trim();
         }
-
         public void DownloadImageFromYoutubeVideo(string url)
         {
             // Get image
@@ -406,7 +421,6 @@ namespace MusicPlayerConsole
             var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
             File.WriteAllBytes(IMAGES_FOLER + getVideoTitle(url) + ".jpg", imgBytes);
         }
-
         public void DownloadSongFromYoutubeVideo(string url)
         {
             var youTube = YouTube.Default;
@@ -425,7 +439,6 @@ namespace MusicPlayerConsole
 
             File.Delete(Path.Combine(SONGS_FOLDER, video.FullName));
         }
-
         public string getVideoTitle(string url)
         {
             // Get video title
@@ -434,7 +447,6 @@ namespace MusicPlayerConsole
             var title = video.FullName.Remove(video.FullName.Length - 4, 4);
             return title;
         }
-
         public bool SaveSongFromYoutube(string url)
         {
             var youTube = YouTube.Default;
@@ -457,7 +469,6 @@ namespace MusicPlayerConsole
                 return false;
             }
         }
-
         public void DownloadImageFromYoutubeVideo2(string videoID)
         {
             // Get image
@@ -465,7 +476,6 @@ namespace MusicPlayerConsole
             var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
             File.WriteAllBytes(IMAGES_FOLER + getVideoTitle("https://www.youtube.com/watch?v=" + videoID) + ".jpg", imgBytes);
         }
-
         public bool SaveSongFromYoutube2(string url, string videoID)
         {
             var youTube = YouTube.Default;
@@ -488,7 +498,6 @@ namespace MusicPlayerConsole
                 return false;
             }
         }
-
         public async Task SaveSongFromYoutubeAsync(string url)
         {
             await Task.Run(() =>
@@ -496,7 +505,6 @@ namespace MusicPlayerConsole
                 SaveSongFromYoutube(url);
             });
         }
-
         public async Task GetVideosFromPlaylistAsync(string url)
         {
             await Task.Run(() =>
@@ -504,7 +512,6 @@ namespace MusicPlayerConsole
                 GetVideosFromPlaylist(url);
             });
         }
-
         public int CountVideosInYoutubePlaylist(string url)
         {
             string list = "list=";
@@ -530,7 +537,6 @@ namespace MusicPlayerConsole
 
             return videosCount;
         }
-
         public void GetVideosFromPlaylist(string url)
         {
             string list = "list=";
@@ -559,6 +565,7 @@ namespace MusicPlayerConsole
                 Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
             }
         }
+        #endregion
 
         /* IMPORT, EXPORT - PLAYLISTS */
 
@@ -706,71 +713,10 @@ namespace MusicPlayerConsole
             return true;
         }
 
-        private IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
-        {
-            return Database.GetAllSongsFromPlaylist(playListName);
-        }
+        /* PLAY MUSIC - Media Player */
+        #region MediaPlayer
 
-        /* PLAY MUSIC */
-
-        public void LoadSongs(List<Song> _songs)
-        {
-            songs = _songs;
-        }
-
-        public void PlaySong(string filePath, int _currentPlayedSong)
-        {
-            player.FileName = filePath;
-            songLength = (int)player.CurrentPosition;
-            player.Volume = volume;
-            player.Play();
-            currentPlayedSong = _currentPlayedSong;
-        }
-
-        public void ResumeSong()
-        {
-            player.Play();
-        }
-
-        public void PauseSong()
-        {
-            player.Pause();
-        }
-
-        public void StopSong()
-        {
-            player.Stop();
-        }
-
-        public void ChangeValue(int value)
-        {
-            if (value > 0 && value <= 4001)
-            {
-                player.Volume = -value;
-                volume = -value;
-            }
-        }
-
-        public void NextSong()
-        {
-            currentPlayedSong++;
-            if (currentPlayedSong >= songs.Count)
-            {
-                currentPlayedSong = 0;
-            }
-            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
-        }
-
-        public void PreviousSong()
-        {
-            currentPlayedSong--;
-            if (currentPlayedSong < 0)
-            {
-                currentPlayedSong = songs.Count - 1;
-            }
-            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
-        }
-
+        /* Current song second (aktualna sekunda piosenki) */
         public int currentPossition
         {
             get
@@ -782,7 +728,7 @@ namespace MusicPlayerConsole
                 player.CurrentPosition = value;
             }
         }
-
+        /* Current song length (długość piosenki) */
         public int songDuration
         {
             get
@@ -790,6 +736,59 @@ namespace MusicPlayerConsole
                 return (int)player.Duration;
             }
         }
+        public void LoadSongs(List<Song> _songs)
+        {
+            songs = _songs;
+        }
+        public void PlaySong(string filePath, int _currentPlayedSong)
+        {
+            player.FileName = filePath;
+            songLength = (int)player.CurrentPosition;
+            player.Volume = volume;
+            player.Play();
+            currentPlayedSong = _currentPlayedSong;
+        }
+        public void ResumeSong()
+        {
+            player.Play();
+        }
+        public void PauseSong()
+        {
+            player.Pause();
+        }
+        public void StopSong()
+        {
+            player.Stop();
+        }
+        /* Change song volume from 1 - MAX to 4000 - MIN, 4001 - MUTE*/
+        public void ChangeValue(int value)
+        {
+            if (value > 0 && value <= 4001)
+            {
+                player.Volume = -value;
+                volume = -value;
+            }
+        }
+        public void NextSong()
+        {
+            currentPlayedSong++;
+            if (currentPlayedSong >= songs.Count)
+            {
+                currentPlayedSong = 0;
+            }
+            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
+        }
+        public void PreviousSong()
+        {
+            currentPlayedSong--;
+            if (currentPlayedSong < 0)
+            {
+                currentPlayedSong = songs.Count - 1;
+            }
+            PlaySong(songs[currentPlayedSong].FilePath, currentPlayedSong);
+        }
+
+        #endregion
 
         public void display(int display)
         {

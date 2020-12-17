@@ -50,28 +50,27 @@ namespace MusicPlayerWPF
             }
         }
 
+        #region YouTube
         private async void button_DownloadYoutubeVideo_Click(object sender, RoutedEventArgs e)
         {
             var link = textBox_YoutubeVideoLink.Text;
-
             await musicPlayer.SaveSongFromYoutubeAsync(link);
         }
-
         private void button_DownloadPlaylist_Click(object sender, RoutedEventArgs e)
         {
             var link = textBox_PlaylistLink.Text;
 
-            //await musicPlayer.GetVideosFromPlaylistAsync(link);
-
+            grid_YouTube.DataContext = musicPlayer;
             progressBar_playlistDownload.Maximum = musicPlayer.CountVideosInYoutubePlaylist(link);
 
             musicPlayer.backgroundWorker.DoWork += (obj, arg) =>
             {
                 musicPlayer.GetVideosFromPlaylist(link);
+                musicPlayer.WorkerState = 0;
             };
-
             musicPlayer.backgroundWorker.RunWorkerAsync();
         }
+        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -138,12 +137,6 @@ namespace MusicPlayerWPF
         {
            /*TimeSpan ts = TimeSpan.FromSeconds(e.NewValue);
            musicPlayer.player.Position = ts;*/
-        }
-
-        private void SIEMA_Click(object sender, RoutedEventArgs e)
-        {
-            musicPlayer.WorkerState++;
-            progressBar_playlistDownload.Value++;
         }
     }
 }
