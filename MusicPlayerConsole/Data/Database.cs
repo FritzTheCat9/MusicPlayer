@@ -538,5 +538,6 @@ namespace MusicPlayerConsole.Data
                 return true;
             }
         }
+        #endregion
     }
 }
