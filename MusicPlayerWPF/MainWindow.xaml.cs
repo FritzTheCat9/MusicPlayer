@@ -137,5 +137,17 @@ namespace MusicPlayerWPF
             int value = (int) slider_volume.Value;
             musicPlayer.ChangeValue(value);
         }
+
+        private void MenuItem_AddSong_Click(object sender, RoutedEventArgs e)
+        {
+            AddSongWindow addSongWindow = new AddSongWindow();
+            addSongWindow.Show();
+        }
+
+        private void MenuItem_EditSong_Click(object sender, RoutedEventArgs e)
+        {
+            EditSongWindow editSongWindow = new EditSongWindow();
+            editSongWindow.Show();
+        }
     }
 }

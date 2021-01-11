@@ -134,6 +134,10 @@ namespace MusicPlayerConsole
             // Adding song
             if (File.Exists(filePath))
             {
+                if (title == "")
+                {
+                    title = Path.GetFileName(filePath);
+                }
                 var newFilePath = SONGS_FOLDER + Path.GetFileName(filePath);
                 if (!File.Exists(newFilePath))
                 {
@@ -219,6 +223,11 @@ namespace MusicPlayerConsole
                 // Delete old files only if there are new files
                 if (File.Exists(newFilePath))
                 {
+                    if (newTitle == "")
+                    {
+                        newTitle = Path.GetFileName(newFilePath);
+                    }
+
                     // Delete from Images Folder
                     if (songToUpdate.ImagePath != IMAGES_FOLER + "DefaultImage.png")
                     {
@@ -234,10 +243,6 @@ namespace MusicPlayerConsole
                         File.Delete(songToUpdate.FilePath);
                     }
                 }
-                else
-                {
-                    return false;
-                }
 
                 // Adding song
                 if (File.Exists(newFilePath))
@@ -248,10 +253,6 @@ namespace MusicPlayerConsole
                         File.Copy(newFilePath, newPath);
                     }
                     newFilePath = newPath;
-                }
-                else
-                {
-                    return false;
                 }
 
                 // Adding image

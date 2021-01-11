@@ -63,8 +63,8 @@
             <TabItem Header="Songs library">
                 <StackPanel>
                     <Menu>
-                        <MenuItem Header="Add"/>
-                        <MenuItem Header="Edit"/>
+                        <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
+                        <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
                         <MenuItem Header="Delete"/>
                         <MenuItem Header="Details"/>
                     </Menu>

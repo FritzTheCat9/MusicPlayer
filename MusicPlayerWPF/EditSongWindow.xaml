@@ -1,11 +1,11 @@
-﻿<Window x:Class="MusicPlayerWPF.AddSongWindow"
+﻿<Window x:Class="MusicPlayerWPF.EditSongWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
-        Title="AddSongWindow" Height="200" Width="300">
+        Title="EditSongWindow" Height="200" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -33,6 +33,6 @@
         <Label Grid.Row="4" Grid.Column="0" Content="Image path" />
         <TextBox Name="TextBox_ImagePath" Grid.Row="4" Grid.Column="1"/>
         <Button Name="Button_Choose_Image" Content="Choose image" Click="Button_Choose_Image_Click" Grid.Row="4" Grid.Column="3"/>
-        <Button Name="Button_AddSong" Grid.Row="5" Grid.Column="0" Content="Add song" Click="Button_AddSong_Click"/>
+        <Button Name="Button_EditSong" Grid.Row="5" Grid.Column="0" Content="Edit song" Click="Button_EditSong_Click"/>
     </Grid>
 </Window>
