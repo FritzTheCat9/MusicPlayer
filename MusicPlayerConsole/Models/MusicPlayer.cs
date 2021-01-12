@@ -42,12 +42,13 @@ namespace MusicPlayerConsole
 
         private MediaPlayer.MediaPlayer player = null;
         private int songLength = 0;
-        private int volume = -2000;
+        private int volume = -1000;
         public List<Song> songs = null;
         public int currentPlayedSong = -1;
         private List<Playlist> playlists = null;
         private List<Author> authors = null;
         private List<Album> albums = null;
+        public List<string> youtubePlaylistSongTitles = null;
 
         #endregion
 
@@ -415,6 +416,20 @@ namespace MusicPlayerConsole
 
         /* YOUTUBE */
         #region YOUTUBE
+        public bool IsYoutubeLink(string link) { 
+            try 
+            { 
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(link); 
+                request.Method = "HEAD"; 
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse()) 
+                { 
+                    return response.ResponseUri.ToString().Contains("youtube.com") ? true : false; 
+                } 
+            } catch 
+            { 
+                return false; 
+            } 
+        }
         private static string FindTextBetween(string text, string left, string right)
         {
             // Walidacja danych 
@@ -576,11 +591,13 @@ namespace MusicPlayerConsole
             playlistItemsListRequest.PlaylistId = playlistId;
 
             var playlistItemsListResponse = playlistItemsListRequest.Execute();
+            youtubePlaylistSongTitles = new List<string>();
 
             foreach (var playlistItem in playlistItemsListResponse.Items)
             {
                 var SongTitle = playlistItem.Snippet.Title;
                 var SongId = playlistItem.Snippet.ResourceId.VideoId;
+                youtubePlaylistSongTitles.Add(SongTitle);
 
                 SaveSongFromYoutube2("https://www.youtube.com/watch?v=" + SongId, SongId);
 

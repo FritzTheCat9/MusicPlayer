@@ -222,7 +222,7 @@
                     </Grid.RowDefinitions>
                     <!--<Image Grid.Column="0" Grid.RowSpan="2" Source="img/DefaultImage.png" Width="320" Height="180"/>-->
                     <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" Source="img/DefaultImage.png"/>
-                    <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="2000" ValueChanged="Slider_ValueChanged">
+                    <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="3000" ValueChanged="Slider_ValueChanged">
                         <Slider.LayoutTransform>
                             <RotateTransform Angle="180"></RotateTransform>
                         </Slider.LayoutTransform>

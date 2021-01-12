@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -33,6 +34,9 @@ namespace MusicPlayerWPF
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
 
+            musicPlayer.backgroundWorker.WorkerReportsProgress = true;
+            musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
+
             InitializeComponent();
             DataContext = this;
         }
@@ -59,22 +63,80 @@ namespace MusicPlayerWPF
         #region YouTube
         private async void button_DownloadYoutubeVideo_Click(object sender, RoutedEventArgs e)
         {
+            button_DownloadYoutubeVideo.IsEnabled = false;
+            button_DownloadPlaylist.IsEnabled = false;
+
             var link = textBox_YoutubeVideoLink.Text;
-            await musicPlayer.SaveSongFromYoutubeAsync(link);
+            
+            if(musicPlayer.IsYoutubeLink(link) && link.Contains(@"/watch?"))
+            {
+                await musicPlayer.SaveSongFromYoutubeAsync(link);
+                var title = musicPlayer.getVideoTitle(link);
+                var addedSong = musicPlayer.GetSong(title);
+                if (addedSong != null)
+                {
+                    songsList.Add(addedSong);
+                    musicPlayer.LoadSongs(songsList);
+                }
+            }
+
+            button_DownloadYoutubeVideo.IsEnabled = true;
+            button_DownloadPlaylist.IsEnabled = true;
         }
         private void button_DownloadPlaylist_Click(object sender, RoutedEventArgs e)
         {
+            button_DownloadYoutubeVideo.IsEnabled = false;
+            button_DownloadPlaylist.IsEnabled = false;
+
             var link = textBox_PlaylistLink.Text;
 
             grid_YouTube.DataContext = musicPlayer;
-            progressBar_playlistDownload.Maximum = musicPlayer.CountVideosInYoutubePlaylist(link);
 
-            musicPlayer.backgroundWorker.DoWork += (obj, arg) =>
+            if (musicPlayer.IsYoutubeLink(link) && link.Contains(@"/playlist?"))
             {
-                musicPlayer.GetVideosFromPlaylist(link);
-                musicPlayer.WorkerState = 0;
-            };
-            musicPlayer.backgroundWorker.RunWorkerAsync();
+                progressBar_playlistDownload.Maximum = musicPlayer.CountVideosInYoutubePlaylist(link);
+
+                musicPlayer.backgroundWorker.DoWork += (obj, arg) =>
+                {
+                    musicPlayer.GetVideosFromPlaylist(link);
+                    musicPlayer.WorkerState = 0;
+                    musicPlayer.backgroundWorker.ReportProgress(100);
+                };
+                musicPlayer.backgroundWorker.RunWorkerAsync();
+            }
+            else
+            {
+                button_DownloadYoutubeVideo.IsEnabled = true;
+                button_DownloadPlaylist.IsEnabled = true;
+            }
+        }
+        void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == 100)
+            {
+                var songsTitles = musicPlayer.youtubePlaylistSongTitles;
+                if (songsTitles != null)
+                {
+                    foreach (var title in songsTitles)
+                    {
+                        var newSongTitle = title.Replace(@"""", "_");
+
+                        var addedSong = musicPlayer.GetSong(newSongTitle);
+                        if (addedSong != null)
+                        {
+                            var song = songsList.FirstOrDefault(s => s.SongID == addedSong.SongID);
+                            if (song == null)
+                            {
+                                songsList.Add(addedSong);
+                                musicPlayer.LoadSongs(songsList);
+                            }
+                        }
+                    }
+                }
+
+                button_DownloadYoutubeVideo.IsEnabled = true;
+                button_DownloadPlaylist.IsEnabled = true;
+            }
         }
         #endregion
 
@@ -174,6 +236,8 @@ namespace MusicPlayerWPF
             musicPlayer.ChangeValue(value);
         }
 
+        #region Add, Edit, Delete song
+        
         private void MenuItem_AddSong_Click(object sender, RoutedEventArgs e)
         {
             AddSongWindow addSongWindow = new AddSongWindow();
@@ -282,6 +346,8 @@ namespace MusicPlayerWPF
                 MessageBox.Show("Can not delete this song! It is currently running!", "Delete Song", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        #endregion
 
         private void MenuItem_AddAuthor_Click(object sender, RoutedEventArgs e)
         {
