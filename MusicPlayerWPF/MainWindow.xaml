@@ -7,6 +7,7 @@
         xmlns:musicPlayer="clr-namespace:MusicPlayerConsole;assembly=MusicPlayerConsole"
         mc:Ignorable="d"
         Title="MusicPlayer" Height="450" Width="800"
+        Name="MainWindowName"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -65,7 +66,7 @@
                     <Menu>
                         <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
                         <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
-                        <MenuItem Header="Delete"/>
+                        <MenuItem Name="MenuItem_DeleteSong" Header="Delete" Click="MenuItem_DeleteSong_Click"/>
                         <MenuItem Header="Details"/>
                     </Menu>
                     <Grid>
@@ -87,7 +88,7 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick" />
+                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding ElementName=MainWindowName, Path=songsList}" SelectedItem="{Binding ElementName=MainWindowName, Path=currentSong}" DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">

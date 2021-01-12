@@ -1,6 +1,7 @@
 ﻿using MusicPlayerConsole;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -16,9 +17,15 @@ namespace MusicPlayerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        MusicPlayer musicPlayer = MusicPlayer.getInstance();
-        List<Song> songsList = null;
-        Song currentSong = null;
+        public MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        public Collection<Song> songsList = new ObservableCollection<Song>();
+        public Song currentSong = null;
+
+        public ObservableCollection<Song> List
+        {
+            get { return (ObservableCollection<Song>) songsList; }
+            set { songsList = value; }
+        }
 
         public MainWindow()
         {
@@ -68,7 +75,7 @@ namespace MusicPlayerWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            songsList = musicPlayer.GetAllSongs().ToList();
+            songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
             if (listBox_SongsList != null)
             {
                 listBox_SongsList.ItemsSource = songsList;
@@ -81,27 +88,48 @@ namespace MusicPlayerWPF
         {
             musicPlayer.PreviousSong();
 
-            Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
             ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;
+            image_CurrentSong.Source = imgSource;*/
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            image.EndInit();
+            image_CurrentSong.Source = image;
         }
 
         private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
         {
             musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
 
-            Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
             ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;
+            image_CurrentSong.Source = imgSource;*/
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            image.EndInit();
+            image_CurrentSong.Source = image;
         }
 
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
         {
             musicPlayer.NextSong();
 
-            Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
             ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;
+            image_CurrentSong.Source = imgSource;*/
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+            image.EndInit();
+            image_CurrentSong.Source = image;
         }
 
         private void buttonShuffleSong_Click(object sender, RoutedEventArgs e)
@@ -128,8 +156,15 @@ namespace MusicPlayerWPF
                 uri = new Uri(newPath, UriKind.Absolute);
             }
 
-            ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;
+            /*ImageSource imgSource = new BitmapImage(uri);
+            image_CurrentSong.Source = imgSource;*/
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = uri;
+            image.EndInit();
+            image_CurrentSong.Source = image;
 
             label_SongDuration.Content = currentSong.Length;
             //slider_SongDuration.Maximum = currentSong.Length;
@@ -162,6 +197,37 @@ namespace MusicPlayerWPF
         {
             EditSongWindow editSongWindow = new EditSongWindow();
             editSongWindow.Show();
+        }
+
+        private void MenuItem_DeleteSong_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this song?", "Delete Song", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if(result == MessageBoxResult.Yes)
+            {
+                string workingDirectory = Environment.CurrentDirectory;
+                string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                Uri uri = new Uri(newPath, UriKind.Absolute);
+                /*ImageSource imgSource = new BitmapImage(uri);
+                image_CurrentSong.Source = imgSource;*/
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = uri;
+                image.EndInit();
+                image_CurrentSong.Source = image;
+
+                var currentSong = (Song)listBox_SongsList.SelectedItem;
+                musicPlayer.RemoveSong(currentSong.Title);
+
+                songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
+                musicPlayer.LoadSongs(songsList);
+                if (listBox_SongsList != null)
+                {
+                    listBox_SongsList.ItemsSource = songsList;
+                }
+            }
         }
     }
 }

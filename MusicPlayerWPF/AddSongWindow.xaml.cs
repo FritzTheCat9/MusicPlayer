@@ -1,6 +1,7 @@
 ﻿using MusicPlayerConsole;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,6 +81,15 @@ namespace MusicPlayerWPF
                 {
                     MessageBox.Show("New song added", "Add Song", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
+
+                    // Update songs list
+                    MainWindow mw = ((MainWindow)Application.Current.MainWindow);
+                    mw.songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
+                    musicPlayer.LoadSongs(mw.songsList);
+                    if (mw.listBox_SongsList != null)
+                    {
+                        mw.listBox_SongsList.ItemsSource = mw.songsList;
+                    }
                 }
                 else
                 {

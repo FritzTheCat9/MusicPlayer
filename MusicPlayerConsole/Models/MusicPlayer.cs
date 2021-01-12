@@ -772,9 +772,9 @@ namespace MusicPlayerConsole
                 return (int)player.Duration;
             }
         }
-        public void LoadSongs(List<Song> _songs)
+        public void LoadSongs(ICollection<Song> _songs)
         {
-            songs = _songs;
+            songs = _songs.ToList();
         }
         public void PlaySong(string filePath, int _currentPlayedSong)
         {
