@@ -24,10 +24,14 @@ namespace MusicPlayerWPF
         public IList<Author> authorsList { get; set; } = new ObservableCollection<Author>();
         public Author currentAuthor = null;
 
+        public IList<Album> albumsList { get; set; } = new ObservableCollection<Album>();
+        public Album currentAlbum = null;
+
         public MainWindow()
         {
             songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
+            albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
 
             InitializeComponent();
             DataContext = this;
@@ -76,22 +80,12 @@ namespace MusicPlayerWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            /*songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-            if (listBox_SongsList != null)
-            {
-                listBox_SongsList.ItemsSource = songsList;
-            }*/
-
             musicPlayer.LoadSongs(songsList);
         }
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
             musicPlayer.PreviousSong();
-
-            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;*/
 
             BitmapImage image = new BitmapImage();
             image.BeginInit();
@@ -192,6 +186,25 @@ namespace MusicPlayerWPF
                     songsList.Add(addedSong);
                     musicPlayer.LoadSongs(songsList);
                 }
+                var addedAuthor = addSongWindow.addedAuthor;
+                if (addedAuthor != null)
+                {
+                    var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
+                    if(author == null)
+                    {
+                        authorsList.Add(addedAuthor);
+                    }
+                }
+                var addedAlbum = addSongWindow.addedAlbum;
+                if (addedAlbum != null)
+                {
+                    var album = albumsList.FirstOrDefault(a => a.AlbumID == addedAlbum.AlbumID);
+
+                    if (album == null)
+                    {
+                        albumsList.Add(addedAlbum);
+                    }
+                }
             }
         }
 
@@ -208,6 +221,25 @@ namespace MusicPlayerWPF
                     {
                         songsList[listBox_SongsList.SelectedIndex] = modifiedSong;
                         musicPlayer.LoadSongs(songsList);
+                    }
+                    var addedAuthor = editSongWindow.addedAuthor;
+                    if (addedAuthor != null)
+                    {
+                        var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
+                        if (author == null)
+                        {
+                            authorsList.Add(addedAuthor);
+                        }
+                    }
+                    var addedAlbum = editSongWindow.addedAlbum;
+                    if (addedAlbum != null)
+                    {
+                        var album = albumsList.FirstOrDefault(a => a.AlbumID == addedAlbum.AlbumID);
+
+                        if (album == null)
+                        {
+                            albumsList.Add(addedAlbum);
+                        }
                     }
                 }
             }
@@ -243,14 +275,6 @@ namespace MusicPlayerWPF
                         songsList.Remove(currentSong);
                         musicPlayer.LoadSongs(songsList);
                     }
-
-                    /*songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-                    musicPlayer.LoadSongs(songsList);*/
-                
-                    /*if (listBox_SongsList != null)
-                    {
-                        listBox_SongsList.ItemsSource = songsList;
-                    }*/
                 }
             }
             else

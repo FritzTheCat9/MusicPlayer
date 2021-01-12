@@ -142,10 +142,7 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1">
-                        <ListBoxItem>Sample album</ListBoxItem>
-                        <ListBoxItem>Sample album</ListBoxItem>
-                        <ListBoxItem>Sample album</ListBoxItem>
+                    <ListBox Name="listBox_AlbumsList" Grid.Row="1" ItemsSource="{Binding albumsList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>

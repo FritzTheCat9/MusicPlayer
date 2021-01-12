@@ -24,6 +24,8 @@ namespace MusicPlayerWPF
     {
         MusicPlayer musicPlayer = MusicPlayer.getInstance();
         public Song addedSong { get; set; } = null;
+        public Album addedAlbum { get; set; } = null;
+        public Author addedAuthor { get; set; } = null;
 
         public AddSongWindow()
         {
@@ -81,26 +83,22 @@ namespace MusicPlayerWPF
                 else if (musicPlayer.AddSong(title, filePath, imagePath, authorName, albumName))
                 {
                     MessageBox.Show("New song added", "Add Song", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
-
-                    // Update songs list
-                    /*MainWindow mw = ((MainWindow)Application.Current.MainWindow);
-                    mw.songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-                    musicPlayer.LoadSongs(mw.songsList);*/
 
                     if (title == "")
                     {
                         title = System.IO.Path.GetFileName(filePath);
                     }
                     addedSong = MusicPlayer.getInstance().GetSong(title);
+                    if(authorName != null)
+                    {
+                        addedAuthor = MusicPlayer.getInstance().GetAuthor(authorName);
+                    }
+                    if (albumName != null)
+                    {
+                        addedAlbum = MusicPlayer.getInstance().GetAlbum(albumName);
+                    }
                     DialogResult = true;
                     Close();
-                    //mw.songsList.Add(addedSong);
-
-                    /*if (mw.listBox_SongsList != null)
-                    {
-                        mw.listBox_SongsList.ItemsSource = mw.songsList;
-                    }*/
                 }
                 else
                 {
