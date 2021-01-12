@@ -23,5 +23,15 @@ namespace MusicPlayerWPF
         {
             InitializeComponent();
         }
+
+        private void Button_Choose_File_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_AddSong_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

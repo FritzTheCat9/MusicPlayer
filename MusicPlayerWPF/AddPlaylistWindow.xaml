@@ -5,23 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
-        Title="AddPlaylistWindow" Height="100" Width="300">
+        Title="AddPlaylistWindow" Height="150" Width="600" MaxHeight="150" MinHeight="150" MinWidth="600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Name" />
-        <TextBox Grid.Row="0" Grid.Column="1"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="File path" />
-        <TextBox Grid.Row="1" Grid.Column="1"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="Name" Margin="5"/>
+        <TextBox Name="TextBox_Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="File path" Margin="5" />
+        <TextBox Name="TextBox_FilePath" Grid.Row="1" Grid.Column="1" Padding="5" Margin="5"/>
+        <Button Name="Button_Choose_File" Content="Choose file" Click="Button_Choose_File_Click" Grid.Row="1" Grid.Column="3" Margin="5"/>
+        <Button Name="Button_AddPlaylist" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Width="90" Content="Add playlist" Click="Button_AddSong_Click" Margin="5" Padding="5"/>
     </Grid>
 </Window>

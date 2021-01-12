@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
-        Title="AddAlbumWindow" Height="100" Width="300">
+        Title="AddAlbumWindow" Height="150" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -14,11 +14,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Name" />
-        <TextBox Grid.Row="0" Grid.Column="1"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="Author" />
-        <TextBox Grid.Row="1" Grid.Column="1"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="Name" Margin="5"/>
+        <TextBox Name="TextBox_Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Author" Margin="5"/>
+        <TextBox Name="TextBox_Author" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
+        <Button Name="Button_AddAlbum" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Width="90" Content="Add album" Click="Button_AddAlbum_Click" Margin="5" Padding="5"/>
     </Grid>
 </Window>

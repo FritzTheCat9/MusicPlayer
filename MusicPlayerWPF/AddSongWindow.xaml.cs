@@ -23,6 +23,7 @@ namespace MusicPlayerWPF
     public partial class AddSongWindow : Window
     {
         MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        public Song addedSong { get; set; } = null;
 
         public AddSongWindow()
         {
@@ -80,16 +81,26 @@ namespace MusicPlayerWPF
                 else if (musicPlayer.AddSong(title, filePath, imagePath, authorName, albumName))
                 {
                     MessageBox.Show("New song added", "Add Song", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                    
 
                     // Update songs list
-                    MainWindow mw = ((MainWindow)Application.Current.MainWindow);
+                    /*MainWindow mw = ((MainWindow)Application.Current.MainWindow);
                     mw.songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-                    musicPlayer.LoadSongs(mw.songsList);
-                    if (mw.listBox_SongsList != null)
+                    musicPlayer.LoadSongs(mw.songsList);*/
+
+                    if (title == "")
+                    {
+                        title = System.IO.Path.GetFileName(filePath);
+                    }
+                    addedSong = MusicPlayer.getInstance().GetSong(title);
+                    DialogResult = true;
+                    Close();
+                    //mw.songsList.Add(addedSong);
+
+                    /*if (mw.listBox_SongsList != null)
                     {
                         mw.listBox_SongsList.ItemsSource = mw.songsList;
-                    }
+                    }*/
                 }
                 else
                 {

@@ -18,18 +18,19 @@ namespace MusicPlayerWPF
     public partial class MainWindow : Window
     {
         public MusicPlayer musicPlayer = MusicPlayer.getInstance();
-        public Collection<Song> songsList = new ObservableCollection<Song>();
+        public IList<Song> songsList { get; set; } = new ObservableCollection<Song>();
         public Song currentSong = null;
 
-        public ObservableCollection<Song> List
-        {
-            get { return (ObservableCollection<Song>) songsList; }
-            set { songsList = value; }
-        }
+        public IList<Author> authorsList { get; set; } = new ObservableCollection<Author>();
+        public Author currentAuthor = null;
 
         public MainWindow()
         {
+            songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
+            authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
+
             InitializeComponent();
+            DataContext = this;
         }
 
         private void Button_Choose_File_Click(object sender, RoutedEventArgs e)
@@ -75,13 +76,13 @@ namespace MusicPlayerWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
+            /*songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
             if (listBox_SongsList != null)
             {
                 listBox_SongsList.ItemsSource = songsList;
-            }
+            }*/
 
-            musicPlayer.LoadSongs(songsList); 
+            musicPlayer.LoadSongs(songsList);
         }
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
@@ -104,10 +105,6 @@ namespace MusicPlayerWPF
         {
             musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
 
-            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;*/
-
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
@@ -119,10 +116,6 @@ namespace MusicPlayerWPF
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
         {
             musicPlayer.NextSong();
-
-            /*Uri uri = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;*/
 
             BitmapImage image = new BitmapImage();
             image.BeginInit();
@@ -140,34 +133,34 @@ namespace MusicPlayerWPF
         private void listBox_SongsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
-            musicPlayer.PlaySong(currentSong.FilePath, listBox_SongsList.SelectedIndex);
-
-            Uri uri;
-            if (File.Exists(currentSong.ImagePath))
+            if(currentSong != null)
             {
-                uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+                musicPlayer.PlaySong(currentSong.FilePath, listBox_SongsList.SelectedIndex);
+
+                Uri uri;
+                if (File.Exists(currentSong.ImagePath))
+                {
+                    uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+                }
+                else
+                {
+                    string workingDirectory = Environment.CurrentDirectory;
+                    string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                    string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                    var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                    uri = new Uri(newPath, UriKind.Absolute);
+                }
+
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = uri;
+                image.EndInit();
+                image_CurrentSong.Source = image;
+
+                label_SongDuration.Content = currentSong.Length;
+                //slider_SongDuration.Maximum = currentSong.Length;
             }
-            else
-            {
-                string workingDirectory = Environment.CurrentDirectory;
-                string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-                string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
-                var newPath = IMAGES_FOLDER + "DefaultImage.png";
-                uri = new Uri(newPath, UriKind.Absolute);
-            }
-
-            /*ImageSource imgSource = new BitmapImage(uri);
-            image_CurrentSong.Source = imgSource;*/
-
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = uri;
-            image.EndInit();
-            image_CurrentSong.Source = image;
-
-            label_SongDuration.Content = currentSong.Length;
-            //slider_SongDuration.Maximum = currentSong.Length;
         }
 
         private void listBox_SongsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -190,44 +183,85 @@ namespace MusicPlayerWPF
         private void MenuItem_AddSong_Click(object sender, RoutedEventArgs e)
         {
             AddSongWindow addSongWindow = new AddSongWindow();
-            addSongWindow.Show();
+
+            if (addSongWindow.ShowDialog() == true)
+            {
+                var addedSong = addSongWindow.addedSong;
+                if(addedSong != null)
+                {
+                    songsList.Add(addedSong);
+                    musicPlayer.LoadSongs(songsList);
+                }
+            }
         }
 
         private void MenuItem_EditSong_Click(object sender, RoutedEventArgs e)
         {
-            EditSongWindow editSongWindow = new EditSongWindow();
-            editSongWindow.Show();
+            if(listBox_SongsList.SelectedIndex != musicPlayer.currentPlayedSong)
+            {
+                EditSongWindow editSongWindow = new EditSongWindow();
+
+                if (editSongWindow.ShowDialog() == true)
+                {
+                    var modifiedSong = editSongWindow.modifiedSong;
+                    if (modifiedSong != null)
+                    {
+                        songsList[listBox_SongsList.SelectedIndex] = modifiedSong;
+                        musicPlayer.LoadSongs(songsList);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Can not edit this song! It is currently running!", "Edit Song", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void MenuItem_DeleteSong_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to delete this song?", "Delete Song", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if(result == MessageBoxResult.Yes)
+            if (listBox_SongsList.SelectedIndex != musicPlayer.currentPlayedSong)
             {
-                string workingDirectory = Environment.CurrentDirectory;
-                string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-                string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
-                var newPath = IMAGES_FOLDER + "DefaultImage.png";
-                Uri uri = new Uri(newPath, UriKind.Absolute);
-                /*ImageSource imgSource = new BitmapImage(uri);
-                image_CurrentSong.Source = imgSource;*/
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = uri;
-                image.EndInit();
-                image_CurrentSong.Source = image;
-
-                var currentSong = (Song)listBox_SongsList.SelectedItem;
-                musicPlayer.RemoveSong(currentSong.Title);
-
-                songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-                musicPlayer.LoadSongs(songsList);
-                if (listBox_SongsList != null)
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this song?", "Delete Song", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result == MessageBoxResult.Yes)
                 {
-                    listBox_SongsList.ItemsSource = songsList;
+                    string workingDirectory = Environment.CurrentDirectory;
+                    string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                    string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                    var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                    Uri uri = new Uri(newPath, UriKind.Absolute);
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = uri;
+                    image.EndInit();
+                    image_CurrentSong.Source = image;
+
+                    var currentSong = (Song)listBox_SongsList.SelectedItem;
+                    if(currentSong != null)
+                    {
+                        musicPlayer.RemoveSong(currentSong.Title);
+                        songsList.Remove(currentSong);
+                        musicPlayer.LoadSongs(songsList);
+                    }
+
+                    /*songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
+                    musicPlayer.LoadSongs(songsList);*/
+                
+                    /*if (listBox_SongsList != null)
+                    {
+                        listBox_SongsList.ItemsSource = songsList;
+                    }*/
                 }
             }
+            else
+            {
+                MessageBox.Show("Can not delete this song! It is currently running!", "Delete Song", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void MenuItem_AddAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            authorsList.Add(new Author("siema"));
         }
     }
 }

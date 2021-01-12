@@ -67,7 +67,7 @@
                         <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
                         <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
                         <MenuItem Name="MenuItem_DeleteSong" Header="Delete" Click="MenuItem_DeleteSong_Click"/>
-                        <MenuItem Header="Details"/>
+                        <MenuItem Header="Add to playlist"/>
                     </Menu>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -88,7 +88,8 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding ElementName=MainWindowName, Path=songsList}" SelectedItem="{Binding ElementName=MainWindowName, Path=currentSong}" DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick" />
+                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding songsList}" DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick">
+                    </ListBox>
                 </StackPanel>
             </TabItem>
             <TabItem Header="YouTube">
@@ -151,7 +152,7 @@
             <TabItem Header="Autors">
                 <StackPanel>
                     <Menu>
-                        <MenuItem Header="Add"/>
+                        <MenuItem Name="MenuItem_AddAuthor" Header="Add" Click="MenuItem_AddAuthor_Click"/>
                         <MenuItem Header="Edit"/>
                         <MenuItem Header="Delete"/>
                         <MenuItem Header="Details"/>
@@ -173,13 +174,7 @@
                             <ComboBoxItem>By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1">
-                        <ListBoxItem>Sample author</ListBoxItem>
-                        <ListBoxItem>Sample author</ListBoxItem>
-                        <ListBoxItem>Sample author</ListBoxItem>
-                        <ListBoxItem>Sample author</ListBoxItem>
-                        <ListBoxItem>Sample author</ListBoxItem>
-                        <ListBoxItem>Sample author</ListBoxItem>
+                    <ListBox Name="listBox_AutorsList" Grid.Row="1" ItemsSource="{Binding authorsList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>

@@ -15,16 +15,21 @@ using System.Windows.Shapes;
 namespace MusicPlayerWPF
 {
     /// <summary>
-    /// Interaction logic for AddAuthorWindow.xaml
+    /// Interaction logic for EditPlaylistWindow.xaml
     /// </summary>
-    public partial class AddAuthorWindow : Window
+    public partial class EditPlaylistWindow : Window
     {
-        public AddAuthorWindow()
+        public EditPlaylistWindow()
         {
             InitializeComponent();
         }
 
-        private void Button_AddAuthor_Click(object sender, RoutedEventArgs e)
+        private void Button_Choose_File_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_EditPlaylist_Click(object sender, RoutedEventArgs e)
         {
 
         }

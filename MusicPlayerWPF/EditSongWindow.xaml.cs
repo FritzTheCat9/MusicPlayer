@@ -23,6 +23,7 @@ namespace MusicPlayerWPF
     {
         MusicPlayer musicPlayer = MusicPlayer.getInstance();
         Song selectedSong;
+        public Song modifiedSong { get; set; } = null;
 
         public EditSongWindow()
         {
@@ -89,19 +90,31 @@ namespace MusicPlayerWPF
                 string filePath = TextBox_FilePath.Text.ToString();
                 string imagePath = TextBox_ImagePath.Text.ToString();
 
-                if (musicPlayer.UpdateSong(editedSong.Title, title, filePath, imagePath, authorName, albumName))            // naprawić tu edycje
+                if (musicPlayer.UpdateSong(editedSong.Title, title, filePath, imagePath, authorName, albumName))
                 {
                     MessageBox.Show("Song edited", "Edit Song", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                    
 
                     // Update songs list
-                    MainWindow mw = ((MainWindow)Application.Current.MainWindow);
+                    /*MainWindow mw = ((MainWindow)Application.Current.MainWindow);
                     mw.songsList = new Collection<Song>(musicPlayer.GetAllSongs().ToList());
-                    musicPlayer.LoadSongs(mw.songsList);
-                    if (mw.listBox_SongsList != null)
+                    musicPlayer.LoadSongs(mw.songsList);*/
+
+                    if (title == "")
+                    {
+                        title = System.IO.Path.GetFileName(filePath);
+                    }
+                    modifiedSong = MusicPlayer.getInstance().GetSong(title);
+                    DialogResult = true;
+                    Close();
+
+                    /*var newSong = MusicPlayer.getInstance().GetSong(title);
+                    mw.songsList.Add(newSong);*/
+
+                    /*if (mw.listBox_SongsList != null)
                     {
                         mw.listBox_SongsList.ItemsSource = mw.songsList;
-                    }
+                    }*/
                 }
                 else
                 {
