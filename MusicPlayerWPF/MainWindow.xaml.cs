@@ -1,6 +1,7 @@
 ﻿using MusicPlayerConsole;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -113,7 +114,20 @@ namespace MusicPlayerWPF
             currentSong = (Song)listBox_SongsList.SelectedItem;
             musicPlayer.PlaySong(currentSong.FilePath, listBox_SongsList.SelectedIndex);
 
-            Uri uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+            Uri uri;
+            if (File.Exists(currentSong.ImagePath))
+            {
+                uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+            }
+            else
+            {
+                string workingDirectory = Environment.CurrentDirectory;
+                string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                uri = new Uri(newPath, UriKind.Absolute);
+            }
+
             ImageSource imgSource = new BitmapImage(uri);
             image_CurrentSong.Source = imgSource;
 

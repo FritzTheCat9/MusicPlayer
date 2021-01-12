@@ -294,7 +294,7 @@ namespace MusicPlayerConsole.Data
                 return false;
             }
         }
-        public static Song UpdateSong(string title, string newTitle, string newFilePath, string newImagePath, int newLength, string newAuthorName, string newAlbumName = null)
+        public static Song UpdateSong(string title, string newTitle, string newFilePath, string newImagePath, int newLength, string newAuthorName = null, string newAlbumName = null)
         {
             using (var context = new MusicPlayerContext())
             {

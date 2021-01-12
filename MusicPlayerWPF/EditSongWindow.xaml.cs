@@ -84,7 +84,7 @@ namespace MusicPlayerWPF
 
                 string title = TextBox_Title.Text.ToString();
                 string authorName = (TextBox_Author.Text.ToString() == "") ? null : TextBox_Author.Text.ToString();
-                string albumName = (TextBox_Album.Text.ToString() == "") ? null : TextBox_Author.Text.ToString();
+                string albumName = (TextBox_Album.Text.ToString() == "") ? null : TextBox_Album.Text.ToString();
                 string filePath = TextBox_FilePath.Text.ToString();
                 string imagePath = TextBox_ImagePath.Text.ToString();
 

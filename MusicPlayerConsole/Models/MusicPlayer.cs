@@ -61,7 +61,7 @@ namespace MusicPlayerConsole
             // This will get the current SOLUTION directory
             SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             SONGS_FOLDER = SOLUTION_DIRECTORY + @"\Songs\";
-            IMAGES_FOLER = SOLUTION_DIRECTORY + @"\Images\";
+            IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
             PLAYLISTS_FOLDER = SOLUTION_DIRECTORY + @"\Playlists\";
 
             #endregion
@@ -75,7 +75,7 @@ namespace MusicPlayerConsole
 
         private string SOLUTION_DIRECTORY;
         private string SONGS_FOLDER;
-        private string IMAGES_FOLER;
+        private string IMAGES_FOLDER;
         private string PLAYLISTS_FOLDER;
 
         #endregion
@@ -153,7 +153,7 @@ namespace MusicPlayerConsole
             // Adding image
             if (File.Exists(imagePath))
             {
-                var newImagePath = IMAGES_FOLER + Path.GetFileName(imagePath);
+                var newImagePath = IMAGES_FOLDER + Path.GetFileName(imagePath);
                 if (!File.Exists(newImagePath))
                 {
                     File.Copy(imagePath, newImagePath);
@@ -162,7 +162,7 @@ namespace MusicPlayerConsole
             }
             else
             {
-                imagePath = IMAGES_FOLER + "DefaultImage.png";
+                imagePath = IMAGES_FOLDER + "DefaultImage.png";
             }
 
             // Adding to database
@@ -182,7 +182,7 @@ namespace MusicPlayerConsole
             if (songToRemove != null)
             {
                 // Delete from Images Folder
-                if (songToRemove.ImagePath != IMAGES_FOLER + "DefaultImage.png")
+                if (songToRemove.ImagePath != IMAGES_FOLDER + "DefaultImage.png")
                 {
                     if (File.Exists(songToRemove.ImagePath))
                     {
@@ -221,26 +221,29 @@ namespace MusicPlayerConsole
             if (songToUpdate != null)
             {
                 // Delete old files only if there are new files
-                if (File.Exists(newFilePath))
+                if (File.Exists(newFilePath) && songToUpdate.FilePath != newFilePath)
                 {
                     if (newTitle == "")
                     {
                         newTitle = Path.GetFileName(newFilePath);
                     }
 
-                    // Delete from Images Folder
-                    if (songToUpdate.ImagePath != IMAGES_FOLER + "DefaultImage.png")
+                    // Delete from Songs Folder
+                    if (File.Exists(songToUpdate.FilePath))
+                    {
+                        File.Delete(songToUpdate.FilePath);
+                    }
+                }
+
+                // Delete from Images Folder
+                if (File.Exists(newImagePath) && songToUpdate.ImagePath != newImagePath)
+                {
+                    if (songToUpdate.ImagePath != IMAGES_FOLDER + "DefaultImage.png")
                     {
                         if (File.Exists(songToUpdate.ImagePath))
                         {
                             File.Delete(songToUpdate.ImagePath);
                         }
-                    }
-
-                    // Delete from Songs Folder
-                    if (File.Exists(songToUpdate.FilePath))
-                    {
-                        File.Delete(songToUpdate.FilePath);
                     }
                 }
 
@@ -258,7 +261,7 @@ namespace MusicPlayerConsole
                 // Adding image
                 if (File.Exists(newImagePath))
                 {
-                    var newPath = IMAGES_FOLER + Path.GetFileName(newImagePath);
+                    var newPath = IMAGES_FOLDER + Path.GetFileName(newImagePath);
                     if (!File.Exists(newPath))
                     {
                         File.Copy(newImagePath, newPath);
@@ -267,7 +270,7 @@ namespace MusicPlayerConsole
                 }
                 else
                 {
-                    newImagePath = IMAGES_FOLER + "DefaultImage.png";
+                    newImagePath = IMAGES_FOLDER + "DefaultImage.png";
                 }
 
                 // Updating the database
@@ -440,7 +443,7 @@ namespace MusicPlayerConsole
             WebClient cli = new WebClient();
             var videoID = FindTextBetween(url, "/watch?v=", "&");
             var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
-            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle(url) + ".jpg", imgBytes);
+            File.WriteAllBytes(IMAGES_FOLDER + getVideoTitle(url) + ".jpg", imgBytes);
         }
         public void DownloadSongFromYoutubeVideo(string url)
         {
@@ -478,7 +481,7 @@ namespace MusicPlayerConsole
                 DownloadSongFromYoutubeVideo(url);
                 DownloadImageFromYoutubeVideo(url);
                 string title = getVideoTitle(url);
-                string imagePath = IMAGES_FOLER + title + ".jpg";
+                string imagePath = IMAGES_FOLDER + title + ".jpg";
                 string filePath = SONGS_FOLDER + title + ".mp3";
 
                 AddSong(title, filePath, imagePath);
@@ -495,7 +498,7 @@ namespace MusicPlayerConsole
             // Get image
             WebClient cli = new WebClient();
             var imgBytes = cli.DownloadData(@"http://img.youtube.com/vi/" + videoID + @"/mqdefault.jpg");
-            File.WriteAllBytes(IMAGES_FOLER + getVideoTitle("https://www.youtube.com/watch?v=" + videoID) + ".jpg", imgBytes);
+            File.WriteAllBytes(IMAGES_FOLDER + getVideoTitle("https://www.youtube.com/watch?v=" + videoID) + ".jpg", imgBytes);
         }
         public bool SaveSongFromYoutube2(string url, string videoID)
         {
@@ -507,7 +510,7 @@ namespace MusicPlayerConsole
                 DownloadSongFromYoutubeVideo(url);
                 DownloadImageFromYoutubeVideo2(videoID);
                 string title = getVideoTitle(url);
-                string imagePath = IMAGES_FOLER + title + ".jpg";
+                string imagePath = IMAGES_FOLDER + title + ".jpg";
                 string filePath = SONGS_FOLDER + title + ".mp3";
 
                 AddSong(title, filePath, imagePath);
