@@ -38,7 +38,7 @@
         
         <TabControl Grid.Column="0" TabStripPlacement="Left" Padding="5" Margin="5">
             <TabItem Header="Play song" Padding="5">
-                <Grid>
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -48,9 +48,10 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     
-                    <Button Name="Button_Choose_File" Content="Choose file" Click="Button_Choose_File_Click"/>
-                    <Label Grid.Row="1" Content="Choosen file name: "/>
-                    <Label Grid.Row="1" Grid.Column="1" Content="filename" />
+                    <Button Name="Button_Choose_File" Content="Choose file" Margin="5" Padding="5"
+                            Click="Button_Choose_File_Click"/>
+                    <Label Grid.Row="1" Content="Choosen file name: " Margin="5"/>
+                    <Label Grid.Row="1" Grid.Column="1" Content="filename" Margin="5"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Playlists" Padding="5">
@@ -82,14 +83,19 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Songs library" Padding="5">
-                <StackPanel>
-                    <Menu Margin="5" Padding="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Menu Margin="5" Padding="5" Grid.Row="0">
                         <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
                         <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
                         <MenuItem Name="MenuItem_DeleteSong" Header="Delete" Click="MenuItem_DeleteSong_Click"/>
                         <MenuItem Header="Add to playlist"/>
                     </Menu>
-                    <Grid>
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
@@ -113,16 +119,14 @@
                             <ComboBoxItem Selected="SortTitleDescending">By title descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ScrollViewer>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding MyFilteredSongList}"
+                    <ListBox Grid.Row="2" Name="listBox_SongsList" ItemsSource="{Binding MyFilteredSongList}"
                              SelectionChanged="listBox_SongsList_SelectionChanged" 
                              MouseDoubleClick="listBox_SongsList_MouseDoubleClick"
                              Padding="5" Margin="5" ItemTemplate="{StaticResource SongDataTemplate}"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     </ListBox>
-                    </ScrollViewer>
-                </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="YouTube" Padding="5">
                 <StackPanel Name="grid_YouTube">
@@ -255,7 +259,7 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Settings" Padding="5">
-                <Grid>
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -265,18 +269,17 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Label>Save Playlist format</Label>
-                    <ComboBox Grid.Column="1" Grid.Row="0">
-                        <ComboBoxItem>JSON</ComboBoxItem>
+                    <Label Margin="5">Default playlist format</Label>
+                    <ComboBox Grid.Column="1" Grid.Row="0" SelectedIndex="0" Margin="5">
                         <ComboBoxItem>XML</ComboBoxItem>
+                        <ComboBoxItem>JSON</ComboBoxItem>
                     </ComboBox>
-                    <Label Grid.Row="1">Default style</Label>
-                    <ComboBox Grid.Column="1" Grid.Row="1">
-                        <ComboBoxItem>DARK</ComboBoxItem>
+                    <Label Grid.Row="1" Margin="5">Default style</Label>
+                    <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="0" Margin="5">
                         <ComboBoxItem>LIGHT</ComboBoxItem>
+                        <ComboBoxItem>DARK</ComboBoxItem>
                         <ComboBoxItem>COLOR</ComboBoxItem>
                     </ComboBox>
-                    <CheckBox Grid.Row="2" Content="Play songs randomly" />
                 </Grid>
             </TabItem>
         </TabControl>
