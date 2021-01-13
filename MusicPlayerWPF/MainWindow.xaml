@@ -6,17 +6,17 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         xmlns:musicPlayer="clr-namespace:MusicPlayerConsole;assembly=MusicPlayerConsole"
         mc:Ignorable="d"
-        Title="MusicPlayer" Height="500" Width="800" MinHeight="500" MinWidth="800"
+        Title="MusicPlayer" Height="500" Width="850" MinHeight="500" MinWidth="850"
         Name="MainWindowName"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         
-        <TabControl Grid.Column="0" TabStripPlacement="Left">
-            <TabItem Header="Play song">
+        <TabControl Grid.Column="0" TabStripPlacement="Left" Padding="5" Margin="5">
+            <TabItem Header="Play song" Padding="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -32,9 +32,9 @@
                     <Label Grid.Row="1" Grid.Column="1" Content="filename" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Playlists">
+            <TabItem Header="Playlists" Padding="5">
                 <StackPanel>
-                    <Menu>
+                    <Menu Margin="5" Padding="5">
                         <MenuItem Header="Add"/>
                         <MenuItem Header="Edit"/>
                         <MenuItem Header="Delete"/>
@@ -51,7 +51,7 @@
                             <MenuItem Header="From ZIP"/>
                         </MenuItem>
                     </Menu>
-                    <ListBox>
+                    <ListBox Padding="5" Margin="5">
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
@@ -60,9 +60,9 @@
                     </ListBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Songs library">
+            <TabItem Header="Songs library" Padding="5">
                 <StackPanel>
-                    <Menu>
+                    <Menu Margin="5" Padding="5">
                         <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
                         <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
                         <MenuItem Name="MenuItem_DeleteSong" Header="Delete" Click="MenuItem_DeleteSong_Click"/>
@@ -77,14 +77,16 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Content="Search" />
+                        <Label Grid.Column="0" Content="Search" Margin="5"/>
                         <TextBox Name="TextBox_SearchSongList" Grid.Column="1" 
                                  Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}" 
-                                 TextChanged="TextBox_SearchSongList_TextChanged"/>
-                        <Label Grid.Row="1" Content="Sort" />
+                                 TextChanged="TextBox_SearchSongList_TextChanged"
+                                 VerticalAlignment="Center" Padding="5" Margin="5"/>
+                        <Label Grid.Row="1" Content="Sort" Margin="5"/>
                         <ComboBox Name="ComboBox_SortSongList" Grid.Row="1" Grid.Column="1" 
                                   SelectedIndex="{Binding SelectedIndexSong, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionChanged="ComboBox_SortSongList_SelectionChanged">
+                                  SelectionChanged="ComboBox_SortSongList_SelectionChanged"
+                                  VerticalAlignment="Center" Padding="5" Margin="5">
                             <ComboBoxItem Selected="SortNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortTitleAscending">By title ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortTitleDescending">By title descending</ComboBoxItem>
@@ -93,11 +95,11 @@
                     <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding MyFilteredSongList}"
                              DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" 
                              MouseDoubleClick="listBox_SongsList_MouseDoubleClick"
-                             >
+                             Padding="5" Margin="5">
                     </ListBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="YouTube">
+            <TabItem Header="YouTube" Padding="5">
                 <Grid Name="grid_YouTube">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -110,21 +112,30 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="Link to video"/>
-                    <TextBox Name="textBox_YoutubeVideoLink" Grid.Column="1" Text="link"/>
-                    <Button Name="button_DownloadYoutubeVideo" Grid.Row="1" Content="Download" Click="button_DownloadYoutubeVideo_Click"/>
-                    <Label Content="Link to playlist" Grid.Row="2"/>
-                    <TextBox Name="textBox_PlaylistLink" Grid.Row="2" Grid.Column="1" Text="link"/>
-                    <Button Name="button_DownloadPlaylist" Grid.Row="3" Content="Download" Click="button_DownloadPlaylist_Click"/>
-                    <Label Content="Downloading progress:" Grid.Row="4"/>
-                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Grid.Column="1" Height="25" Minimum="0" Maximum="1" Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Grid.Row="0" Content="Link to youtube video:"
+                           Margin="3" Padding="5"/>
+                    <TextBox Name="textBox_YoutubeVideoLink" Grid.Row="1" Grid.ColumnSpan="2" 
+                             Text="Link" Margin="3" Padding="5"/>
+                    <Button Name="button_DownloadYoutubeVideo" Grid.Row="2" Content="Download" 
+                            Click="button_DownloadYoutubeVideo_Click" Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
+                    <Label Content="Link to youtube playlist:" Grid.Row="4" Margin="3" Padding="5"/>
+                    <TextBox Name="textBox_PlaylistLink" Grid.Row="5" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
+                    <Button Name="button_DownloadPlaylist" Grid.Row="6" Content="Download" Click="button_DownloadPlaylist_Click"
+                            Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
+                    <Label Content="Playlist downloading progress:" Grid.Row="7" Margin="3" Padding="5"/>
+                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="8" Height="25" Minimum="0" Maximum="1" 
+                                 Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"
+                                 Margin="3" Padding="5"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Albums">
+            <TabItem Header="Albums" Padding="5">
                 <StackPanel>
-                    <Menu>
+                    <Menu Margin="5" Padding="5">
                         <MenuItem Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                         <MenuItem Name="MenuItem_EditAlbum" Header="Edit" Click="MenuItem_EditAlbum_Click"/>
                         <MenuItem Name="MenuItem_DeleteAlbum" Header="Delete" Click="MenuItem_DeleteAlbum_Click"/>
@@ -138,27 +149,30 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Content="Search" />
+                        <Label Grid.Column="0" Content="Search" Margin="5"/>
                         <TextBox Name="TextBox_SearchAlbumList" Grid.Column="1" 
                                  Text="{Binding SearchTextAlbum, UpdateSourceTrigger=PropertyChanged}"
-                                 TextChanged="TextBox_SearchAlbumList_TextChanged"/>
-                        <Label Grid.Row="1" Content="Sort" />
+                                 TextChanged="TextBox_SearchAlbumList_TextChanged"
+                                 VerticalAlignment="Center" Padding="5" Margin="5"/>
+                        <Label Grid.Row="1" Content="Sort" Margin="5"/>
                         <ComboBox Name="ComboBox_SortAlbumList" Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedIndexAlbum, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionChanged="ComboBox_SortAlbumList_SelectionChanged">
+                                  SelectionChanged="ComboBox_SortAlbumList_SelectionChanged"
+                                  VerticalAlignment="Center" Padding="5" Margin="5">
                             <ComboBoxItem Selected="SortAlbumNameNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortAlbumNameAscending">By name ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortAlbumNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AlbumsList" Grid.Row="1" 
-                             ItemsSource="{Binding MyFilteredAlbumList}" DisplayMemberPath="Name">
+                             ItemsSource="{Binding MyFilteredAlbumList}" DisplayMemberPath="Name"
+                             Padding="5" Margin="5">
                     </ListBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Autors">
+            <TabItem Header="Autors" Padding="5">
                 <StackPanel>
-                    <Menu>
+                    <Menu Margin="5" Padding="5">
                         <MenuItem Name="MenuItem_AddAuthor" Header="Add" Click="MenuItem_AddAuthor_Click"/>
                         <MenuItem Name="MenuItem_EditAuthor" Header="Edit" Click="MenuItem_EditAuthor_Click"/>
                         <MenuItem Name="MenuItem_DeleteAuthor" Header="Delete" Click="MenuItem_DeleteAuthor_Click"/>
@@ -172,25 +186,28 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Content="Search" />
+                        <Label Grid.Column="0" Content="Search" Margin="5"/>
                         <TextBox Name="TextBox_SearchAuthorList" Grid.Column="1" 
                                  Text="{Binding SearchTextAuthor, UpdateSourceTrigger=PropertyChanged}"
-                                 TextChanged="TextBox_SearchAuthorList_TextChanged"/>
-                        <Label Grid.Row="1" Content="Sort" />
+                                 TextChanged="TextBox_SearchAuthorList_TextChanged"
+                                 VerticalAlignment="Center" Padding="5" Margin="5"/>
+                        <Label Grid.Row="1" Content="Sort" Margin="5"/>
                         <ComboBox Name="ComboBox_SortAuthorList" Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedIndexAuthor, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionChanged="ComboBox_SortAuthorList_SelectionChanged">
+                                  SelectionChanged="ComboBox_SortAuthorList_SelectionChanged"
+                                  VerticalAlignment="Center" Padding="5" Margin="5">
                             <ComboBoxItem Selected="SortAuthorNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortAuthorNameAscending">By name ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortAuthorNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AutorsList" Grid.Row="1" 
-                             ItemsSource="{Binding MyFilteredAuthorList}" DisplayMemberPath="Name">
+                             ItemsSource="{Binding MyFilteredAuthorList}" DisplayMemberPath="Name"
+                             Padding="5" Margin="5">
                     </ListBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="Settings" Padding="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -234,20 +251,22 @@
                         <RowDefinition/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" Source="img/DefaultImage.png"/>
-                    <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="3000" ValueChanged="Slider_ValueChanged">
+                    <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" 
+                           Source="img/DefaultImage.png" Margin="5"/>
+                    <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="3000" 
+                            ValueChanged="Slider_ValueChanged" Margin="5">
                         <Slider.LayoutTransform>
                             <RotateTransform Angle="180"></RotateTransform>
                         </Slider.LayoutTransform>
                     </Slider>
-                    <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30"/>
+                    <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30" Margin="3"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Slider Name="slider_SongDuration" Minimum="0" Value="0" Maximum="1"/>
+                    <Slider Name="slider_SongDuration" Minimum="0" Value="0" Maximum="1" Margin="5"/>
                     <Label Name="label_SongDuration" Grid.Column="1"/>
                 </Grid>
                 <Grid HorizontalAlignment="Center">
@@ -278,7 +297,7 @@
 
             <!-- Current playlist -->
 
-            <ListBox Grid.Row="1">
+            <ListBox Grid.Row="1" Padding="5" Margin="5">
                 <ListBoxItem>Sample song 1</ListBoxItem>
                 <ListBoxItem>Sample song 2</ListBoxItem>
                 <ListBoxItem>Sample song 3</ListBoxItem>
