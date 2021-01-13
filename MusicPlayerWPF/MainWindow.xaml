@@ -78,9 +78,13 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Content="Search" />
-                        <TextBox Grid.Column="1" Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Name="TextBox_SearchSongList" Grid.Column="1" 
+                                 Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextChanged="TextBox_SearchSongList_TextChanged"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                        <ComboBox Name="ComboBox_SortSongList" Grid.Row="1" Grid.Column="1" 
+                                  SelectedIndex="{Binding SelectedIndexSong, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectionChanged="ComboBox_SortSongList_SelectionChanged">
                             <ComboBoxItem Selected="SortNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortTitleAscending">By title ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortTitleDescending">By title descending</ComboBoxItem>
@@ -135,16 +139,20 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Content="Search" />
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Name="TextBox_SearchAlbumList" Grid.Column="1" 
+                                 Text="{Binding SearchTextAlbum, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="TextBox_SearchAlbumList_TextChanged"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                        <ComboBox Name="ComboBox_SortAlbumList" Grid.Row="1" Grid.Column="1"
+                                  SelectedIndex="{Binding SelectedIndexAlbum, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectionChanged="ComboBox_SortAlbumList_SelectionChanged">
                             <ComboBoxItem Selected="SortAlbumNameNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortAlbumNameAscending">By name ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortAlbumNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AlbumsList" Grid.Row="1" 
-                             ItemsSource="{Binding albumsList}" DisplayMemberPath="Name">
+                             ItemsSource="{Binding MyFilteredAlbumList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -165,16 +173,20 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Content="Search" />
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Name="TextBox_SearchAuthorList" Grid.Column="1" 
+                                 Text="{Binding SearchTextAuthor, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="TextBox_SearchAuthorList_TextChanged"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                        <ComboBox Name="ComboBox_SortAuthorList" Grid.Row="1" Grid.Column="1"
+                                  SelectedIndex="{Binding SelectedIndexAuthor, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectionChanged="ComboBox_SortAuthorList_SelectionChanged">
                             <ComboBoxItem Selected="SortAuthorNone">Don't sort</ComboBoxItem>
                             <ComboBoxItem Selected="SortAuthorNameAscending">By name ascending</ComboBoxItem>
                             <ComboBoxItem Selected="SortAuthorNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AutorsList" Grid.Row="1" 
-                             ItemsSource="{Binding authorsList}" DisplayMemberPath="Name">
+                             ItemsSource="{Binding MyFilteredAuthorList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>

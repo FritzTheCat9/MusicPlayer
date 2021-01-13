@@ -27,6 +27,15 @@ namespace MusicPlayerWPF
         public IList<Album> albumsList { get; set; } = new ObservableCollection<Album>();
         public Album currentAlbum = null;
 
+        #region Sortowanie i filtrowanie list
+
+        #region Search SongsList
+        public event PropertyChangedEventHandler PropertyChanged;
+        void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
         private string _searchTextSong;
         public string SearchTextSong
         {
@@ -40,29 +49,149 @@ namespace MusicPlayerWPF
             }
         }
 
-        public IEnumerable<Song> MyFilteredSongList
+        public IList<Song> MyFilteredSongList
         {
             get
             {
                 if (SearchTextSong == null) return songsList;
 
-                return songsList.Where(s => s.Title.ToUpper().Contains(SearchTextSong.ToUpper()));
+                return songsList.Where(s => s.Title.ToUpper().Contains(SearchTextSong.ToUpper())).ToList();
+            }
+        }
+        #endregion
+
+        #region Search AuthorsList
+
+        private string _searchTextAuthor;
+        public string SearchTextAuthor
+        {
+            get { return _searchTextAuthor; }
+            set
+            {
+                _searchTextAuthor = value;
+
+                OnPropertyChanged("SearchTextAuthor");
+                OnPropertyChanged("MyFilteredAuthorList");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string name)
+        public IList<Author> MyFilteredAuthorList
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+            get
+            {
+                if (SearchTextAuthor == null) return authorsList;
+
+                return authorsList.Where(a => a.Name.ToUpper().Contains(SearchTextAuthor.ToUpper())).ToList();
+            }
         }
+        #endregion
+
+        #region Search AlbumsList
+
+        private string _searchTextAlbum;
+        public string SearchTextAlbum
+        {
+            get { return _searchTextAlbum; }
+            set
+            {
+                _searchTextAlbum = value;
+
+                OnPropertyChanged("SearchTextAlbum");
+                OnPropertyChanged("MyFilteredAlbumList");
+            }
+        }
+
+        public IList<Album> MyFilteredAlbumList
+        {
+            get
+            {
+                if (SearchTextAlbum == null) return albumsList;
+
+                return albumsList.Where(a => a.Name.ToUpper().Contains(SearchTextAlbum.ToUpper())).ToList();
+            }
+        }
+        #endregion
+
+
+        #region Search and Sort SongList
+        private int _selectedIndexSong;
+        public int SelectedIndexSong
+        {
+            get { return _selectedIndexSong; }
+            set
+            {
+                _selectedIndexSong = value;
+
+                OnPropertyChanged("SelectedIndexSong");
+            }
+        }
+        private void TextBox_SearchSongList_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedIndexSong = 0;
+        }
+
+        private void ComboBox_SortSongList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchTextSong = null;
+            SelectedIndexSong = ComboBox_SortSongList.SelectedIndex;
+        }
+        #endregion
+
+        #region Search and Sort AuthorList
+        private int _selectedIndexAuthor;
+        public int SelectedIndexAuthor
+        {
+            get { return _selectedIndexAuthor; }
+            set
+            {
+                _selectedIndexAuthor = value;
+
+                OnPropertyChanged("SelectedIndexAuthor");
+            }
+        }
+        private void TextBox_SearchAuthorList_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedIndexAuthor = 0;
+        }
+
+        private void ComboBox_SortAuthorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchTextAuthor = null;
+            SelectedIndexAuthor = ComboBox_SortAuthorList.SelectedIndex;
+        }
+        #endregion
+
+        #region Search and Sort AlbumList
+        private int _selectedIndexAlbum;
+        public int SelectedIndexAlbum
+        {
+            get { return _selectedIndexAlbum; }
+            set
+            {
+                _selectedIndexAlbum = value;
+
+                OnPropertyChanged("SelectedIndexAlbum");
+            }
+        }
+        private void TextBox_SearchAlbumList_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedIndexAlbum = 0;
+        }
+
+        private void ComboBox_SortAlbumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchTextAlbum = null;
+            SelectedIndexAlbum = ComboBox_SortAlbumList.SelectedIndex;
+        }
+#endregion
+
 
         #region Sort SongsList
         private ListCollectionView ViewSongs
         {
             get
             {
-                return (ListCollectionView)CollectionViewSource.GetDefaultView(songsList);
+                return (ListCollectionView)CollectionViewSource.GetDefaultView(MyFilteredSongList);
             }
         }
         private void SortTitleAscending(object sender, RoutedEventArgs e)
@@ -82,7 +211,7 @@ namespace MusicPlayerWPF
         }
         #endregion
 
-        #region Sort Authors List
+        #region Sort AuthorsList
         private ListCollectionView ViewAuthors
         {
             get
@@ -130,6 +259,8 @@ namespace MusicPlayerWPF
             ViewAlbums.SortDescriptions.Clear();
             ViewAlbums.CustomSort = null;
         }
+        #endregion
+
         #endregion
 
         public MainWindow()
