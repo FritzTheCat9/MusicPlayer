@@ -300,6 +300,8 @@ namespace MusicPlayerWPF
         {
             button_DownloadYoutubeVideo.IsEnabled = false;
             button_DownloadPlaylist.IsEnabled = false;
+            Label_Downloading.Content = "Downloading...";
+            Label_Downloading.Foreground = Brushes.Green;
 
             var link = textBox_YoutubeVideoLink.Text;
             
@@ -317,11 +319,15 @@ namespace MusicPlayerWPF
 
             button_DownloadYoutubeVideo.IsEnabled = true;
             button_DownloadPlaylist.IsEnabled = true;
+            Label_Downloading.Content = "Downloading not started";
+            Label_Downloading.Foreground = Brushes.Red;
         }
         private void button_DownloadPlaylist_Click(object sender, RoutedEventArgs e)
         {
             button_DownloadYoutubeVideo.IsEnabled = false;
             button_DownloadPlaylist.IsEnabled = false;
+            Label_Downloading.Content = "Downloading...";
+            Label_Downloading.Foreground = Brushes.Green;
 
             var link = textBox_PlaylistLink.Text;
 
@@ -343,6 +349,8 @@ namespace MusicPlayerWPF
             {
                 button_DownloadYoutubeVideo.IsEnabled = true;
                 button_DownloadPlaylist.IsEnabled = true;
+                Label_Downloading.Content = "Downloading not started";
+                Label_Downloading.Foreground = Brushes.Red;
             }
         }
         void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -371,6 +379,8 @@ namespace MusicPlayerWPF
 
                 button_DownloadYoutubeVideo.IsEnabled = true;
                 button_DownloadPlaylist.IsEnabled = true;
+                Label_Downloading.Content = "Downloading not started";
+                Label_Downloading.Foreground = Brushes.Red;
             }
         }
         #endregion

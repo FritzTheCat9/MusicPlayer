@@ -9,6 +9,27 @@
         Title="MusicPlayer" Height="500" Width="850" MinHeight="500" MinWidth="850"
         Name="MainWindowName"
         Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+        <DataTemplate x:Key="SongDataTemplate">
+            <Border Margin="5" BorderThickness="2" BorderBrush="Black" CornerRadius="4">
+                <Grid Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" FontWeight="Bold" Text="{Binding Title}" Padding="10"/>
+                    <Image Margin="0,0,5,0" Grid.RowSpan="2" MaxHeight="45"
+                            Source="{Binding Path=ImagePath, Converter={StaticResource ImagePathConverter}}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
@@ -93,9 +114,9 @@
                         </ComboBox>
                     </Grid>
                     <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding MyFilteredSongList}"
-                             DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" 
+                             SelectionChanged="listBox_SongsList_SelectionChanged" 
                              MouseDoubleClick="listBox_SongsList_MouseDoubleClick"
-                             Padding="5" Margin="5">
+                             Padding="5" Margin="5" ItemTemplate="{StaticResource SongDataTemplate}">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -123,14 +144,16 @@
                              Text="Link" Margin="3" Padding="5"/>
                     <Button Name="button_DownloadYoutubeVideo" Grid.Row="2" Content="Download" 
                             Click="button_DownloadYoutubeVideo_Click" Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
-                    <Label Content="Link to youtube playlist:" Grid.Row="4" Margin="3" Padding="5"/>
-                    <TextBox Name="textBox_PlaylistLink" Grid.Row="5" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
-                    <Button Name="button_DownloadPlaylist" Grid.Row="6" Content="Download" Click="button_DownloadPlaylist_Click"
+                    <Label Content="Link to youtube playlist:" Grid.Row="3" Margin="3" Padding="5"/>
+                    <TextBox Name="textBox_PlaylistLink" Grid.Row="4" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
+                    <Button Name="button_DownloadPlaylist" Grid.Row="5" Content="Download" Click="button_DownloadPlaylist_Click"
                             Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
-                    <Label Content="Playlist downloading progress:" Grid.Row="7" Margin="3" Padding="5"/>
-                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="8" Height="25" Minimum="0" Maximum="1" 
+                    <Label Content="Playlist downloading progress:" Grid.Row="6" Margin="3" Padding="5"/>
+                    <ProgressBar Name="progressBar_playlistDownload" Grid.Row="7" Height="25" Minimum="0" Maximum="1" 
                                  Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"
                                  Margin="3" Padding="5"/>
+                    <Label Name="Label_Downloading" Content="Downloading not started" Grid.ColumnSpan="2" Grid.Row="8" 
+                           Margin="3" Padding="5" Foreground="Red" FontSize="20" HorizontalAlignment="Center"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Albums" Padding="5">
