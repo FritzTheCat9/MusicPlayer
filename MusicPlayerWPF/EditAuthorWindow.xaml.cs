@@ -1,0 +1,89 @@
+﻿using MusicPlayerConsole;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace MusicPlayerWPF
+{
+    /// <summary>
+    /// Interaction logic for EditAuthorWindow.xaml
+    /// </summary>
+    public partial class EditAuthorWindow : Window
+    {
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        public Author modifiedAuthor { get; set; } = null;
+        Author selectedAuthor;
+
+        public EditAuthorWindow()
+        {
+            InitializeComponent();
+
+            selectedAuthor = (Author)((MainWindow)Application.Current.MainWindow).listBox_AutorsList.SelectedItem;
+
+            if (selectedAuthor != null)
+            {
+                var editedAuthor = MusicPlayer.getInstance().GetAuthor(selectedAuthor.Name);
+                TextBox_Name.Text = editedAuthor.Name;
+            }
+        }
+
+        private void Button_EditAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedAuthor != null)
+            {
+                var editedAuthor = MusicPlayer.getInstance().GetAuthor(selectedAuthor.Name);
+                string newName = TextBox_Name.Text.ToString();
+
+                if (newName != "" && newName != string.Empty)
+                {
+                    var authorsList = ((MainWindow)Application.Current.MainWindow).authorsList;
+
+                    if (authorsList != null)
+                    {
+                        var isAuthorInDatabase = authorsList.FirstOrDefault(a => a.Name == newName);
+                        if (isAuthorInDatabase == null)                                                                     // dodajemy dopiero gdy nie ma go juz zapisanego w bazie danych
+                        {
+                            var updatedAutor = musicPlayer.UpdateAuthor(editedAuthor.Name, newName);
+
+                            if (updatedAutor != null)
+                            {
+                                MessageBox.Show("Author edited", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Information);
+                                modifiedAuthor = MusicPlayer.getInstance().GetAuthor(updatedAutor.Name);
+                                DialogResult = true;
+                                Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Can not edit author", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("This author name exists. Can not name author like that!", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Author name can not be empty!", "Edit author", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Can not edit author", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+            }
+        }
+    }
+}

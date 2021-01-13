@@ -351,7 +351,81 @@ namespace MusicPlayerWPF
 
         private void MenuItem_AddAuthor_Click(object sender, RoutedEventArgs e)
         {
-            authorsList.Add(new Author("siema"));
+            AddAuthorWindow addAuthorWindow = new AddAuthorWindow();
+
+            if (addAuthorWindow.ShowDialog() == true)
+            {
+                var addedAuthor = addAuthorWindow.addedAuthor;
+                if (addedAuthor != null)
+                {
+                    var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
+                    if (author == null)
+                    {
+                        authorsList.Add(addedAuthor);
+                    }
+                }
+            }
+        }
+
+        private void MenuItem_EditAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            EditAuthorWindow editAuthorWindow= new EditAuthorWindow();
+
+            if (editAuthorWindow.ShowDialog() == true)
+            {
+                var editedAuthor = editAuthorWindow.modifiedAuthor;
+                if (editedAuthor != null)
+                {
+                    authorsList[listBox_AutorsList.SelectedIndex] = editedAuthor;
+                }
+            }
+        }
+
+        private void MenuItem_DeleteAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_AutorsList.SelectedIndex != -1)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this author?", "Delete Author", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var currentAuthor = (Author)listBox_AutorsList.SelectedItem;
+
+                    if (currentAuthor != null)
+                    {
+                        var authorInSongs = songsList.FirstOrDefault(s => s.AuthorID == currentAuthor.AuthorID);
+                        var authorInAlbums = albumsList.FirstOrDefault(a => a.AuthorID == currentAuthor.AuthorID);
+
+                        if(authorInSongs != null || authorInAlbums != null)
+                        {
+                            MessageBox.Show("This author have songs or albums. Can not delete!", "Delete Author", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        else
+                        {
+                            musicPlayer.RemoveAuthor(currentAuthor.Name);
+                            authorsList.Remove(currentAuthor);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Choose author to delete!", "Delete Author", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void MenuItem_AddAlbum_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_EditAlbum_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_DeleteAlbum_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
