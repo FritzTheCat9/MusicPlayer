@@ -80,17 +80,16 @@
                         <Label Grid.Column="0" Content="Search" />
                         <TextBox Grid.Column="1"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1">
-                            <ComboBoxItem>By title ascending</ComboBoxItem>
-                            <ComboBoxItem>By title descending</ComboBoxItem>
-                            <ComboBoxItem>By length</ComboBoxItem>
-                            <ComboBoxItem>By length</ComboBoxItem>
-                            <ComboBoxItem>By author</ComboBoxItem>
+                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                            <ComboBoxItem Selected="SortNone">Don't sort</ComboBoxItem>
+                            <ComboBoxItem Selected="SortTitleAscending">By title ascending</ComboBoxItem>
+                            <ComboBoxItem Selected="SortTitleDescending">By title descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding songsList}" 
                              DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" 
-                             MouseDoubleClick="listBox_SongsList_MouseDoubleClick">
+                             MouseDoubleClick="listBox_SongsList_MouseDoubleClick"
+                             ScrollViewer.CanContentScroll="False">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -138,9 +137,10 @@
                         <Label Grid.Column="0" Content="Search" />
                         <TextBox Grid.Column="1"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1">
-                            <ComboBoxItem>By name</ComboBoxItem>
-                            <ComboBoxItem>By author</ComboBoxItem>
+                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                            <ComboBoxItem Selected="SortAlbumNameNone">Don't sort</ComboBoxItem>
+                            <ComboBoxItem Selected="SortAlbumNameAscending">By name ascending</ComboBoxItem>
+                            <ComboBoxItem Selected="SortAlbumNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AlbumsList" Grid.Row="1" 
@@ -167,9 +167,10 @@
                         <Label Grid.Column="0" Content="Search" />
                         <TextBox Grid.Column="1"/>
                         <Label Grid.Row="1" Content="Sort" />
-                        <ComboBox Grid.Row="1" Grid.Column="1">
-                            <ComboBoxItem>By name ascending</ComboBoxItem>
-                            <ComboBoxItem>By name descending</ComboBoxItem>
+                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
+                            <ComboBoxItem Selected="SortAuthorNone">Don't sort</ComboBoxItem>
+                            <ComboBoxItem Selected="SortAuthorNameAscending">By name ascending</ComboBoxItem>
+                            <ComboBoxItem Selected="SortAuthorNameDescending">By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                     <ListBox Name="listBox_AutorsList" Grid.Row="1" 

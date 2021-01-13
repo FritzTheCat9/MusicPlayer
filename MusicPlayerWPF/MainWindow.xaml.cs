@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,12 +22,85 @@ namespace MusicPlayerWPF
         public MusicPlayer musicPlayer = MusicPlayer.getInstance();
         public IList<Song> songsList { get; set; } = new ObservableCollection<Song>();
         public Song currentSong = null;
-
         public IList<Author> authorsList { get; set; } = new ObservableCollection<Author>();
         public Author currentAuthor = null;
-
         public IList<Album> albumsList { get; set; } = new ObservableCollection<Album>();
         public Album currentAlbum = null;
+
+        #region Sort SongsList
+        private ListCollectionView ViewSongs
+        {
+            get
+            {
+                return (ListCollectionView)CollectionViewSource.GetDefaultView(songsList);
+            }
+        }
+        private void SortTitleAscending(object sender, RoutedEventArgs e)
+        {
+            ViewSongs.SortDescriptions.Clear();
+            ViewSongs.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
+        }
+        private void SortTitleDescending(object sender, RoutedEventArgs e)
+        {
+            ViewSongs.SortDescriptions.Clear();
+            ViewSongs.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Descending));
+        }
+        private void SortNone(object sender, RoutedEventArgs e)
+        {
+            ViewSongs.SortDescriptions.Clear();
+            ViewSongs.CustomSort = null;
+        }
+        #endregion
+
+        #region Sort Authors List
+        private ListCollectionView ViewAuthors
+        {
+            get
+            {
+                return (ListCollectionView)CollectionViewSource.GetDefaultView(authorsList);
+            }
+        }
+        private void SortAuthorNameAscending(object sender, RoutedEventArgs e)
+        {
+            ViewAuthors.SortDescriptions.Clear();
+            ViewAuthors.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+        }
+        private void SortAuthorNameDescending(object sender, RoutedEventArgs e)
+        {
+            ViewAuthors.SortDescriptions.Clear();
+            ViewAuthors.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
+        }
+        private void SortAuthorNone(object sender, RoutedEventArgs e)
+        {
+            ViewAuthors.SortDescriptions.Clear();
+            ViewAuthors.CustomSort = null;
+        }
+        #endregion
+
+        #region Sort AlbumsList
+        private ListCollectionView ViewAlbums
+        {
+            get
+            {
+                return (ListCollectionView)CollectionViewSource.GetDefaultView(albumsList);
+            }
+        }
+        private void SortAlbumNameAscending(object sender, RoutedEventArgs e)
+        {
+            ViewAlbums.SortDescriptions.Clear();
+            ViewAlbums.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+        }
+        private void SortAlbumNameDescending(object sender, RoutedEventArgs e)
+        {
+            ViewAlbums.SortDescriptions.Clear();
+            ViewAlbums.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
+        }
+        private void SortAlbumNameNone(object sender, RoutedEventArgs e)
+        {
+            ViewAlbums.SortDescriptions.Clear();
+            ViewAlbums.CustomSort = null;
+        }
+        #endregion
 
         public MainWindow()
         {
@@ -145,6 +219,8 @@ namespace MusicPlayerWPF
             musicPlayer.LoadSongs(songsList);
         }
 
+        #region Music Player buttons
+
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
             musicPlayer.PreviousSong();
@@ -210,8 +286,45 @@ namespace MusicPlayerWPF
 
         private void buttonShuffleSong_Click(object sender, RoutedEventArgs e)
         {
+            var songList = listBox_SongsList.Items;
+            if(songList != null && songList.Count > 0)
+            {
+                Random random = new Random();
+                var randomSongIndex = random.Next(0, songList.Count);
+                currentSong = songsList[randomSongIndex];
 
+                if (currentSong != null)
+                {
+                    musicPlayer.PlaySong(currentSong.FilePath, randomSongIndex);
+
+                    Uri uri;
+                    if (File.Exists(currentSong.ImagePath))
+                    {
+                        uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+                    }
+                    else
+                    {
+                        string workingDirectory = Environment.CurrentDirectory;
+                        string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                        string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                        var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                        uri = new Uri(newPath, UriKind.Absolute);
+                    }
+
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = uri;
+                    image.EndInit();
+                    image_CurrentSong.Source = image;
+
+                    label_SongDuration.Content = currentSong.Length;
+                    slider_SongDuration.Maximum = currentSong.Length;
+                }
+            }
         }
+
+        #endregion
 
         private void listBox_SongsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -266,7 +379,7 @@ namespace MusicPlayerWPF
             musicPlayer.ChangeValue(value);
         }
 
-        #region Add, Edit, Delete song
+        #region ADD EDIT DELETE SONG
         
         private void MenuItem_AddSong_Click(object sender, RoutedEventArgs e)
         {
@@ -379,6 +492,7 @@ namespace MusicPlayerWPF
 
         #endregion
 
+        #region ADD EDIT DELETE AUTHOR
         private void MenuItem_AddAuthor_Click(object sender, RoutedEventArgs e)
         {
             AddAuthorWindow addAuthorWindow = new AddAuthorWindow();
@@ -442,7 +556,9 @@ namespace MusicPlayerWPF
                 MessageBox.Show("Choose author to delete!", "Delete Author", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        #endregion
 
+        #region ADD EDIT DELETE ALBUM
         private void MenuItem_AddAlbum_Click(object sender, RoutedEventArgs e)
         {
             AddAlbumWindow addAlbumWindow = new AddAlbumWindow();
@@ -525,5 +641,6 @@ namespace MusicPlayerWPF
                 MessageBox.Show("Choose album to delete!", "Delete Album", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        #endregion
     }
 }
