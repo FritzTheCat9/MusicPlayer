@@ -28,10 +28,10 @@
         <Label Grid.Row="2" Grid.Column="0" Content="Album" Margin="5"/>
         <TextBox Name="TextBox_Album" Grid.Row="2" Grid.Column="1" Padding="5" Margin="5"/>
         <Label Grid.Row="3" Grid.Column="0" Content="File path" Margin="5"/>
-        <TextBox Name="TextBox_FilePath" Grid.Row="3" Grid.Column="1" Padding="5" Margin="5"/>
+        <TextBox Name="TextBox_FilePath" Grid.Row="3" Grid.Column="1" Padding="5" Margin="5" IsEnabled="False"/>
         <Button Name="Button_Choose_File" Content="Choose file" Click="Button_Choose_File_Click" Grid.Row="3" Grid.Column="3" Margin="5"/>
         <Label Grid.Row="4" Grid.Column="0" Content="Image path" Margin="5"/>
-        <TextBox Name="TextBox_ImagePath" Grid.Row="4" Grid.Column="1" Padding="5" Margin="5"/>
+        <TextBox Name="TextBox_ImagePath" Grid.Row="4" Grid.Column="1" Padding="5" Margin="5" IsEnabled="False"/>
         <Button Name="Button_Choose_Image" Content="Choose image" Click="Button_Choose_Image_Click" Grid.Row="4" Grid.Column="3" Margin="5"/>
         <Button Name="Button_EditSong" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Width="70" Content="Edit song" Click="Button_EditSong_Click" Margin="5" Padding="5"/>
     </Grid>
