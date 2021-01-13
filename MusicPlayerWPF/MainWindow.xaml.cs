@@ -17,7 +17,7 @@ namespace MusicPlayerWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MusicPlayer musicPlayer = MusicPlayer.getInstance();
         public IList<Song> songsList { get; set; } = new ObservableCollection<Song>();
@@ -26,6 +26,36 @@ namespace MusicPlayerWPF
         public Author currentAuthor = null;
         public IList<Album> albumsList { get; set; } = new ObservableCollection<Album>();
         public Album currentAlbum = null;
+
+        private string _searchTextSong;
+        public string SearchTextSong
+        {
+            get { return _searchTextSong; }
+            set
+            {
+                _searchTextSong = value;
+
+                OnPropertyChanged("SearchTextSong");
+                OnPropertyChanged("MyFilteredSongList");
+            }
+        }
+
+        public IEnumerable<Song> MyFilteredSongList
+        {
+            get
+            {
+                if (SearchTextSong == null) return songsList;
+
+                return songsList.Where(s => s.Title.ToUpper().Contains(SearchTextSong.ToUpper()));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
 
         #region Sort SongsList
         private ListCollectionView ViewSongs

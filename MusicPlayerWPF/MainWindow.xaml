@@ -78,7 +78,7 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Content="Search" />
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Grid.Column="1" Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}"/>
                         <Label Grid.Row="1" Content="Sort" />
                         <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="0">
                             <ComboBoxItem Selected="SortNone">Don't sort</ComboBoxItem>
@@ -86,10 +86,10 @@
                             <ComboBoxItem Selected="SortTitleDescending">By title descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding songsList}" 
+                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding MyFilteredSongList}"
                              DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" 
                              MouseDoubleClick="listBox_SongsList_MouseDoubleClick"
-                             ScrollViewer.CanContentScroll="False">
+                             >
                     </ListBox>
                 </StackPanel>
             </TabItem>
