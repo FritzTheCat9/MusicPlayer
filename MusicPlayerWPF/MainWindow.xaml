@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         xmlns:musicPlayer="clr-namespace:MusicPlayerConsole;assembly=MusicPlayerConsole"
         mc:Ignorable="d"
-        Title="MusicPlayer" Height="450" Width="800" MinHeight="450" MinWidth="800"
+        Title="MusicPlayer" Height="500" Width="800" MinHeight="500" MinWidth="800"
         Name="MainWindowName"
         Loaded="Window_Loaded">
     <Grid>
@@ -52,7 +52,6 @@
                         </MenuItem>
                     </Menu>
                     <ListBox>
-
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
                         <ListBoxItem>Sample playlist</ListBoxItem>
@@ -85,10 +84,13 @@
                             <ComboBoxItem>By title ascending</ComboBoxItem>
                             <ComboBoxItem>By title descending</ComboBoxItem>
                             <ComboBoxItem>By length</ComboBoxItem>
+                            <ComboBoxItem>By length</ComboBoxItem>
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding songsList}" DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" MouseDoubleClick="listBox_SongsList_MouseDoubleClick">
+                    <ListBox Grid.Row="1" Name="listBox_SongsList" ItemsSource="{Binding songsList}" 
+                             DisplayMemberPath="Title" SelectionChanged="listBox_SongsList_SelectionChanged" 
+                             MouseDoubleClick="listBox_SongsList_MouseDoubleClick">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -141,7 +143,8 @@
                             <ComboBoxItem>By author</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Name="listBox_AlbumsList" Grid.Row="1" ItemsSource="{Binding albumsList}" DisplayMemberPath="Name">
+                    <ListBox Name="listBox_AlbumsList" Grid.Row="1" 
+                             ItemsSource="{Binding albumsList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -169,7 +172,8 @@
                             <ComboBoxItem>By name descending</ComboBoxItem>
                         </ComboBox>
                     </Grid>
-                    <ListBox Name="listBox_AutorsList" Grid.Row="1" ItemsSource="{Binding authorsList}" DisplayMemberPath="Name">
+                    <ListBox Name="listBox_AutorsList" Grid.Row="1" 
+                             ItemsSource="{Binding authorsList}" DisplayMemberPath="Name">
                     </ListBox>
                 </StackPanel>
             </TabItem>
@@ -230,7 +234,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Slider Name="slider_SongDuration" Minimum="0" Value="0" ValueChanged="slider_SongDuration_ValueChanged"/>
+                    <Slider Name="slider_SongDuration" Minimum="0" Value="0" Maximum="1"/>
                     <Label Name="label_SongDuration" Grid.Column="1"/>
                 </Grid>
                 <Grid HorizontalAlignment="Center">

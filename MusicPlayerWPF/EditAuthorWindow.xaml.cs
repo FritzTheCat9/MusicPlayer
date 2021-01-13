@@ -50,32 +50,25 @@ namespace MusicPlayerWPF
 
                     if (authorsList != null)
                     {
-                        var isAuthorInDatabase = authorsList.FirstOrDefault(a => a.Name == newName);
-                        if (isAuthorInDatabase == null)                                                                     // dodajemy dopiero gdy nie ma go juz zapisanego w bazie danych
-                        {
-                            var updatedAutor = musicPlayer.UpdateAuthor(editedAuthor.Name, newName);
 
-                            if (updatedAutor != null)
-                            {
-                                MessageBox.Show("Author edited", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Information);
-                                modifiedAuthor = MusicPlayer.getInstance().GetAuthor(updatedAutor.Name);
-                                DialogResult = true;
-                                Close();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Can not edit author", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
+                        var updatedAutor = musicPlayer.UpdateAuthor(editedAuthor.Name, newName);
+
+                        if (updatedAutor != null)
+                        {
+                            MessageBox.Show("Author edited", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Information);
+                            modifiedAuthor = MusicPlayer.getInstance().GetAuthor(updatedAutor.Name);
+                            DialogResult = true;
+                            Close();
                         }
                         else
                         {
-                            MessageBox.Show("This author name exists. Can not name author like that!", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show("Can not edit author", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Author name can not be empty!", "Edit author", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Author name can not be empty!", "Edit Author", MessageBoxButton.OK, MessageBoxImage.Warning);
                     Close();
                 }
             }

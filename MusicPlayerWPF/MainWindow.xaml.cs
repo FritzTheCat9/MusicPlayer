@@ -171,6 +171,7 @@ namespace MusicPlayerWPF
                 image_CurrentSong.Source = image;
             }
         }
+
         private void buttonPauseSong_Click(object sender, RoutedEventArgs e)
         {
             if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
@@ -241,7 +242,7 @@ namespace MusicPlayerWPF
                 image_CurrentSong.Source = image;
 
                 label_SongDuration.Content = currentSong.Length;
-                //slider_SongDuration.Maximum = currentSong.Length;
+                slider_SongDuration.Maximum = currentSong.Length;
             }
         }
 
@@ -252,8 +253,11 @@ namespace MusicPlayerWPF
 
         private void slider_SongDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-           /*TimeSpan ts = TimeSpan.FromSeconds(e.NewValue);
-           musicPlayer.player.Position = ts;*/
+            //TimeSpan ts = TimeSpan.FromSeconds(e.NewValue);
+            //musicPlayer.player.Position = ts;
+
+            //slider_SongDuration.Value = musicPlayer.currentPossition;
+            //label_SongDuration.Content = currentSong.Length;
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -441,17 +445,85 @@ namespace MusicPlayerWPF
 
         private void MenuItem_AddAlbum_Click(object sender, RoutedEventArgs e)
         {
+            AddAlbumWindow addAlbumWindow = new AddAlbumWindow();
 
+            if (addAlbumWindow.ShowDialog() == true)
+            {
+                var addedAlbum = addAlbumWindow.addedAlbum;
+                if (addedAlbum != null)
+                {
+                    var album = albumsList.FirstOrDefault(a => a.AlbumID == addedAlbum.AlbumID);
+                    if (album == null)
+                    {
+                        albumsList.Add(addedAlbum);
+                    }
+                }
+
+                var addedAuthor = addAlbumWindow.addedAuthor;
+                if (addedAuthor != null)
+                {
+                    var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
+                    if (author == null)
+                    {
+                        authorsList.Add(addedAuthor);
+                    }
+                }
+            }
         }
 
         private void MenuItem_EditAlbum_Click(object sender, RoutedEventArgs e)
         {
+            EditAlbumWindow editAlbumWindow = new EditAlbumWindow();
 
+            if (editAlbumWindow.ShowDialog() == true)
+            {
+                var editedAlbum = editAlbumWindow.modifiedAlbum;
+                if (editedAlbum != null)
+                {
+                    albumsList[listBox_AlbumsList.SelectedIndex] = editedAlbum;
+                }
+
+                var addedAuthor = editAlbumWindow.addedAuthor;
+                if (addedAuthor != null)
+                {
+                    var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
+                    if (author == null)
+                    {
+                        authorsList.Add(addedAuthor);
+                    }
+                }
+            }
         }
 
         private void MenuItem_DeleteAlbum_Click(object sender, RoutedEventArgs e)
         {
+            if (listBox_AlbumsList.SelectedIndex != -1)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this album?", "Delete Album", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var currentAlbum = (Album)listBox_AlbumsList.SelectedItem;
 
+                    if (currentAlbum != null)
+                    {
+                        var albumInSongs = songsList.FirstOrDefault(s => s.AlbumID == currentAlbum.AlbumID);
+
+                        if (albumInSongs != null)
+                        {
+                            MessageBox.Show("This album have songs. Can not delete!", "Delete Album", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        else
+                        {
+                            musicPlayer.RemoveAlbum(currentAlbum.Name);
+                            albumsList.Remove(currentAlbum);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Choose album to delete!", "Delete Album", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

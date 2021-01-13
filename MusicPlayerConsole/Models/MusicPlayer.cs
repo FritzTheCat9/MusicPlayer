@@ -40,7 +40,7 @@ namespace MusicPlayerConsole
         /* Media player for playing music */
         #region Player Variables
 
-        private MediaPlayer.MediaPlayer player = null;
+        public MediaPlayer.MediaPlayer player = null;
         private int songLength = 0;
         private int volume = -1000;
         public List<Song> songs = null;
