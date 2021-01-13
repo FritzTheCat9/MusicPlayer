@@ -208,7 +208,6 @@
 
             <!-- Current song -->
             <StackPanel Grid.Row="0">
-                <!--<Grid Grid.Row="0" DataContext="{Binding ElementName=listBox_SongsList, Path=SelectedItem}">-->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -218,7 +217,6 @@
                         <RowDefinition/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <!--<Image Grid.Column="0" Grid.RowSpan="2" Source="img/DefaultImage.png" Width="320" Height="180"/>-->
                     <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" Source="img/DefaultImage.png"/>
                     <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="3000" ValueChanged="Slider_ValueChanged">
                         <Slider.LayoutTransform>
@@ -227,7 +225,7 @@
                     </Slider>
                     <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30"/>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
@@ -235,12 +233,30 @@
                     <Slider Name="slider_SongDuration" Minimum="0" Value="0" ValueChanged="slider_SongDuration_ValueChanged"/>
                     <Label Name="label_SongDuration" Grid.Column="1"/>
                 </Grid>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Name="buttonPreviousSong" Content="Previous" Click="buttonPreviousSong_Click"/>
-                    <Button Name="buttonPlaySong" Content="Play" Click="buttonPlaySong_Click"/>
-                    <Button Name="buttonNextSong" Content="Next" Click="buttonNextSong_Click"/>
-                    <Button Name="buttonShuffleSong" Content="Shuffle" Click="buttonShuffleSong_Click"/>
-                </StackPanel>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0" Content="Previous" Click="buttonPreviousSong_Click" Margin="5" Padding="5"/>
+                    <Button Name="buttonPauseSong" Grid.Row="0" Grid.Column="1" Content="Pause" Click="buttonPauseSong_Click" Margin="5" Padding="5"/>
+                    <Button Name="buttonResumeSong" Grid.Row="0" Grid.Column="2" Content="Resume" Click="buttonResumeSong_Click" Margin="5" Padding="5"/>
+                    <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Content="Next" Click="buttonNextSong_Click" Margin="5" Padding="5"/>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
+                        
+                        <Button Name="buttonPlaySong" Content="Play" Click="buttonPlaySong_Click" Margin="5" Padding="5"/>
+                        <Button Name="buttonStopSong" Content="Stop" Click="buttonStopSong_Click" Margin="5" Padding="5"/>
+                        <Button Name="buttonShuffleSong" Content="Shuffle" Click="buttonShuffleSong_Click" Margin="5" Padding="5"/>
+                    </StackPanel>
+                    
+                </Grid>
             </StackPanel>
 
             <!-- Current playlist -->

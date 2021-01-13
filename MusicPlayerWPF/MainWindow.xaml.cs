@@ -159,14 +159,40 @@ namespace MusicPlayerWPF
 
         private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
         {
-            musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
+            if(musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            {
+                musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
 
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            image.EndInit();
-            image_CurrentSong.Source = image;
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+                image.EndInit();
+                image_CurrentSong.Source = image;
+            }
+        }
+        private void buttonPauseSong_Click(object sender, RoutedEventArgs e)
+        {
+            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            {
+                musicPlayer.PauseSong();
+            }
+        }
+
+        private void buttonStopSong_Click(object sender, RoutedEventArgs e)
+        {
+            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            {
+                musicPlayer.StopSong();
+            }
+        }
+
+        private void buttonResumeSong_Click(object sender, RoutedEventArgs e)
+        {
+            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            {
+                musicPlayer.ResumeSong();
+            }
         }
 
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
