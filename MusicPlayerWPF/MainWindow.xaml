@@ -41,23 +41,6 @@
             </Grid.RowDefinitions>
 
             <TabControl Grid.Column="0" TabStripPlacement="Left" Padding="5" Margin="5">
-                <TabItem Header="Play song" Padding="5">
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Button Name="Button_Choose_File" Content="Choose file" Margin="5" Padding="5"
-                            Click="Button_Choose_File_Click"/>
-                        <Label Grid.Row="1" Content="Choosen file name: " Margin="5"/>
-                        <Label Grid.Row="1" Grid.Column="1" Content="filename" Margin="5"/>
-                    </Grid>
-                </TabItem>
                 <TabItem Header="Playlists" Padding="5">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -92,7 +75,6 @@
                             ScrollViewer.CanContentScroll="False">
                         </ListBox>
                     </Grid>
-
                 </TabItem>
                 <TabItem Header="Songs library" Padding="5">
                     <!--<DockPanel>-->
@@ -307,13 +289,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Margin="5">Default playlist format</Label>
+                        <Label Grid.Row="0" Margin="5">Default style</Label>
                         <ComboBox Grid.Column="1" Grid.Row="0" SelectedIndex="0" Margin="5">
-                            <ComboBoxItem>XML</ComboBoxItem>
-                            <ComboBoxItem>JSON</ComboBoxItem>
-                        </ComboBox>
-                        <Label Grid.Row="1" Margin="5">Default style</Label>
-                        <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="0" Margin="5">
                             <ComboBoxItem>LIGHT</ComboBoxItem>
                             <ComboBoxItem>DARK</ComboBoxItem>
                             <ComboBoxItem>COLOR</ComboBoxItem>
