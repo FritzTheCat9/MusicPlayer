@@ -419,7 +419,7 @@ namespace MusicPlayerWPF
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 musicPlayer.PreviousSong();
 
@@ -434,7 +434,7 @@ namespace MusicPlayerWPF
 
         private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -452,7 +452,7 @@ namespace MusicPlayerWPF
 
         private void buttonPauseSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -463,7 +463,7 @@ namespace MusicPlayerWPF
 
         private void buttonStopSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -474,7 +474,7 @@ namespace MusicPlayerWPF
 
         private void buttonResumeSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -485,7 +485,7 @@ namespace MusicPlayerWPF
 
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 musicPlayer.NextSong();
 
@@ -576,6 +576,8 @@ namespace MusicPlayerWPF
         private void listBox_SongsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
+
+            musicPlayer.LoadSongs(songsList);
         }
 
         private void slider_SongDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
