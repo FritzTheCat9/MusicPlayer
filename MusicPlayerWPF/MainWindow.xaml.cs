@@ -436,7 +436,7 @@ namespace MusicPlayerWPF
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 musicPlayer.PreviousSong();
 
@@ -451,7 +451,7 @@ namespace MusicPlayerWPF
 
         private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -469,7 +469,7 @@ namespace MusicPlayerWPF
 
         private void buttonPauseSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -482,7 +482,7 @@ namespace MusicPlayerWPF
 
         private void buttonStopSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -493,7 +493,7 @@ namespace MusicPlayerWPF
 
         private void buttonResumeSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
                 {
@@ -504,7 +504,7 @@ namespace MusicPlayerWPF
 
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0 && musicPlayer.currentPlayedSong < musicPlayer.songs.Count)
             {
                 musicPlayer.NextSong();
 
@@ -596,6 +596,8 @@ namespace MusicPlayerWPF
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
             slider_SongDuration.Maximum = currentSong.Length+1;
+
+            musicPlayer.LoadSongs(songsList);
         }
 
         private void slider_SongDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -1066,6 +1068,40 @@ namespace MusicPlayerWPF
             {
                 pos = (int)slider_SongDuration.Value;
                 musicPlayer.currentPossition = pos;
+            }
+        }
+
+        private void listBox_playlistSongList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            currentSong = (Song)listBox_playlistSongList.SelectedItem;
+            if (currentSong != null)
+            {
+                musicPlayer.LoadSongs(playlistSongList);
+                musicPlayer.PlaySong(currentSong.FilePath, listBox_playlistSongList.SelectedIndex);
+
+                Uri uri;
+                if (File.Exists(currentSong.ImagePath))
+                {
+                    uri = new Uri(currentSong.ImagePath, UriKind.Absolute);
+                }
+                else
+                {
+                    string workingDirectory = Environment.CurrentDirectory;
+                    string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                    string IMAGES_FOLDER = SOLUTION_DIRECTORY + @"\Images\";
+                    var newPath = IMAGES_FOLDER + "DefaultImage.png";
+                    uri = new Uri(newPath, UriKind.Absolute);
+                }
+
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = uri;
+                image.EndInit();
+                image_CurrentSong.Source = image;
+
+                label_SongDuration.Content = currentSong.Length;
+                slider_SongDuration.Maximum = currentSong.Length;
             }
         }
     }
