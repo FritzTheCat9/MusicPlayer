@@ -71,8 +71,8 @@
                                 <MenuItem Header="To ZIP"/>
                             </MenuItem>
                             <MenuItem Header="Import">
-                                <MenuItem Header="From XML"/>
-                                <MenuItem Header="From JSON"/>
+                                <MenuItem Name="Import_From_XML" Header="From XML" Click="Import_From_XML_Click"/>
+                                <MenuItem Name="Import_From_JSON" Header="From JSON" Click="Import_From_JSON_Click"/>
                                 <MenuItem Header="From ZIP"/>
                             </MenuItem>
                         </Menu>

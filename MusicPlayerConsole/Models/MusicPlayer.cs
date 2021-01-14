@@ -621,9 +621,9 @@ namespace MusicPlayerConsole
 
             if (File.Exists(xmlFilePath))
             {
-                if (!File.Exists(playlistFilePath))
+                /*if (!File.Exists(playlistFilePath))
                 {
-                    File.Copy(xmlFilePath, playlistFilePath);
+                    File.Copy(xmlFilePath, playlistFilePath);*/
                     AddPlaylist(playlistName, playlistFilePath);
 
                     foreach (var song in playlistXML.Descendants("song"))
@@ -638,7 +638,7 @@ namespace MusicPlayerConsole
                         AddSong(title, songPATH, imagePATH, author, album);
                         AddSongPlaylist(title, playlistName);
                     }
-                }
+                //}
             }
             else
             {
@@ -682,11 +682,11 @@ namespace MusicPlayerConsole
 
                 if (File.Exists(jsonFilePath))
                 {
-                    if (!File.Exists(playlistFilePath))
+                    /*if (!File.Exists(playlistFilePath))
                     {
-                        File.Copy(jsonFilePath, playlistFilePath);
+                        File.Copy(jsonFilePath, playlistFilePath);*/
                         AddPlaylist(playlistName, playlistFilePath);
-                    }
+                    //}
                 }
                 else
                 {

@@ -418,21 +418,9 @@ namespace MusicPlayerWPF
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
-            musicPlayer.PreviousSong();
-
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            image.EndInit();
-            image_CurrentSong.Source = image;
-        }
-
-        private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
-        {
-            if(musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            if(musicPlayer.songs.Count > 0)
             {
-                musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
+                musicPlayer.PreviousSong();
 
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
@@ -443,40 +431,70 @@ namespace MusicPlayerWPF
             }
         }
 
+        private void buttonPlaySong_Click(object sender, RoutedEventArgs e)
+        {
+            if (musicPlayer.songs.Count > 0)
+            {
+                if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+                {
+                    musicPlayer.PlaySong(musicPlayer.songs[musicPlayer.currentPlayedSong].FilePath, musicPlayer.currentPlayedSong);
+
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+                    image.EndInit();
+                    image_CurrentSong.Source = image;
+                }
+            }
+        }
+
         private void buttonPauseSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            if (musicPlayer.songs.Count > 0)
             {
-                musicPlayer.PauseSong();
+                if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+                {
+                    musicPlayer.PauseSong();
+                }
             }
         }
 
         private void buttonStopSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            if (musicPlayer.songs.Count > 0)
             {
-                musicPlayer.StopSong();
+                if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+                {
+                    musicPlayer.StopSong();
+                }
             }
         }
 
         private void buttonResumeSong_Click(object sender, RoutedEventArgs e)
         {
-            if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+            if (musicPlayer.songs.Count > 0)
             {
-                musicPlayer.ResumeSong();
+                if (musicPlayer.currentPlayedSong != -1 && musicPlayer.songs[musicPlayer.currentPlayedSong] != null)
+                {
+                    musicPlayer.ResumeSong();
+                }
             }
         }
 
         private void buttonNextSong_Click(object sender, RoutedEventArgs e)
         {
-            musicPlayer.NextSong();
+            if (musicPlayer.songs.Count > 0)
+            {
+                musicPlayer.NextSong();
 
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
-            image.EndInit();
-            image_CurrentSong.Source = image;
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
+                image.EndInit();
+                image_CurrentSong.Source = image;
+            }
         }
 
         private void buttonShuffleSong_Click(object sender, RoutedEventArgs e)
@@ -671,11 +689,21 @@ namespace MusicPlayerWPF
                     image_CurrentSong.Source = image;
 
                     var currentSong = (Song)listBox_SongsList.SelectedItem;
-                    if(currentSong != null)
+
+                    var songPlaylist = musicPlayer.GetAllSongPlaylists().FirstOrDefault(sp => sp.SongID == currentSong.SongID);
+
+                    if(songPlaylist == null)
                     {
-                        musicPlayer.RemoveSong(currentSong.Title);
-                        songsList.Remove(currentSong);
-                        musicPlayer.LoadSongs(songsList);
+                        if (currentSong != null)
+                        {
+                            musicPlayer.RemoveSong(currentSong.Title);
+                            songsList.Remove(currentSong);
+                            musicPlayer.LoadSongs(songsList);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can not delete this song! This song is in playlist!", "Delete Song", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }
@@ -965,6 +993,48 @@ namespace MusicPlayerWPF
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
                 musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+            }
+        }
+
+        private void Import_From_XML_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                var playlistFilePath = currentPlaylist.FilePath + currentPlaylist.Name + @".xml";
+                var SongsPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Songs";
+                var ImagesPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Images";
+
+                if (File.Exists(playlistFilePath))
+                {
+                    musicPlayer.ImportPlaylistFromXML(playlistFilePath, SongsPath, ImagesPath);
+                    MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("You must create playlist file, Songs folder and Image folder!", "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void Import_From_JSON_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                var playlistFilePath = currentPlaylist.FilePath + currentPlaylist.Name + @".json";
+                var SongsPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Songs";
+                var ImagesPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Images";
+
+                if (File.Exists(playlistFilePath))
+                {
+                    musicPlayer.ImportPlaylistFromJSON(playlistFilePath, SongsPath, ImagesPath);
+                    MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("You must create playlist file, Songs folder and Image folder!", "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }
