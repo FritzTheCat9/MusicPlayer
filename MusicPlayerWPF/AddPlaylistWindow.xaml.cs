@@ -27,6 +27,7 @@ namespace MusicPlayerWPF
         public AddPlaylistWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
         private void Button_AddPlaylist_Click(object sender, RoutedEventArgs e)

@@ -27,6 +27,7 @@ namespace MusicPlayerWPF
         public EditAuthorWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             selectedAuthor = (Author)((MainWindow)Application.Current.MainWindow).listBox_AutorsList.SelectedItem;
 

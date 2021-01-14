@@ -27,6 +27,7 @@ namespace MusicPlayerWPF
         public AddAlbumWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
         private void Button_AddAlbum_Click(object sender, RoutedEventArgs e)

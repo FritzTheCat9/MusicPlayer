@@ -295,7 +295,7 @@ namespace MusicPlayerWPF
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
 
             InitializeComponent();
-
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             DataContext = this;
 
 
@@ -588,14 +588,13 @@ namespace MusicPlayerWPF
                 image_CurrentSong.Source = image;
 
                 label_SongDuration.Content = currentSong.Length;
-                slider_SongDuration.Maximum = currentSong.Length;
+                slider_SongDuration.Maximum = currentSong.Length + 1;
             }
         }
 
         private void listBox_SongsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
-            //slider_SongDuration.Maximum = currentSong.Length+1;
 
             musicPlayer.LoadSongs(songsList);
         }

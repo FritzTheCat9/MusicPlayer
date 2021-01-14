@@ -28,6 +28,7 @@ namespace MusicPlayerWPF
         public EditAlbumWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             selectedAlbum = (Album)((MainWindow)Application.Current.MainWindow).listBox_AlbumsList.SelectedItem;
 

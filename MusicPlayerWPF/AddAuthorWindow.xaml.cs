@@ -26,6 +26,7 @@ namespace MusicPlayerWPF
         public AddAuthorWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
         private void Button_AddAuthor_Click(object sender, RoutedEventArgs e)
