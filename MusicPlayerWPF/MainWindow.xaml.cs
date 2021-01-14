@@ -595,7 +595,7 @@ namespace MusicPlayerWPF
         private void listBox_SongsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
-            slider_SongDuration.Maximum = currentSong.Length+1;
+            //slider_SongDuration.Maximum = currentSong.Length+1;
 
             musicPlayer.LoadSongs(songsList);
         }
