@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Title" Margin="5"/>
-        <TextBox Name="TextBox_Title" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
+        <TextBox Name="TextBox_Title" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5" IsEnabled="False"/>
         <Label Grid.Row="1" Grid.Column="0" Content="Author" Margin="5" />
         <TextBox Name="TextBox_Author" Grid.Row="1" Grid.Column="1" Padding="5" Margin="5"/>
         <Label Grid.Row="2" Grid.Column="0" Content="Album" Margin="5"/>

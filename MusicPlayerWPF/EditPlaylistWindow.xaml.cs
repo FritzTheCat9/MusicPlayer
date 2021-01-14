@@ -55,8 +55,7 @@ namespace MusicPlayerWPF
                         string workingDirectory = Environment.CurrentDirectory;
                         string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
                         string PLAYLISTS_FOLDER = SOLUTION_DIRECTORY + @"\Playlists\";
-                        var playlistPath = PLAYLISTS_FOLDER + newName + ".xml";
-
+                        var playlistPath = PLAYLISTS_FOLDER;
 
                         var updatedPlaylist = musicPlayer.UpdatePlaylist(editedPlaylist.Name, newName, playlistPath);
 

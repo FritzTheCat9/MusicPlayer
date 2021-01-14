@@ -318,25 +318,6 @@ namespace MusicPlayerWPF
             }
         }
 
-        private void Button_Choose_File_Click(object sender, RoutedEventArgs e)
-        {
-            // Configure open file dialog box
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".txt"; // Default file extension
-            dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
-
-            // Show open file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process open file dialog box results
-            if (result == true)
-            {
-                // Open document
-                string filename = dlg.FileName;
-            }
-        }
-
         #region YouTube
         private async void button_DownloadYoutubeVideo_Click(object sender, RoutedEventArgs e)
         {
@@ -1006,6 +987,7 @@ namespace MusicPlayerWPF
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
                 musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
+                musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
             }
         }
 
@@ -1015,6 +997,7 @@ namespace MusicPlayerWPF
             {
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
+                musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
                 musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
             }
         }
@@ -1030,7 +1013,16 @@ namespace MusicPlayerWPF
 
                 if (File.Exists(playlistFilePath))
                 {
-                    musicPlayer.ImportPlaylistFromXML(playlistFilePath, SongsPath, ImagesPath);
+                    musicPlayer.clearPlaylistFromSongs(currentPlaylist.Name);
+                    musicPlayer.ImportPlaylistFromXML(playlistFilePath, SongsPath, ImagesPath);                                             // update listy piosenek w liście w wpf dodaj
+
+                    playlistSongList.Clear();
+                    var songPlaylists = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID);
+                    foreach (var fsongPlaylist in songPlaylists)
+                    {
+                        playlistSongList.Add(fsongPlaylist.Song);
+                    }
+
                     MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
@@ -1051,7 +1043,16 @@ namespace MusicPlayerWPF
 
                 if (File.Exists(playlistFilePath))
                 {
-                    musicPlayer.ImportPlaylistFromJSON(playlistFilePath, SongsPath, ImagesPath);
+                    musicPlayer.clearPlaylistFromSongs(currentPlaylist.Name);
+                    musicPlayer.ImportPlaylistFromJSON(playlistFilePath, SongsPath, ImagesPath);                                            // update listy piosenek w liście w wpf dodaj
+
+                    playlistSongList.Clear();
+                    var songPlaylists = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID);
+                    foreach (var fsongPlaylist in songPlaylists)
+                    {
+                        playlistSongList.Add(fsongPlaylist.Song);
+                    }
+
                     MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else

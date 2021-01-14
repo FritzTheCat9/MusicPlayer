@@ -1,5 +1,5 @@
 {
-  "Name": "Playlist2",
+  "Name": "Kolejna playlista",
   "Songs": [
     {
       "Title": "Black Eyed Peas, Shakira - GIRL LIKE ME (Official Music Video)",
@@ -8,11 +8,6 @@
     },
     {
       "Title": "Jacuś - Rodeo",
-      "Autor": "",
-      "Album": ""
-    },
-    {
-      "Title": "Wac Toja - Kapitan (Official Music Video)",
       "Autor": "",
       "Album": ""
     }

@@ -417,19 +417,21 @@ namespace MusicPlayerConsole
 
         /* YOUTUBE */
         #region YOUTUBE
-        public bool IsYoutubeLink(string link) { 
-            try 
-            { 
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(link); 
-                request.Method = "HEAD"; 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse()) 
-                { 
-                    return response.ResponseUri.ToString().Contains("youtube.com") ? true : false; 
-                } 
-            } catch 
-            { 
-                return false; 
-            } 
+        public bool IsYoutubeLink(string link)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(link);
+                request.Method = "HEAD";
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    return response.ResponseUri.ToString().Contains("youtube.com") ? true : false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
         private static string FindTextBetween(string text, string left, string right)
         {
@@ -612,19 +614,45 @@ namespace MusicPlayerConsole
         /* IMPORT, EXPORT - PLAYLISTS */
         #region Playlists import and export to XML and JSON
 
+        public void clearPlaylistFromSongs(string playlistName)
+        {
+            var playlist = GetPlaylist(playlistName);
+            if (playlist != null)
+            {
+                var songPlaylists = GetAllSongPlaylists().Where(sp => sp.PlaylistID == playlist.PlaylistID);
+
+                foreach (var fsongPlaylist in songPlaylists)
+                {
+                    RemoveSongPlaylist(fsongPlaylist.Song.Title, playlistName);
+
+                    var songsFolderPath = playlist.FilePath + playlist.Name + @"\Songs";            // usunięcie folderów z piosenkami itp.
+                    var imagesFolderPath = playlist.FilePath + playlist.Name + @"\Images";
+
+                    if (!Directory.Exists(songsFolderPath))
+                    {
+                        Directory.CreateDirectory(songsFolderPath);
+                    }
+
+                    if (!Directory.Exists(imagesFolderPath))
+                    {
+                        Directory.CreateDirectory(imagesFolderPath);
+                    }
+                }
+            }
+        }
+
         public bool ImportPlaylistFromXML(string xmlFilePath, string songsFolderPath, string imagesFolderPath)
         {
-            XDocument playlistXML = XDocument.Load(xmlFilePath);
-
-            var root = playlistXML.Root;
-            string playlistName = root.Attribute("name").Value;
-            string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".xml";
-
-            if (File.Exists(xmlFilePath))
+            try
             {
-                /*if (!File.Exists(playlistFilePath))
+                XDocument playlistXML = XDocument.Load(xmlFilePath);
+
+                var root = playlistXML.Root;
+                string playlistName = root.Attribute("name").Value;
+                string playlistFilePath = PLAYLISTS_FOLDER + playlistName + ".xml";
+
+                if (File.Exists(xmlFilePath))
                 {
-                    File.Copy(xmlFilePath, playlistFilePath);*/
                     AddPlaylist(playlistName, playlistFilePath);
 
                     foreach (var song in playlistXML.Descendants("song"))
@@ -636,12 +664,19 @@ namespace MusicPlayerConsole
                         string songPATH = songsFolderPath + @"\" + title + ".mp3";
                         string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
 
-                        AddSong(title, songPATH, imagePATH, author, album);
-                        AddSongPlaylist(title, playlistName);
+                        if (File.Exists(songPATH) && File.Exists(imagePATH))
+                        {
+                            AddSong(title, songPATH, imagePATH, author, album);
+                            AddSongPlaylist(title, playlistName);
+                        }
                     }
-                //}
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch
             {
                 return false;
             }
@@ -664,6 +699,40 @@ namespace MusicPlayerConsole
             );
             playlistXML.Save(savePath + @"\" + playlistName + @".xml");
 
+            foreach (var song in songs)
+            {
+                var currentPlaylist = GetPlaylist(playlistName);
+
+                if (currentPlaylist != null)
+                {
+                    var playlistFilePath = currentPlaylist.FilePath + currentPlaylist.Name + @".xml";
+                    var songsFolderPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Songs";
+                    var imagesFolderPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Images";
+                    string songPATH = songsFolderPath + @"\" + song.Title + ".mp3";
+                    string imagePATH = imagesFolderPath + @"\" + song.Title + ".jpg";
+
+                    if (!Directory.Exists(songsFolderPath))
+                    {
+                        Directory.CreateDirectory(songsFolderPath);
+                    }
+
+                    if (!Directory.Exists(imagesFolderPath))
+                    {
+                        Directory.CreateDirectory(imagesFolderPath);
+                    }
+
+                    if (!File.Exists(songPATH))
+                    {
+                        File.Copy(song.FilePath, songPATH);
+                    }
+
+                    if (!File.Exists(imagePATH))
+                    {
+                        File.Copy(song.ImagePath, imagePATH);
+                    }
+                }
+            }
+
             return true;
         }
         public bool ImportPlaylistFromJSON(string jsonFilePath, string songsFolderPath, string imagesFolderPath)
@@ -683,11 +752,7 @@ namespace MusicPlayerConsole
 
                 if (File.Exists(jsonFilePath))
                 {
-                    /*if (!File.Exists(playlistFilePath))
-                    {
-                        File.Copy(jsonFilePath, playlistFilePath);*/
-                        AddPlaylist(playlistName, playlistFilePath);
-                    //}
+                    AddPlaylist(playlistName, playlistFilePath);
                 }
                 else
                 {
@@ -703,8 +768,11 @@ namespace MusicPlayerConsole
                     string songPATH = songsFolderPath + @"\" + title + ".mp3";
                     string imagePATH = imagesFolderPath + @"\" + title + ".jpg";
 
-                    AddSong(title, songPATH, imagePATH, author, album);
-                    AddSongPlaylist(title, playlistName);
+                    if (File.Exists(songPATH) && File.Exists(imagePATH))
+                    {
+                        AddSong(title, songPATH, imagePATH, author, album);
+                        AddSongPlaylist(title, playlistName);
+                    }
                 }
             }
             catch (Exception ex)
@@ -742,6 +810,40 @@ namespace MusicPlayerConsole
                 using (var writer = new StreamWriter(path))
                 {
                     writer.Write(jsonToWrite);
+                }
+
+                foreach (var song in songs)
+                {
+                    var currentPlaylist = GetPlaylist(playlistName);
+
+                    if (currentPlaylist != null)
+                    {
+                        var playlistFilePath = currentPlaylist.FilePath + currentPlaylist.Name + @".xml";
+                        var songsFolderPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Songs";
+                        var imagesFolderPath = currentPlaylist.FilePath + currentPlaylist.Name + @"\Images";
+                        string songPATH = songsFolderPath + @"\" + song.Title + ".mp3";
+                        string imagePATH = imagesFolderPath + @"\" + song.Title + ".jpg";
+
+                        if (!Directory.Exists(songsFolderPath))
+                        {
+                            Directory.CreateDirectory(songsFolderPath);
+                        }
+
+                        if (!Directory.Exists(imagesFolderPath))
+                        {
+                            Directory.CreateDirectory(imagesFolderPath);
+                        }
+
+                        if (!File.Exists(songPATH))
+                        {
+                            File.Copy(song.FilePath, songPATH);
+                        }
+
+                        if (!File.Exists(imagePATH))
+                        {
+                            File.Copy(song.ImagePath, imagePATH);
+                        }
+                    }
                 }
 
             }
