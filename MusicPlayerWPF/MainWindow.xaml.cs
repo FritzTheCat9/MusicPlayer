@@ -331,12 +331,20 @@ namespace MusicPlayerWPF
             if (musicPlayer.IsYoutubeLink(link) && link.Contains(@"/watch?"))
             {
                 await musicPlayer.SaveSongFromYoutubeAsync(link);
-                var title = musicPlayer.getVideoTitle(link);
-                var addedSong = musicPlayer.GetSong(title);
-                if (addedSong != null)
+
+                try
                 {
-                    songsList.Add(addedSong);
-                    musicPlayer.LoadSongs(songsList);
+                    var title = musicPlayer.getVideoTitle(link);
+                    var addedSong = musicPlayer.GetSong(title);
+                    if (addedSong != null)
+                    {
+                        songsList.Add(addedSong);
+                        musicPlayer.LoadSongs(songsList);
+                    }
+                }
+                catch
+                {
+
                 }
             }
 
