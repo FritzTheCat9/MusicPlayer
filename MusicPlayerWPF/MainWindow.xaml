@@ -302,6 +302,7 @@
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -362,8 +363,10 @@
 
                 <!-- Current playlist -->
 
-
-                <ListBox Name="listBox_playlistSongList" Grid.Row="1"
+                <Menu Margin="5" Padding="5" Grid.Row="1">
+                    <MenuItem Name="MenuItem_RemoveSongFromPlaylist" Header="Remove song from playlist" Click="MenuItem_RemoveSongFromPlaylist_Click"/>
+                </Menu>
+                <ListBox Name="listBox_playlistSongList" Grid.Row="3"
                              ItemsSource="{Binding playlistSongList}"
                              Padding="5" Margin="5"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"

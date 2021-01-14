@@ -556,57 +556,71 @@ namespace MusicPlayerConsole
         }
         public int CountVideosInYoutubePlaylist(string url)
         {
-            string list = "list=";
-            string playlistId = url.Substring(url.IndexOf(list) + list.Length);
-
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            try
             {
-                ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
-            });
+                string list = "list=";
+                string playlistId = url.Substring(url.IndexOf(list) + list.Length);
 
-            var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
-            playlistItemsListRequest.MaxResults = 50;
-            playlistItemsListRequest.PlaylistId = playlistId;
+                var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+                {
+                    ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
+                });
 
-            var playlistItemsListResponse = playlistItemsListRequest.Execute();
+                var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+                playlistItemsListRequest.MaxResults = 50;
+                playlistItemsListRequest.PlaylistId = playlistId;
 
-            int videosCount = 0;
+                var playlistItemsListResponse = playlistItemsListRequest.Execute();
 
-            foreach (var playlistItem in playlistItemsListResponse.Items)
-            {
-                videosCount++;
+                int videosCount = 0;
+
+                foreach (var playlistItem in playlistItemsListResponse.Items)
+                {
+                    videosCount++;
+                }
+
+                return videosCount;
             }
-
-            return videosCount;
+            catch
+            {
+                return 0;
+            }
         }
         public void GetVideosFromPlaylist(string url)
         {
-            string list = "list=";
-            string playlistId = url.Substring(url.IndexOf(list) + list.Length);
-
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            try
             {
-                ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
-            });
+                string list = "list=";
+                string playlistId = url.Substring(url.IndexOf(list) + list.Length);
 
-            var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
-            playlistItemsListRequest.MaxResults = 50;
-            playlistItemsListRequest.PlaylistId = playlistId;
+                var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+                {
+                    ApiKey = "AIzaSyBMbX2FaTInDp1lugk51YyEoJdShccuy-w"
+                });
 
-            var playlistItemsListResponse = playlistItemsListRequest.Execute();
-            youtubePlaylistSongTitles = new List<string>();
+                var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet");
+                playlistItemsListRequest.MaxResults = 50;
+                playlistItemsListRequest.PlaylistId = playlistId;
 
-            foreach (var playlistItem in playlistItemsListResponse.Items)
+                var playlistItemsListResponse = playlistItemsListRequest.Execute();
+                youtubePlaylistSongTitles = new List<string>();
+
+                foreach (var playlistItem in playlistItemsListResponse.Items)
+                {
+                    var SongTitle = playlistItem.Snippet.Title;
+                    var SongId = playlistItem.Snippet.ResourceId.VideoId;
+                    youtubePlaylistSongTitles.Add(SongTitle);
+
+                    SaveSongFromYoutube2("https://www.youtube.com/watch?v=" + SongId, SongId);
+
+                    WorkerState++;
+
+                    //Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
+                }
+            }
+            catch
             {
-                var SongTitle = playlistItem.Snippet.Title;
-                var SongId = playlistItem.Snippet.ResourceId.VideoId;
-                youtubePlaylistSongTitles.Add(SongTitle);
 
-                SaveSongFromYoutube2("https://www.youtube.com/watch?v=" + SongId, SongId);
-
-                WorkerState++;
-
-                Console.WriteLine("Song saved: {0} {1}", SongTitle, SongId);
             }
         }
         #endregion

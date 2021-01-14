@@ -358,8 +358,12 @@ namespace MusicPlayerWPF
 
             if (musicPlayer.IsYoutubeLink(link) && link.Contains(@"/playlist?"))
             {
-                progressBar_playlistDownload.Maximum = musicPlayer.CountVideosInYoutubePlaylist(link);
-
+                var count = musicPlayer.CountVideosInYoutubePlaylist(link);
+                if(count != 0)
+                {
+                    progressBar_playlistDownload.Maximum = count;
+                }
+                
                 musicPlayer.backgroundWorker.DoWork += (obj, arg) =>
                 {
                     musicPlayer.GetVideosFromPlaylist(link);
@@ -980,6 +984,7 @@ namespace MusicPlayerWPF
             }
         }
 
+        #region IMPORT I EKSPORT PLAYLIST
         private void Export_To_XML_Click(object sender, RoutedEventArgs e)
         {
             if (listBox_PlaylistsList.SelectedIndex != -1)
@@ -1014,7 +1019,7 @@ namespace MusicPlayerWPF
                 if (File.Exists(playlistFilePath))
                 {
                     musicPlayer.clearPlaylistFromSongs(currentPlaylist.Name);
-                    musicPlayer.ImportPlaylistFromXML(playlistFilePath, SongsPath, ImagesPath);                                             // update listy piosenek w liście w wpf dodaj
+                    musicPlayer.ImportPlaylistFromXML(playlistFilePath, SongsPath, ImagesPath);
 
                     playlistSongList.Clear();
                     var songPlaylists = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID);
@@ -1044,7 +1049,7 @@ namespace MusicPlayerWPF
                 if (File.Exists(playlistFilePath))
                 {
                     musicPlayer.clearPlaylistFromSongs(currentPlaylist.Name);
-                    musicPlayer.ImportPlaylistFromJSON(playlistFilePath, SongsPath, ImagesPath);                                            // update listy piosenek w liście w wpf dodaj
+                    musicPlayer.ImportPlaylistFromJSON(playlistFilePath, SongsPath, ImagesPath);
 
                     playlistSongList.Clear();
                     var songPlaylists = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID);
@@ -1061,6 +1066,7 @@ namespace MusicPlayerWPF
                 }
             }
         }
+        #endregion
 
         private void slider_SongDuration_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -1102,6 +1108,27 @@ namespace MusicPlayerWPF
 
                 label_SongDuration.Content = currentSong.Length;
                 slider_SongDuration.Maximum = currentSong.Length;
+            }
+        }
+
+        private void MenuItem_RemoveSongFromPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_playlistSongList.SelectedIndex != -1 && listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                var currentSong = (Song)listBox_playlistSongList.SelectedItem;
+
+                var isSongInPlaylist = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID).Where(sp => sp.SongID == currentSong.SongID).FirstOrDefault();
+
+                if (isSongInPlaylist != null)
+                {
+                    musicPlayer.RemoveSongPlaylist(currentSong.Title, currentPlaylist.Name);
+                    playlistSongList.Remove(currentSong);
+                }
+                else
+                {
+                    MessageBox.Show("This song is not from current playlist! Can not remove!", "Add song to playlist", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
     }
