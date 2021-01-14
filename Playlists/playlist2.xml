@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<playlist name="playlist2">
-    <song album="" author="" title="Jacuś - Premier"/>
-    <song album="" author="" title="Jacuś - Queen"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<playlist name="Playlist2">
+  <song album="" author="" title="Black Eyed Peas, Shakira - GIRL LIKE ME (Official Music Video)" />
+  <song album="" author="" title="Jacuś - Rodeo" />
+  <song album="" author="" title="Wac Toja - Kapitan (Official Music Video)" />
 </playlist>

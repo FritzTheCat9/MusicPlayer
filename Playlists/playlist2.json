@@ -1,13 +1,18 @@
 {
-  "Name": "playlist2",
+  "Name": "Playlist2",
   "Songs": [
     {
-      "Title": "Jacuś - Premier",
+      "Title": "Black Eyed Peas, Shakira - GIRL LIKE ME (Official Music Video)",
       "Autor": "",
       "Album": ""
     },
     {
-      "Title": "Jacuś - Queen",
+      "Title": "Jacuś - Rodeo",
+      "Autor": "",
+      "Album": ""
+    },
+    {
+      "Title": "Wac Toja - Kapitan (Official Music Video)",
       "Autor": "",
       "Album": ""
     }

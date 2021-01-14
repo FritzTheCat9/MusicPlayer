@@ -26,6 +26,28 @@ namespace MusicPlayerWPF
         public Author currentAuthor = null;
         public IList<Album> albumsList { get; set; } = new ObservableCollection<Album>();
         public Album currentAlbum = null;
+        public IList<Playlist> playlistsList { get; set; } = new ObservableCollection<Playlist>();
+        public Playlist currentPlaylist = null;
+        public IList<Song> playlistSongList { get; set; } = new ObservableCollection<Song>();
+        public Album currentPlaylistSong = null;
+
+
+        /*private int _selectedPlaylist;
+        public int SelectedPlaylist
+        {
+            get { return _selectedPlaylist; }
+            set
+            {
+                _selectedPlaylist = value;
+
+                OnPropertyChanged("SelectedPlaylist");
+            }
+        }
+
+        private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedPlaylist = listBox_PlaylistsList.SelectedIndex;
+        }*/
 
         #region Sortowanie i filtrowanie list
 
@@ -268,6 +290,8 @@ namespace MusicPlayerWPF
             songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
+            playlistsList = new ObservableCollection<Playlist>(musicPlayer.GetAllPlaylists().ToList());
+            playlistSongList = new ObservableCollection<Song>();
 
             musicPlayer.backgroundWorker.WorkerReportsProgress = true;
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
@@ -813,5 +837,135 @@ namespace MusicPlayerWPF
             }
         }
         #endregion
+
+        #region ADD EDIT DELETE PLAYLIST
+
+        private void MenuItem_AddPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            AddPlaylistWindow addPlaylistWindow = new AddPlaylistWindow();
+
+            if (addPlaylistWindow.ShowDialog() == true)
+            {
+                var addedPlaylist = addPlaylistWindow.addedPlaylist;
+                if (addedPlaylist != null)
+                {
+                    var playlist = playlistsList.FirstOrDefault(a => a.PlaylistID == addedPlaylist.PlaylistID);
+                    if (playlist == null)
+                    {
+                        playlistsList.Add(addedPlaylist);
+                    }
+                }
+            }
+        }
+
+        private void MenuItem_EditPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            EditPlaylistWindow editPlaylistWindow = new EditPlaylistWindow();
+
+            if (editPlaylistWindow.ShowDialog() == true)
+            {
+                var editedPlaylist = editPlaylistWindow.modifiedPlaylist;
+                if (editedPlaylist != null)
+                {
+                    playlistsList[listBox_PlaylistsList.SelectedIndex] = editedPlaylist;
+                }
+            }
+        }
+
+        private void MenuItem_DeletePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this playlist?", "Delete Playlist", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+
+                    if (currentPlaylist != null)
+                    {
+                        var playlistInSongPlaylist = musicPlayer.GetAllSongPlaylists();
+
+                        foreach (var songPlaylist in playlistInSongPlaylist)
+                        {
+                            if(currentPlaylist.PlaylistID == songPlaylist.PlaylistID)
+                            {
+                                musicPlayer.RemoveSongPlaylist(songPlaylist.Song.Title, currentPlaylist.Name);
+                            }
+                        }
+
+                        musicPlayer.RemovePlaylist(currentPlaylist.Name);
+                        playlistsList.Remove(currentPlaylist);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Choose playlist to delete!", "Delete Playlist", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        #endregion
+
+        private void MenuItem_AddSongToPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_SongsList.SelectedIndex != -1 && listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                var currentSong = (Song)listBox_SongsList.SelectedItem;
+
+                var isSongInPlaylist = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID).Where(sp => sp.SongID == currentSong.SongID).FirstOrDefault();
+
+                if(isSongInPlaylist == null)
+                {
+                    musicPlayer.AddSongPlaylist(currentSong.Title, currentPlaylist.Name);
+                    playlistSongList.Add(currentSong);
+                }
+                else
+                {
+                    MessageBox.Show("This song is in choosen playlist!", "Add song to playlist", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                var playlistInSongPlaylist = musicPlayer.GetAllSongPlaylists();
+
+                //var tmpSongList = new ObservableCollection<Song>();
+
+                playlistSongList.Clear();
+
+                foreach (var songPlaylist in playlistInSongPlaylist)
+                {
+                    if (currentPlaylist.PlaylistID == songPlaylist.PlaylistID)
+                    {
+                        playlistSongList.Add(songPlaylist.Song);
+                    }
+                }
+            }
+        }
+
+        private void Export_To_XML_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+
+                musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
+            }
+        }
+
+        private void Export_To_JSON_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+
+                musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+            }
+        }
     }
 }
