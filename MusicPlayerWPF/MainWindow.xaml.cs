@@ -44,10 +44,11 @@ namespace MusicPlayerWPF
             }
         }
 
-        private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectedPlaylist = listBox_PlaylistsList.SelectedIndex;
-        }*/
+        */
+        //private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    musicPlayer.LoadSongs(playlistSongList);
+        //}
 
         #region Sortowanie i filtrowanie list
 
@@ -205,7 +206,7 @@ namespace MusicPlayerWPF
             SearchTextAlbum = null;
             SelectedIndexAlbum = ComboBox_SortAlbumList.SelectedIndex;
         }
-#endregion
+        #endregion
 
 
         #region Sort SongsList
@@ -328,8 +329,8 @@ namespace MusicPlayerWPF
             Label_Downloading.Foreground = Brushes.Green;
 
             var link = textBox_YoutubeVideoLink.Text;
-            
-            if(musicPlayer.IsYoutubeLink(link) && link.Contains(@"/watch?"))
+
+            if (musicPlayer.IsYoutubeLink(link) && link.Contains(@"/watch?"))
             {
                 await musicPlayer.SaveSongFromYoutubeAsync(link);
                 var title = musicPlayer.getVideoTitle(link);
@@ -418,7 +419,7 @@ namespace MusicPlayerWPF
 
         private void buttonPreviousSong_Click(object sender, RoutedEventArgs e)
         {
-            if(musicPlayer.songs.Count > 0)
+            if (musicPlayer.songs.Count > 0)
             {
                 musicPlayer.PreviousSong();
 
@@ -500,7 +501,7 @@ namespace MusicPlayerWPF
         private void buttonShuffleSong_Click(object sender, RoutedEventArgs e)
         {
             var songList = listBox_SongsList.Items;
-            if(songList != null && songList.Count > 0)
+            if (songList != null && songList.Count > 0)
             {
                 Random random = new Random();
                 var randomSongIndex = random.Next(0, songList.Count);
@@ -542,7 +543,7 @@ namespace MusicPlayerWPF
         private void listBox_SongsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
-            if(currentSong != null)
+            if (currentSong != null)
             {
                 musicPlayer.PlaySong(currentSong.FilePath, listBox_SongsList.SelectedIndex);
 
@@ -588,12 +589,12 @@ namespace MusicPlayerWPF
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int value = (int) slider_volume.Value;
+            int value = (int)slider_volume.Value;
             musicPlayer.ChangeValue(value);
         }
 
         #region ADD EDIT DELETE SONG
-        
+
         private void MenuItem_AddSong_Click(object sender, RoutedEventArgs e)
         {
             AddSongWindow addSongWindow = new AddSongWindow();
@@ -601,7 +602,7 @@ namespace MusicPlayerWPF
             if (addSongWindow.ShowDialog() == true)
             {
                 var addedSong = addSongWindow.addedSong;
-                if(addedSong != null)
+                if (addedSong != null)
                 {
                     songsList.Add(addedSong);
                     musicPlayer.LoadSongs(songsList);
@@ -610,7 +611,7 @@ namespace MusicPlayerWPF
                 if (addedAuthor != null)
                 {
                     var author = authorsList.FirstOrDefault(a => a.AuthorID == addedAuthor.AuthorID);
-                    if(author == null)
+                    if (author == null)
                     {
                         authorsList.Add(addedAuthor);
                     }
@@ -630,7 +631,7 @@ namespace MusicPlayerWPF
 
         private void MenuItem_EditSong_Click(object sender, RoutedEventArgs e)
         {
-            if(listBox_SongsList.SelectedIndex != musicPlayer.currentPlayedSong)
+            if (listBox_SongsList.SelectedIndex != musicPlayer.currentPlayedSong)
             {
                 EditSongWindow editSongWindow = new EditSongWindow();
 
@@ -674,7 +675,7 @@ namespace MusicPlayerWPF
             if (listBox_SongsList.SelectedIndex != musicPlayer.currentPlayedSong)
             {
                 MessageBoxResult result = MessageBox.Show("Do you want to delete this song?", "Delete Song", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if(result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     string workingDirectory = Environment.CurrentDirectory;
                     string SOLUTION_DIRECTORY = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
@@ -692,7 +693,7 @@ namespace MusicPlayerWPF
 
                     var songPlaylist = musicPlayer.GetAllSongPlaylists().FirstOrDefault(sp => sp.SongID == currentSong.SongID);
 
-                    if(songPlaylist == null)
+                    if (songPlaylist == null)
                     {
                         if (currentSong != null)
                         {
@@ -736,7 +737,7 @@ namespace MusicPlayerWPF
 
         private void MenuItem_EditAuthor_Click(object sender, RoutedEventArgs e)
         {
-            EditAuthorWindow editAuthorWindow= new EditAuthorWindow();
+            EditAuthorWindow editAuthorWindow = new EditAuthorWindow();
 
             if (editAuthorWindow.ShowDialog() == true)
             {
@@ -762,7 +763,7 @@ namespace MusicPlayerWPF
                         var authorInSongs = songsList.FirstOrDefault(s => s.AuthorID == currentAuthor.AuthorID);
                         var authorInAlbums = albumsList.FirstOrDefault(a => a.AuthorID == currentAuthor.AuthorID);
 
-                        if(authorInSongs != null || authorInAlbums != null)
+                        if (authorInSongs != null || authorInAlbums != null)
                         {
                             MessageBox.Show("This author have songs or albums. Can not delete!", "Delete Author", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
@@ -915,7 +916,7 @@ namespace MusicPlayerWPF
 
                         foreach (var songPlaylist in playlistInSongPlaylist)
                         {
-                            if(currentPlaylist.PlaylistID == songPlaylist.PlaylistID)
+                            if (currentPlaylist.PlaylistID == songPlaylist.PlaylistID)
                             {
                                 musicPlayer.RemoveSongPlaylist(songPlaylist.Song.Title, currentPlaylist.Name);
                             }
@@ -943,7 +944,7 @@ namespace MusicPlayerWPF
 
                 var isSongInPlaylist = musicPlayer.GetAllSongPlaylists().Where(sp => sp.PlaylistID == currentPlaylist.PlaylistID).Where(sp => sp.SongID == currentSong.SongID).FirstOrDefault();
 
-                if(isSongInPlaylist == null)
+                if (isSongInPlaylist == null)
                 {
                     musicPlayer.AddSongPlaylist(currentSong.Title, currentPlaylist.Name);
                     playlistSongList.Add(currentSong);
@@ -957,7 +958,7 @@ namespace MusicPlayerWPF
 
         private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(listBox_PlaylistsList.SelectedIndex != -1)
+            if (listBox_PlaylistsList.SelectedIndex != -1)
             {
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
                 var playlistInSongPlaylist = musicPlayer.GetAllSongPlaylists();
@@ -973,6 +974,7 @@ namespace MusicPlayerWPF
                         playlistSongList.Add(songPlaylist.Song);
                     }
                 }
+                musicPlayer.LoadSongs(playlistSongList);
             }
         }
 
