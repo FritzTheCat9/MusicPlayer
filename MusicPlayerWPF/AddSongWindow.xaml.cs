@@ -30,6 +30,7 @@ namespace MusicPlayerWPF
         public AddSongWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
         private void Button_Choose_File_Click(object sender, RoutedEventArgs e)

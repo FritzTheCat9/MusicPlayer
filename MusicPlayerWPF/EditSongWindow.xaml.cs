@@ -30,6 +30,7 @@ namespace MusicPlayerWPF
         public EditSongWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             selectedSong = (Song)((MainWindow)Application.Current.MainWindow).listBox_SongsList.SelectedItem;
 

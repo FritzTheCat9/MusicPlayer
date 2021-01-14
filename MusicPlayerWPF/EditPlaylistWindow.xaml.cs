@@ -28,6 +28,7 @@ namespace MusicPlayerWPF
         public EditPlaylistWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             selectedPlaylist = (Playlist)((MainWindow)Application.Current.MainWindow).listBox_PlaylistsList.SelectedItem;
 
