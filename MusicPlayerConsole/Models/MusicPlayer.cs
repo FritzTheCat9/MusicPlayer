@@ -71,6 +71,7 @@ namespace MusicPlayerConsole
             player = new MediaPlayer.MediaPlayer();
         }
 
+
         /* Project folders paths (to store songs, playlists, images) */
         #region ProjectPaths
 

@@ -354,7 +354,7 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Slider Name="slider_SongDuration" Minimum="0" Value="0" Maximum="1" Margin="5"/>
+                        <Slider Name="slider_SongDuration" Minimum="0" TickFrequency="1" ValueChanged="slider_SongDuration_ValueChanged_1" Margin="5"/>
                         <Label Name="label_SongDuration" Grid.Column="1"/>
                     </Grid>
                     <Grid HorizontalAlignment="Center">

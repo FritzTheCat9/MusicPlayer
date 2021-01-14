@@ -20,6 +20,7 @@ namespace MusicPlayerWPF
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MusicPlayer musicPlayer = MusicPlayer.getInstance();
+
         public IList<Song> songsList { get; set; } = new ObservableCollection<Song>();
         public Song currentSong = null;
         public IList<Author> authorsList { get; set; } = new ObservableCollection<Author>();
@@ -31,24 +32,19 @@ namespace MusicPlayerWPF
         public IList<Song> playlistSongList { get; set; } = new ObservableCollection<Song>();
         public Album currentPlaylistSong = null;
 
+        private bool isRunning = true;
 
-        /*private int _selectedPlaylist;
-        public int SelectedPlaylist
+        public int pos = 0;
+        public int Pos
         {
-            get { return _selectedPlaylist; }
+            get { return pos; }
             set
             {
-                _selectedPlaylist = value;
-
-                OnPropertyChanged("SelectedPlaylist");
+                pos = value;
+                OnPropertyChanged("Pos");
             }
         }
 
-        */
-        //private void listBox_PlaylistsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    musicPlayer.LoadSongs(playlistSongList);
-        //}
 
         #region Sortowanie i filtrowanie list
 
@@ -288,6 +284,7 @@ namespace MusicPlayerWPF
 
         public MainWindow()
         {
+
             songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
@@ -298,7 +295,27 @@ namespace MusicPlayerWPF
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
 
             InitializeComponent();
+
             DataContext = this;
+
+
+            BackgroundWorker worker = new BackgroundWorker();
+            //assign it work
+            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            //start work
+            worker.RunWorkerAsync();
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(isRunning)
+            {
+                pos = musicPlayer.currentPossition;
+                this.Dispatcher.Invoke(() => {
+                    slider_SongDuration.Value = pos;
+                });
+                System.Threading.Thread.Sleep(1000);
+            }
         }
 
         private void Button_Choose_File_Click(object sender, RoutedEventArgs e)
@@ -459,6 +476,8 @@ namespace MusicPlayerWPF
                     musicPlayer.PauseSong();
                 }
             }
+            //buttonPauseSong.Content = (int)musicPlayer.GetCurrentPossition().ToString();
+            //buttonPauseSong.Content = "SSS";
         }
 
         private void buttonStopSong_Click(object sender, RoutedEventArgs e)
@@ -576,6 +595,7 @@ namespace MusicPlayerWPF
         private void listBox_SongsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentSong = (Song)listBox_SongsList.SelectedItem;
+            slider_SongDuration.Maximum = currentSong.Length+1;
         }
 
         private void slider_SongDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -1037,6 +1057,15 @@ namespace MusicPlayerWPF
                 {
                     MessageBox.Show("You must create playlist file, Songs folder and Image folder!", "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+
+        private void slider_SongDuration_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if((int)slider_SongDuration.Value > pos+1 || (int)slider_SongDuration.Value < pos -1)
+            {
+                pos = (int)slider_SongDuration.Value;
+                musicPlayer.currentPossition = pos;
             }
         }
     }
