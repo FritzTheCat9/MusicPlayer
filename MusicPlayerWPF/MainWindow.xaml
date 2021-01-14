@@ -391,7 +391,8 @@
                              Padding="5" Margin="5"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            ScrollViewer.CanContentScroll="False">
+                            ScrollViewer.CanContentScroll="False"
+                         MouseDoubleClick="listBox_playlistSongList_MouseDoubleClick">
                 </ListBox>
             </Grid>
 
