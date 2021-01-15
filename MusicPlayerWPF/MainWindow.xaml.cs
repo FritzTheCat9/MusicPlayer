@@ -311,10 +311,13 @@ namespace MusicPlayerWPF
             while(isRunning)
             {
                 pos = musicPlayer.currentPossition;
-                this.Dispatcher.Invoke(() => {
-                    if (slider_SongDuration != null)
-                        slider_SongDuration.Value = pos;
-                });
+                if (slider_SongDuration != null)
+                {
+                    this.Dispatcher.Invoke(() => {
+                        if (slider_SongDuration != null)
+                            slider_SongDuration.Value = pos;
+                    });
+                }
                 System.Threading.Thread.Sleep(1000);
             }
         }
@@ -923,22 +926,24 @@ namespace MusicPlayerWPF
                 MessageBoxResult result = MessageBox.Show("Do you want to delete this playlist?", "Delete Playlist", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                    var choosenPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
-                    if (currentPlaylist != null)
+                    if (choosenPlaylist != null)
                     {
                         var playlistInSongPlaylist = musicPlayer.GetAllSongPlaylists();
 
                         foreach (var songPlaylist in playlistInSongPlaylist)
                         {
-                            if (currentPlaylist.PlaylistID == songPlaylist.PlaylistID)
+                            if (choosenPlaylist.PlaylistID == songPlaylist.PlaylistID)
                             {
-                                musicPlayer.RemoveSongPlaylist(songPlaylist.Song.Title, currentPlaylist.Name);
+                                musicPlayer.RemoveSongPlaylist(songPlaylist.Song.Title, choosenPlaylist.Name);
                             }
                         }
 
-                        musicPlayer.RemovePlaylist(currentPlaylist.Name);
-                        playlistsList.Remove(currentPlaylist);
+                        musicPlayer.RemovePlaylist(choosenPlaylist.Name);
+                        playlistsList.Remove(choosenPlaylist);
+
+                        playlistSongList.Clear();
                     }
                 }
             }
@@ -975,7 +980,7 @@ namespace MusicPlayerWPF
         {
             if (listBox_PlaylistsList.SelectedIndex != -1)
             {
-                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+                currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
                 var playlistInSongPlaylist = musicPlayer.GetAllSongPlaylists();
 
                 //var tmpSongList = new ObservableCollection<Song>();
@@ -1048,6 +1053,12 @@ namespace MusicPlayerWPF
                     foreach (var fsongPlaylist in songPlaylists)
                     {
                         playlistSongList.Add(fsongPlaylist.Song);
+
+                        var isSongInDatabase = musicPlayer.GetAllSongs().Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault();
+                        if (isSongInDatabase != null)
+                        {
+                            songsList.Add(isSongInDatabase);
+                        }
                     }
 
                     MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1078,6 +1089,12 @@ namespace MusicPlayerWPF
                     foreach (var fsongPlaylist in songPlaylists)
                     {
                         playlistSongList.Add(fsongPlaylist.Song);
+
+                        var isSongInDatabase = musicPlayer.GetAllSongs().Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault();
+                        if (isSongInDatabase != null)
+                        {
+                            songsList.Add(isSongInDatabase);
+                        }
                     }
 
                     MessageBox.Show("Playlist imported", "Import Succes", MessageBoxButton.OK, MessageBoxImage.Information);
