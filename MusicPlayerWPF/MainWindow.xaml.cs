@@ -46,7 +46,6 @@ namespace MusicPlayerWPF
             }
         }
 
-
         #region Sortowanie i filtrowanie list
 
         #region Search SongsList
@@ -285,7 +284,6 @@ namespace MusicPlayerWPF
 
         public MainWindow()
         {
-
             songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
@@ -311,16 +309,23 @@ namespace MusicPlayerWPF
         {
             while (isRunning)
             {
-                pos = musicPlayer.currentPossition;
-                if (slider_SongDuration != null)
+                try
                 {
-                    this.Dispatcher.Invoke(() =>
+                    pos = musicPlayer.currentPossition;
+                    if (slider_SongDuration != null)
                     {
-                        if (slider_SongDuration != null)
-                            slider_SongDuration.Value = pos;
-                    });
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            if (slider_SongDuration != null)
+                                slider_SongDuration.Value = pos;
+                        });
+                    }
+                    System.Threading.Thread.Sleep(1000);
                 }
-                System.Threading.Thread.Sleep(1000);
+                catch
+                {
+
+                }
             }
         }
 
@@ -445,6 +450,9 @@ namespace MusicPlayerWPF
                 image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
                 image.EndInit();
                 image_CurrentSong.Source = image;
+
+                label_SongDuration.Content = musicPlayer.songs[musicPlayer.currentPlayedSong].Length;
+                slider_SongDuration.Maximum = musicPlayer.songs[musicPlayer.currentPlayedSong].Length + 1;
             }
         }
 
@@ -462,6 +470,9 @@ namespace MusicPlayerWPF
                     image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
                     image.EndInit();
                     image_CurrentSong.Source = image;
+
+                    /*label_SongDuration.Content = musicPlayer.songs[musicPlayer.currentPlayedSong].Length;
+                    slider_SongDuration.Maximum = musicPlayer.songs[musicPlayer.currentPlayedSong].Length + 1;*/
                 }
             }
         }
@@ -513,6 +524,9 @@ namespace MusicPlayerWPF
                 image.UriSource = new Uri(musicPlayer.songs[musicPlayer.currentPlayedSong].ImagePath, UriKind.Absolute);
                 image.EndInit();
                 image_CurrentSong.Source = image;
+
+                label_SongDuration.Content = musicPlayer.songs[musicPlayer.currentPlayedSong].Length;
+                slider_SongDuration.Maximum = musicPlayer.songs[musicPlayer.currentPlayedSong].Length + 1;
             }
         }
 
@@ -551,7 +565,7 @@ namespace MusicPlayerWPF
                     image_CurrentSong.Source = image;
 
                     label_SongDuration.Content = currentSong.Length;
-                    slider_SongDuration.Maximum = currentSong.Length;
+                    slider_SongDuration.Maximum = currentSong.Length + 1;
                 }
             }
         }
@@ -1148,7 +1162,7 @@ namespace MusicPlayerWPF
                 image_CurrentSong.Source = image;
 
                 label_SongDuration.Content = currentSong.Length;
-                slider_SongDuration.Maximum = currentSong.Length;
+                slider_SongDuration.Maximum = currentSong.Length + 1;
             }
         }
 
