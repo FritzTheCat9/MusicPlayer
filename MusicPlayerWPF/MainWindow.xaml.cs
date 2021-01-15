@@ -1054,10 +1054,10 @@ namespace MusicPlayerWPF
                     {
                         playlistSongList.Add(fsongPlaylist.Song);
 
-                        var isSongInDatabase = musicPlayer.GetAllSongs().Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault();
-                        if (isSongInDatabase != null)
+                        var isSongInSongsList = songsList.Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault(); // poprawic to
+                        if (isSongInSongsList == null)
                         {
-                            songsList.Add(isSongInDatabase);
+                            songsList.Add(fsongPlaylist.Song);
                         }
                     }
 
@@ -1090,10 +1090,10 @@ namespace MusicPlayerWPF
                     {
                         playlistSongList.Add(fsongPlaylist.Song);
 
-                        var isSongInDatabase = musicPlayer.GetAllSongs().Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault();
-                        if (isSongInDatabase != null)
+                        var isSongInSongsList = songsList.Where(s => s.Title == fsongPlaylist.Song.Title).FirstOrDefault(); // poprawic to
+                        if (isSongInSongsList == null)
                         {
-                            songsList.Add(isSongInDatabase);
+                            songsList.Add(fsongPlaylist.Song);
                         }
                     }
 
