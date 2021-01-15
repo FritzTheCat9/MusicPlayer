@@ -57,12 +57,11 @@
                                 <MenuItem Header="Export">
                                     <MenuItem Name="Export_To_XML" Header="To XML" Click="Export_To_XML_Click"/>
                                     <MenuItem Name="Export_To_JSON" Header="To JSON" Click="Export_To_JSON_Click"/>
-                                    <MenuItem Header="To ZIP"/>
+                                    <MenuItem Name="Export_To_ZIP" Header="To ZIP" Click="Export_To_ZIP_Click"/>
                                 </MenuItem>
                                 <MenuItem Header="Import">
                                     <MenuItem Name="Import_From_XML" Header="From XML" Click="Import_From_XML_Click"/>
                                     <MenuItem Name="Import_From_JSON" Header="From JSON" Click="Import_From_JSON_Click"/>
-                                    <MenuItem Header="From ZIP"/>
                                 </MenuItem>
                             </Menu>
                         </StackPanel>

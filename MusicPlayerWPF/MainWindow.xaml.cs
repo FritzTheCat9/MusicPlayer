@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -308,12 +309,13 @@ namespace MusicPlayerWPF
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while(isRunning)
+            while (isRunning)
             {
                 pos = musicPlayer.currentPossition;
                 if (slider_SongDuration != null)
                 {
-                    this.Dispatcher.Invoke(() => {
+                    this.Dispatcher.Invoke(() =>
+                    {
                         if (slider_SongDuration != null)
                             slider_SongDuration.Value = pos;
                     });
@@ -371,11 +373,11 @@ namespace MusicPlayerWPF
             if (musicPlayer.IsYoutubeLink(link) && link.Contains(@"/playlist?"))
             {
                 var count = musicPlayer.CountVideosInYoutubePlaylist(link);
-                if(count != 0)
+                if (count != 0)
                 {
                     progressBar_playlistDownload.Maximum = count;
                 }
-                
+
                 musicPlayer.backgroundWorker.DoWork += (obj, arg) =>
                 {
                     musicPlayer.GetVideosFromPlaylist(link);
@@ -1024,7 +1026,7 @@ namespace MusicPlayerWPF
 
                 bool xamlResult = musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
                 bool jsonResult = musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
-                if(xamlResult == false || jsonResult == false)
+                if (xamlResult == false || jsonResult == false)
                 {
                     MessageBox.Show("Something went wrong with exporting", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -1109,7 +1111,7 @@ namespace MusicPlayerWPF
 
         private void slider_SongDuration_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if((int)slider_SongDuration.Value > pos+1 || (int)slider_SongDuration.Value < pos -1)
+            if ((int)slider_SongDuration.Value > pos + 1 || (int)slider_SongDuration.Value < pos - 1)
             {
                 pos = (int)slider_SongDuration.Value;
                 musicPlayer.currentPossition = pos;
@@ -1168,6 +1170,40 @@ namespace MusicPlayerWPF
                 {
                     MessageBox.Show("This song is not from current playlist! Can not remove!", "Add song to playlist", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+            }
+        }
+
+        private void Export_To_ZIP_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox_PlaylistsList.SelectedIndex != -1)
+            {
+                var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
+
+                bool xamlResult = musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
+                bool jsonResult = musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+                if (xamlResult == false || jsonResult == false)
+                {
+                    MessageBox.Show("Something went wrong with exporting", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                try
+                {
+                    var playlistFolderName = currentPlaylist.FilePath + currentPlaylist.Name;
+                    var zipPath = playlistFolderName + @".zip";
+                    if(File.Exists(zipPath))
+                    {
+                        File.Delete(zipPath);
+                    }
+                    ZipFile.CreateFromDirectory(playlistFolderName, zipPath);
+                }
+                catch
+                {
+                    MessageBox.Show("Something went wrong with exporting", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

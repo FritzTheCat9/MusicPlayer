@@ -405,7 +405,7 @@ namespace MusicPlayerConsole
 
         /* OTHER */
         #region OTHER
-        private IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
+        public IEnumerable<Song> GetAllSongsFromPlaylist(string playListName)
         {
             return Database.GetAllSongsFromPlaylist(playListName);
         }
