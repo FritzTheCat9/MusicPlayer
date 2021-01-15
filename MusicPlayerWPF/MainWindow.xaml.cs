@@ -312,7 +312,8 @@ namespace MusicPlayerWPF
             {
                 pos = musicPlayer.currentPossition;
                 this.Dispatcher.Invoke(() => {
-                    slider_SongDuration.Value = pos;
+                    if (slider_SongDuration != null)
+                        slider_SongDuration.Value = pos;
                 });
                 System.Threading.Thread.Sleep(1000);
             }
@@ -999,9 +1000,15 @@ namespace MusicPlayerWPF
             {
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
-                musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
-                musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+                bool xamlResult = musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
+                bool jsonResult = musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+                if (xamlResult == false || jsonResult == false)
+                {
+                    MessageBox.Show("Something went wrong with exporting", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
+            MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Export_To_JSON_Click(object sender, RoutedEventArgs e)
@@ -1010,8 +1017,15 @@ namespace MusicPlayerWPF
             {
                 var currentPlaylist = (Playlist)listBox_PlaylistsList.SelectedItem;
 
-                musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
-                musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+                bool xamlResult = musicPlayer.ExportPlaylistToXML(currentPlaylist.Name, currentPlaylist.FilePath);
+                bool jsonResult = musicPlayer.ExportPlaylistToJSON(currentPlaylist.Name, currentPlaylist.FilePath);
+                if(xamlResult == false || jsonResult == false)
+                {
+                    MessageBox.Show("Something went wrong with exporting", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+
             }
         }
 
