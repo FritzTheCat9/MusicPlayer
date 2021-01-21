@@ -202,9 +202,9 @@
 
                         <StackPanel>
                             <Menu Margin="5" Padding="5">
+                                <MenuItem x:Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                                 <MenuItem Name="MenuItem_EditAlbum" Header="Edit" Click="MenuItem_EditAlbum_Click"/>
                                 <MenuItem Name="MenuItem_DeleteAlbum" Header="Delete" Click="MenuItem_DeleteAlbum_Click"/>
-                                <MenuItem x:Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                             </Menu>
                             <Grid>
                                 <Grid.ColumnDefinitions>
