@@ -284,11 +284,11 @@ namespace MusicPlayerWPF
 
         public MainWindow()
         {
-            songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
+            /*songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
             playlistsList = new ObservableCollection<Playlist>(musicPlayer.GetAllPlaylists().ToList());
-            playlistSongList = new ObservableCollection<Song>();
+            playlistSongList = new ObservableCollection<Song>();*/
 
             musicPlayer.backgroundWorker.WorkerReportsProgress = true;
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
@@ -1218,6 +1218,24 @@ namespace MusicPlayerWPF
                 }
 
                 MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        private void ChangeTheme(object sender, RoutedEventArgs e)
+        {
+            Uri darkUri = new Uri("ResourcesDark.xaml", UriKind.RelativeOrAbsolute);
+            if (Application.Current.Resources.MergedDictionaries[0].Source == darkUri)
+            {
+                ResourceDictionary newRes = new ResourceDictionary();
+                newRes.Source = new Uri("ResourcesLight.xaml", UriKind.RelativeOrAbsolute);
+                Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.MergedDictionaries.Add(newRes);
+            }
+            else
+            {
+                ResourceDictionary newRes = new ResourceDictionary();
+                newRes.Source = new Uri("ResourcesDark.xaml", UriKind.RelativeOrAbsolute);
+                Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.MergedDictionaries.Add(newRes);
             }
         }
     }
