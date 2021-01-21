@@ -285,11 +285,11 @@ namespace MusicPlayerWPF
 
         public MainWindow()
         {
-            /*songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
+            songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
             playlistsList = new ObservableCollection<Playlist>(musicPlayer.GetAllPlaylists().ToList());
-            playlistSongList = new ObservableCollection<Song>();*/
+            playlistSongList = new ObservableCollection<Song>();
 
             musicPlayer.backgroundWorker.WorkerReportsProgress = true;
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
