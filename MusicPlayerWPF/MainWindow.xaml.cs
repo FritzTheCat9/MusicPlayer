@@ -1225,15 +1225,17 @@ namespace MusicPlayerWPF
             Uri darkUri = new Uri("ResourcesDark.xaml", UriKind.RelativeOrAbsolute);
             if (Application.Current.Resources.MergedDictionaries[0].Source == darkUri)
             {
+
                 ResourceDictionary newRes = new ResourceDictionary();
                 newRes.Source = new Uri("ResourcesLight.xaml", UriKind.RelativeOrAbsolute);
                 Application.Current.Resources.MergedDictionaries.Clear();
                 Application.Current.Resources.MergedDictionaries.Add(newRes);
+
             }
             else
             {
                 ResourceDictionary newRes = new ResourceDictionary();
-                newRes.Source = new Uri("ResourcesDark.xaml", UriKind.RelativeOrAbsolute);
+                newRes.Source = darkUri;
                 Application.Current.Resources.MergedDictionaries.Clear();
                 Application.Current.Resources.MergedDictionaries.Add(newRes);
             }
