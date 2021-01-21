@@ -335,7 +335,7 @@
                                 <RotateTransform Angle="180"></RotateTransform>
                             </Slider.LayoutTransform>
                         </Slider>
-                        <Image Name="volumeImage" Grid.Column="1" Grid.Row="4" Source="img/Volume.png" Width="30" Height="30" Margin="3.4,3.8,3.4,0" VerticalAlignment="Top"/>
+                        <Image Name="volumeImage" Grid.Column="1" Grid.Row="4" Source="img/LightTheme/volume.png" Width="30" Height="30" Margin="3.4,3.8,3.4,0" VerticalAlignment="Top"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
