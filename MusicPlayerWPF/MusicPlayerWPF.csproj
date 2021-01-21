@@ -206,48 +206,52 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="img\Icons\Black\btnnext.png">
+    <Resource Include="img\DarkTheme\background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnPause.png">
+    <Resource Include="img\DarkTheme\btnnext.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnplay.png">
+    <Resource Include="img\DarkTheme\btnPause.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnprevious.png">
+    <Resource Include="img\DarkTheme\btnplay.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnresume.png">
+    <Resource Include="img\DarkTheme\btnprevious.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnshuffle.png">
+    <Resource Include="img\DarkTheme\btnresume.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Black\btnstop.png">
+    <Resource Include="img\DarkTheme\btnshuffle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="img\Icons\Color\btnnext.png">
+    <Resource Include="img\DarkTheme\btnstop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnPause.png">
+    <Resource Include="img\DarkTheme\volume.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnplay.png">
+    <Resource Include="img\LightTheme\btnnext.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnprevious.png">
+    <Resource Include="img\LightTheme\btnPause.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnresume.png">
+    <Resource Include="img\LightTheme\btnplay.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnshuffle.png">
+    <Resource Include="img\LightTheme\btnprevious.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="img\Icons\Color\btnstop.png">
+    <Resource Include="img\LightTheme\btnresume.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\LightTheme\btnshuffle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\LightTheme\btnstop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

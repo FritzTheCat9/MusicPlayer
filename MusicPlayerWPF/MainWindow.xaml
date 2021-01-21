@@ -31,6 +31,9 @@
     </Window.Resources>
     <DockPanel >
         <Grid DockPanel.Dock="Top">
+            <Grid.Background>
+                <ImageBrush ImageSource="img/DarkTheme/background.png"/>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="4*"/>
@@ -40,7 +43,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TabControl Grid.Column="0" TabStripPlacement="Left" Padding="5" Margin="5">
+            <TabControl Grid.Column="0" TabStripPlacement="Left" Padding="5" Margin="10">
+                <TabControl.Background>
+                    <SolidColorBrush Color="White" Opacity="0.6"/>
+                </TabControl.Background>
                 <TabItem Header="Playlists" Padding="5">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -120,6 +126,9 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ScrollViewer.CanContentScroll="False">
+                            <ListBox.Background>
+                                <SolidColorBrush Color="White" Opacity="0.8"/>
+                            </ListBox.Background>
                         </ListBox>
                     </Grid>
                     <!--</DockPanel>-->
@@ -127,6 +136,9 @@
                 <TabItem Header="YouTube" Padding="5">
                     <StackPanel Name="grid_YouTube">
                         <Border BorderBrush="Black" BorderThickness="1">
+                            <Border.Background>
+                                <SolidColorBrush Color="White" Opacity="0.8"/>
+                            </Border.Background>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -150,6 +162,9 @@
                         <Separator Visibility="Hidden"></Separator>
 
                         <Border BorderBrush="Black" BorderThickness="1">
+                            <Border.Background>
+                                <SolidColorBrush Color="White" Opacity="0.8"/>
+                            </Border.Background>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -273,9 +288,9 @@
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ScrollViewer.CanContentScroll="False">
-                            </ListBox>
+                        </ListBox>
                     </Grid>
-                        
+
                 </TabItem>
                 <TabItem Header="Settings" Padding="5">
                     <Grid Margin="5">
@@ -313,18 +328,21 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="0*"/>
                             <RowDefinition/>
+                            <RowDefinition Height="15*"/>
+                            <RowDefinition Height="16*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="2" Width="320" Height="180" 
-                           Source="img/DefaultImage.png" Margin="5"/>
+                        <Image Name="image_CurrentSong" Grid.Column="0" Grid.RowSpan="3" Width="320" Height="180" 
+                           Source="img/DefaultImage.png" Margin="10,5,8,5.5" Grid.Row="2" />
                         <Slider Name="slider_volume" Grid.Column="1" Orientation="Vertical" Minimum="1" Maximum="4001" Value="3000" 
-                            ValueChanged="Slider_ValueChanged" Margin="5">
+                            ValueChanged="Slider_ValueChanged" Margin="5,0,5,4.5" Grid.RowSpan="3" Grid.Row="1">
                             <Slider.LayoutTransform>
                                 <RotateTransform Angle="180"></RotateTransform>
                             </Slider.LayoutTransform>
                         </Slider>
-                        <Image Grid.Column="1" Grid.Row="1" Source="img/Volume.png" Width="30" Height="30" Margin="3"/>
+                        <Image Grid.Column="1" Grid.Row="4" Source="img/Volume.png" Width="30" Height="30" Margin="3,3.5,3,2.5"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -345,36 +363,36 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/Icons/Color/btnprevious.png" Width="32" Height="32" />
+                            <Image Source="img/DarkTheme/btnprevious.png" Width="32" Height="32" />
                         </Button>
-                        
+
                         <Button Name="buttonPauseSong" Grid.Row="0" Grid.Column="1"  Click="buttonPauseSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/Icons/Color/btnPause.png" Width="32" Height="32" />
+                            <Image Source="img/DarkTheme/btnPause.png" Width="32" Height="32" />
                         </Button>
 
                         <Button Name="buttonResumeSong" Grid.Row="0" Grid.Column="2"  Click="buttonResumeSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/Icons/Color/btnresume.png" Width="32" Height="32" />
+                            <Image Source="img/DarkTheme/btnresume.png" Width="32" Height="32" />
                         </Button>
 
                         <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Click="buttonNextSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/Icons/Color/btnnext.png" Width="32" Height="32" />
+                            <Image Source="img/DarkTheme/btnnext.png" Width="32" Height="32" />
                         </Button>
                         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
 
 
 
                             <Button Name="buttonPlaySong" Click="buttonPlaySong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/Icons/Color/btnplay.png" Width="32" Height="32" />
+                                <Image Source="img/DarkTheme/btnplay.png" Width="32" Height="32" />
                             </Button>
 
                             <Button Name="buttonStopSong"  Click="buttonStopSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/Icons/Color/btnstop.png" Width="32" Height="32" />
+                                <Image Source="img/DarkTheme/btnstop.png" Width="32" Height="32" />
                             </Button>
 
                             <Button Name="buttonShuffleSong"  Click="buttonShuffleSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/Icons/Color/btnshuffle.png" Width="32" Height="32" />
+                                <Image Source="img/DarkTheme/btnshuffle.png" Width="32" Height="32" />
                             </Button>
                         </StackPanel>
 
@@ -384,6 +402,9 @@
                 <!-- Current playlist -->
 
                 <Menu Margin="5" Padding="5" Grid.Row="1">
+                    <Menu.Background>
+                        <SolidColorBrush Color="White" Opacity="0.6"/>
+                    </Menu.Background>
                     <MenuItem Name="MenuItem_RemoveSongFromPlaylist" Header="Remove song from playlist" Click="MenuItem_RemoveSongFromPlaylist_Click"/>
                 </Menu>
                 <ListBox Name="listBox_playlistSongList" Grid.Row="3"
@@ -393,6 +414,9 @@
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ScrollViewer.CanContentScroll="False"
                          MouseDoubleClick="listBox_playlistSongList_MouseDoubleClick">
+                    <ListBox.Background>
+                        <SolidColorBrush Color="White" Opacity="0.6"/>
+                    </ListBox.Background>
                 </ListBox>
             </Grid>
 
