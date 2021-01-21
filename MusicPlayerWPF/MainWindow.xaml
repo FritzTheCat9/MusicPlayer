@@ -335,7 +335,7 @@
                                 <RotateTransform Angle="180"></RotateTransform>
                             </Slider.LayoutTransform>
                         </Slider>
-                        <Image Grid.Column="1" Grid.Row="4" Source="img/Volume.png" Width="30" Height="30" Margin="3,3.5,3,2.5"/>
+                        <Image Name="volumeImage" Grid.Column="1" Grid.Row="4" Source="img/Volume.png" Width="30" Height="30" Margin="3.4,3.8,3.4,0" VerticalAlignment="Top"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -372,19 +372,19 @@
                             <Image Source="img/Icons/btnnext.png" Width="32" Height="32" />
                         </Button>-->
                         <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/DarkTheme/btnprevious.png" Width="32" Height="32" />
+                            <Image Name="buttonPreviousSongImage" Source="img/DarkTheme/btnprevious.png" Width="32" Height="32" />
                         </Button>
 
                         <Button Name="buttonPauseSong" Grid.Row="0" Grid.Column="1"  Click="buttonPauseSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/DarkTheme/btnPause.png" Width="32" Height="32" />
+                            <Image Name="buttonPauseSongImage" Source="img/DarkTheme/btnPause.png" Width="32" Height="32" />
                         </Button>
 
                         <Button Name="buttonResumeSong" Grid.Row="0" Grid.Column="2"  Click="buttonResumeSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Source="img/DarkTheme/btnresume.png" Width="32" Height="32" />
+                            <Image Name="buttonResumeSongImage" Source="img/DarkTheme/btnresume.png" Width="32" Height="32" />
                         </Button>
 
                         <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Click="buttonNextSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/DarkTheme/btnnext.png" Width="32" Height="32" />
+                            <Image Name="buttonNextSongImage" Source="img/DarkTheme/btnnext.png" Width="32" Height="32" />
                             </Button>
                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
                             <!--<Button Name="buttonPlaySong" Click="buttonPlaySong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
@@ -399,15 +399,15 @@
                                 <Image Source="img/Icons/btnshuffle.png" Width="32" Height="32" />
                             </Button>-->
                             <Button Name="buttonPlaySong" Click="buttonPlaySong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/DarkTheme/btnplay.png" Width="32" Height="32" />
+                                <Image Name="buttonPlaySongImage" Source="img/DarkTheme/btnplay.png" Width="32" Height="32" />
                             </Button>
 
                             <Button Name="buttonStopSong"  Click="buttonStopSong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Source="img/DarkTheme/btnstop.png" Width="32" Height="32" />
+                                <Image Name="buttonStopSongImage" Source="img/DarkTheme/btnstop.png" Width="32" Height="32" />
                             </Button>
 
                             <Button Name="buttonShuffleSong"  Click="buttonShuffleSong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
-                                        <Image Source="img/DarkTheme/btnshuffle.png" Width="32" Height="32" />
+                                <Image Name="buttonShuffleSongImage" Source="img/DarkTheme/btnshuffle.png" Width="32" Height="32" />
                              </Button>
                         </StackPanel>
 
