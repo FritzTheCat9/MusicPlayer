@@ -31,9 +31,6 @@
     </Window.Resources>
     <DockPanel >
         <Grid DockPanel.Dock="Top">
-            <Grid.Background>
-                <ImageBrush x:Name="backgroundImage" ImageSource="img/LightTheme/background.png"/>
-            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="4*"/>
@@ -104,7 +101,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Content="Search" Margin="5"/>
+                            <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchSongList}"/>
                             <TextBox Name="TextBox_SearchSongList" Grid.Column="1" 
                                  Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}" 
                                  TextChanged="TextBox_SearchSongList_TextChanged"
@@ -204,9 +201,9 @@
 
                         <StackPanel>
                             <Menu Margin="5" Padding="5">
-                                <MenuItem Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                                 <MenuItem Name="MenuItem_EditAlbum" Header="Edit" Click="MenuItem_EditAlbum_Click"/>
                                 <MenuItem Name="MenuItem_DeleteAlbum" Header="Delete" Click="MenuItem_DeleteAlbum_Click"/>
+                                <MenuItem x:Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                             </Menu>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -217,7 +214,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Column="0" Content="Search" Margin="5"/>
+                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAlbumList}"/>
                                 <TextBox Name="TextBox_SearchAlbumList" Grid.Column="1" 
                                  Text="{Binding SearchTextAlbum, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="TextBox_SearchAlbumList_TextChanged"
@@ -265,7 +262,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Column="0" Content="Search" Margin="5"/>
+                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAuthorList}"/>
                                 <TextBox Name="TextBox_SearchAuthorList" Grid.Column="1" 
                                  Text="{Binding SearchTextAuthor, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="TextBox_SearchAuthorList_TextChanged"
@@ -303,14 +300,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Margin="5">Default style</Label>
-                        <ComboBox x:Name="cmb_theme" Grid.Column="1" Grid.Row="0" SelectedIndex="0" Margin="5">
-                            <ComboBoxItem>LIGHT</ComboBoxItem>
-                            <ComboBoxItem>DARK</ComboBoxItem>
-                            <ComboBoxItem>COLOR</ComboBoxItem>
-                        </ComboBox>
-                        <Button Name="DarkThemeButton" Grid.Column="1" Grid.Row="1" Margin="5" Click="DarkThemeButton_Click">DARK</Button>
-                        <Button Name="LightThemeButton" Grid.Column="0" Grid.Row="1" Margin="5" Click="LightThemeButton_Click">LIGHT</Button>
+                        <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Click="ChangeTheme" Content="Change Theme" Width="120" Height="25"></Button>
                     </Grid>
                 </TabItem>
             </TabControl>
@@ -344,7 +334,7 @@
                                 <RotateTransform Angle="180"></RotateTransform>
                             </Slider.LayoutTransform>
                         </Slider>
-                        <Image Name="volumeImage" Grid.Column="1" Grid.Row="4" Source="img/LightTheme/Volume.png" Width="30" Height="30" Margin="3,3.5,3,2.5"/>
+                        <Image Name="volumeImage" Grid.Column="1" Grid.Row="4" Source="img/LightTheme/volume.png" Width="30" Height="30" Margin="3.4,3.8,3.4,0" VerticalAlignment="Top"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -365,35 +355,33 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-
-                        <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Name="buttonPreviousSongImage" Source="img/LightTheme/btnprevious.png" Width="32" Height="32" />
+                        <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
+                            <Image Name="buttonPreviousSongImage" Source="img/DarkTheme/btnprevious.png" Width="32" Height="32" />
                         </Button>
 
-                        <Button Name="buttonPauseSong" Grid.Row="0" Grid.Column="1"  Click="buttonPauseSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Name="buttonPauseSongImage" Source="img/LightTheme/btnPause.png" Width="32" Height="32" />
+                        <Button Name="buttonPauseSong" Grid.Row="0" Grid.Column="1"  Click="buttonPauseSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
+                            <Image Name="buttonPauseSongImage" Source="img/DarkTheme/btnPause.png" Width="32" Height="32" />
                         </Button>
 
-                        <Button Name="buttonResumeSong" Grid.Row="0" Grid.Column="2"  Click="buttonResumeSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Name="buttonResumeSongImage" Source="img/LightTheme/btnresume.png" Width="32" Height="32" />
+                        <Button Name="buttonResumeSong" Grid.Row="0" Grid.Column="2"  Click="buttonResumeSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
+                            <Image Name="buttonResumeSongImage" Source="img/DarkTheme/btnresume.png" Width="32" Height="32" />
                         </Button>
 
-                        <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Click="buttonNextSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                            <Image Name="buttonNextSongImage" Source="img/LightTheme/btnnext.png" Width="32" Height="32" />
-                        </Button>
+                        <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Click="buttonNextSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
+                            <Image Name="buttonNextSongImage" Source="img/DarkTheme/btnnext.png" Width="32" Height="32" />
+                            </Button>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
+                            <Button Name="buttonPlaySong" Click="buttonPlaySong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
+                                <Image Name="buttonPlaySongImage" Source="img/DarkTheme/btnplay.png" Width="32" Height="32" />
+                            </Button>
 
-                        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
-                            <Button Name="buttonPlaySong" Click="buttonPlaySong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Name="buttonPlaySongImage" Source="img/LightTheme/btnplay.png" Width="32" Height="32" />
-                        </Button>
+                            <Button Name="buttonStopSong"  Click="buttonStopSong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
+                                <Image Name="buttonStopSongImage" Source="img/DarkTheme/btnstop.png" Width="32" Height="32" />
+                            </Button>
 
-                        <Button Name="buttonStopSong"  Click="buttonStopSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Name="buttonStopSongImage" Source="img/LightTheme/btnstop.png" Width="32" Height="32" />
-                        </Button>
-
-                        <Button Name="buttonShuffleSong"  Click="buttonShuffleSong_Click" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
-                                <Image Name="buttonShuffleSongImage" Source="img/LightTheme/btnshuffle.png" Width="32" Height="32" />
-                        </Button>
+                            <Button Name="buttonShuffleSong"  Click="buttonShuffleSong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
+                                <Image Name="buttonShuffleSongImage" Source="img/DarkTheme/btnshuffle.png" Width="32" Height="32" />
+                             </Button>
                         </StackPanel>
 
                     </Grid>

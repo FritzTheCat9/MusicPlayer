@@ -285,11 +285,11 @@ namespace MusicPlayerWPF
 
         public MainWindow()
         {
-            songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
+            /*songsList = new ObservableCollection<Song>(musicPlayer.GetAllSongs().ToList());
             authorsList = new ObservableCollection<Author>(musicPlayer.GetAllAuthors().ToList());
             albumsList = new ObservableCollection<Album>(musicPlayer.GetAllAlbums().ToList());
             playlistsList = new ObservableCollection<Playlist>(musicPlayer.GetAllPlaylists().ToList());
-            playlistSongList = new ObservableCollection<Song>();
+            playlistSongList = new ObservableCollection<Song>();*/
 
             musicPlayer.backgroundWorker.WorkerReportsProgress = true;
             musicPlayer.backgroundWorker.ProgressChanged += bgWorker_ProgressChanged;
@@ -1222,18 +1222,25 @@ namespace MusicPlayerWPF
             }
         }
 
+
         #region ThemeControler
 
         private void LightThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            ChangeMusicIcons("LightTheme");
-            DisplayBackground("LightTheme");
+            ResourceDictionary newRes = new ResourceDictionary();
+                newRes.Source = new Uri("ResourcesLight.xaml", UriKind.RelativeOrAbsolute);
+                Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.MergedDictionaries.Add(newRes);
+                ChangeMusicIcons("LightTheme");
         }
 
         private void DarkThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            ChangeMusicIcons("DarkTheme");
-            DisplayBackground("DarkTheme");
+            ResourceDictionary newRes = new ResourceDictionary();
+                newRes.Source = darkUri;
+                Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.MergedDictionaries.Add(newRes);
+                ChangeMusicIcons("DarkTheme");
         }
 
         private void ChangeMusicIcons(string theme)
@@ -1265,17 +1272,6 @@ namespace MusicPlayerWPF
 
         }
 
-        private void DisplayBackground(string theme)
-        {
-            if (theme == "DarkTheme") backgroundImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MusicPlayerWPF;component/img/DarkTheme/background.png", UriKind.RelativeOrAbsolute));
-            else backgroundImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MusicPlayerWPF;component/img/LightTheme/background.png", UriKind.RelativeOrAbsolute));
-        }
-
-        private static BitmapImage GetImageSource(string imageName)
-        {
-            return new BitmapImage(new Uri($"/MusicPlayer;component/img/LightTheme/{imageName}", UriKind.Relative));
-        }
-
-        #endregion ThemeControler
+        #endregion ThemeControler       
     }
 }
