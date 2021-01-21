@@ -180,7 +180,7 @@
                                 <Label Content="Link to youtube playlist:" Grid.Row="0" Margin="3" Padding="5" Foreground="Black"/>
                                 <TextBox Name="textBox_PlaylistLink" Grid.Row="1" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
                                 <Button Name="button_DownloadPlaylist" Grid.Row="2" Content="Download" Click="button_DownloadPlaylist_Click"
-                            Width="100" Margin="10" Padding="5" Height="20" Grid.ColumnSpan="2" IsEnabled="False"/>
+                            Width="100" Margin="10" Padding="5" Height="20" Grid.ColumnSpan="2"/>
                                 <Label Content="Playlist downloading progress:" Grid.Row="3" Margin="3" Padding="5" Foreground="Black"/>
                                 <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Height="25" Minimum="0" Maximum="1" 
                                  Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"
@@ -202,9 +202,9 @@
 
                         <StackPanel>
                             <Menu Margin="5" Padding="5">
+                                <MenuItem x:Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                                 <MenuItem Name="MenuItem_EditAlbum" Header="Edit" Click="MenuItem_EditAlbum_Click"/>
                                 <MenuItem Name="MenuItem_DeleteAlbum" Header="Delete" Click="MenuItem_DeleteAlbum_Click"/>
-                                <MenuItem x:Name="MenuItem_AddAlbum" Header="Add" Click="MenuItem_AddAlbum_Click"/>
                             </Menu>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -363,7 +363,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
+                        <Button Name="buttonPreviousSong" Grid.Row="0" Grid.Column="0"  Click="buttonPreviousSong_Click" Style="{x:Null}" Background="{x:Null}" BorderThickness="0" Margin="1" Padding="2">
                             <Image Name="buttonPreviousSongImage" Source="img/DarkTheme/btnprevious.png" Width="32" Height="32" />
                         </Button>
 

@@ -7,6 +7,7 @@
     <Color x:Key="ColorBackground">#d9d9d9</Color> 
     <!-- Button -->
     <Style TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Margin" Value="5"></Setter>
         <!--<Setter Property="FontSize" Value="20"></Setter>-->
         <Setter Property="Foreground">
@@ -25,6 +26,14 @@
                         </Border>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Button" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -88,24 +97,44 @@
         </Setter>
     </Style>
     <!-- Grid -->
-    <Style TargetType="Grid">
-        <!--<Setter Property="FontSize" Value="20"></Setter>-->
+    <!--<Style TargetType="Grid">
+        --><!--<Setter Property="FontSize" Value="20"></Setter>--><!--
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Color="{StaticResource ColorBackground}"/>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
     <!-- DockPanel -->
     <Style TargetType="MenuItem">
         <!--<Setter Property="FontSize" Value="20"></Setter>-->
+        <Setter Property="Foreground" Value="White"/>
+        <!--<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <Grid>
+                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                          TextBlock.Foreground="White"
+                                        Margin="0"/>
+                        <Border BorderBrush="#585265" BorderThickness="1" CornerRadius="5">
+                            <Border.Background>
+                                <SolidColorBrush Color="#7E7493"/>
+                            </Border.Background>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>-->
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="{StaticResource ColorBackgroundControls}"/>
+                <SolidColorBrush Color="#7E7493"/>
             </Setter.Value>
         </Setter>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#5C5C5C"/>
+        <Setter Property="BorderBrush" Value="#585265"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Padding" Value="3"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>

@@ -7,6 +7,7 @@
     <Color x:Key="ColorBackground">#EBF5EE</Color>
     <!-- Button -->
     <Style TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Margin" Value="5"></Setter>
         <Setter Property="Padding" Value="2"/>
         <Setter Property="Foreground">
@@ -17,14 +18,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
+                    <Grid Name="Button">
                         <Border BorderBrush="#DCDCDD" BorderThickness="2" CornerRadius="5" Padding="3">
                             <Border.Background>
+                                
                                 <SolidColorBrush Color="{StaticResource ColorBackgroundControls}"/>
                             </Border.Background>
                         </Border>
+                        
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Button" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
