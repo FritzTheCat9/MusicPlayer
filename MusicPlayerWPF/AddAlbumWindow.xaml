@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
         Title="AddAlbumWindow" Height="150" Width="300" MinHeight="150" MinWidth="300" MaxHeight="150">
+    <DockPanel>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -23,4 +24,5 @@
         <TextBox Name="TextBox_Author" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
         <Button Name="Button_AddAlbum" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Width="90" Content="Add album" Click="Button_AddAlbum_Click" Margin="5" Padding="5"/>
     </Grid>
+    </DockPanel>
 </Window>

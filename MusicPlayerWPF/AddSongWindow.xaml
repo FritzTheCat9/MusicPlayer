@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
         Title="AddSongWindow" Height="270" Width="600" MaxHeight="270" MinHeight="270" MinWidth="600">
-    <Grid>
+    <DockPanel>
+        <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -35,4 +36,5 @@
         <Button Name="Button_Choose_Image" Content="Choose image" Click="Button_Choose_Image_Click" Grid.Row="4" Grid.Column="3" Margin="5"/>
         <Button Name="Button_AddSong" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Width="70" Content="Add song" Click="Button_AddSong_Click" Margin="5" Padding="5"/>
     </Grid>
+    </DockPanel>
 </Window>

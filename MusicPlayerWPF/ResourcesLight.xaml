@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MusicPlayerWPF">
     <Color x:Key="ColorText">#EBF5EE</Color>
-    <Color x:Key="ColorBackgroundControls">#78A1BB </Color>
+    <Color x:Key="ColorBackgroundControls">#d9d9d9 </Color>
     <Color x:Key="ColorBackgroundControlsSelected">#5B6D9A</Color>
-    <Color x:Key="ColorBackground">#EBF5EE</Color> 
+    <Color x:Key="ColorBackground">#d9d9d9</Color> 
     <!-- Button -->
     <Style TargetType="Button">
         <Setter Property="Margin" Value="5"></Setter>
@@ -17,10 +17,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Border BorderBrush="#5B6D9A" BorderThickness="2" CornerRadius="5" >
+                    <Grid Name="Button">
+                        <Border BorderBrush="#FF585265" BorderThickness="2" CornerRadius="5" >
                             <Border.Background>
-                                <SolidColorBrush Color="{StaticResource ColorBackgroundControls}"/>
+                                <SolidColorBrush Color="#7E7493"/>
                             </Border.Background>
                         </Border>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -50,10 +50,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Panel" Property="Background" Value="#5B6D9A" /> 
+                            <Setter TargetName="Panel" Property="Background" Value="#FF585265" /> 
                         </Trigger>
                         <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Panel" Property="Background" Value="#78A1BB" />
+                            <Setter TargetName="Panel" Property="Background" Value="#7E7493" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -83,7 +83,7 @@
         <!--<Setter Property="FontSize" Value="20"></Setter>-->
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="#D6EADC"/>
+                <SolidColorBrush Color="#FFB4B4B4"/>
             </Setter.Value>
         </Setter>
     </Style>
@@ -101,8 +101,13 @@
         <!--<Setter Property="FontSize" Value="20"></Setter>-->
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="{StaticResource ColorBackground}"/>
+                <SolidColorBrush Color="{StaticResource ColorBackgroundControls}"/>
             </Setter.Value>
         </Setter>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#5C5C5C"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>

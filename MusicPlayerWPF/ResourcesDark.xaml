@@ -8,6 +8,7 @@
     <!-- Button -->
     <Style TargetType="Button">
         <Setter Property="Margin" Value="5"></Setter>
+        <Setter Property="Padding" Value="2"/>
         <Setter Property="Foreground">
             <Setter.Value>
                 <SolidColorBrush Color="{StaticResource ColorText}"/>
@@ -17,7 +18,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Border BorderBrush="#DCDCDD" BorderThickness="2" CornerRadius="5" >
+                        <Border BorderBrush="#DCDCDD" BorderThickness="2" CornerRadius="5" Padding="3">
                             <Border.Background>
                                 <SolidColorBrush Color="{StaticResource ColorBackgroundControls}"/>
                             </Border.Background>
@@ -74,6 +75,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="Label">
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
     <!-- Menu -->
     <Style TargetType="Menu">
         <Setter Property="Background">
@@ -97,6 +101,11 @@
                 <SolidColorBrush Color="{StaticResource ColorBackgroundControlsSelected}"/>
             </Setter.Value>
         </Setter>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="#5C5C5C"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     
     <Style TargetType="Window">

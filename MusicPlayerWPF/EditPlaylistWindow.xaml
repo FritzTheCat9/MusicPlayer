@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
         Title="EditPlaylistWindow" Height="120" Width="200" MaxHeight="120" MinHeight="120" MinWidth="200">
-    <Grid>
+    <DockPanel>
+        <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -20,4 +21,5 @@
         <TextBox Name="TextBox_Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
        <Button Name="Button_EditPlaylist" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="90" Content="Edit playlist" Click="Button_EditPlaylist_Click" Margin="5" Padding="5"/>
     </Grid>
+    </DockPanel>
 </Window>

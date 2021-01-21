@@ -87,7 +87,8 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Menu Margin="5" Padding="5" Grid.Row="0">
-                            <MenuItem Name="MenuItem_AddSong" Header="Add" Click="MenuItem_AddSong_Click"/>
+                            <MenuItem Name="MenuItem_AddSong" Click="MenuItem_AddSong_Click" Header="Add">
+                            </MenuItem>
                             <MenuItem Name="MenuItem_EditSong" Header="Edit" Click="MenuItem_EditSong_Click"/>
                             <MenuItem Name="MenuItem_DeleteSong" Header="Delete" Click="MenuItem_DeleteSong_Click"/>
                             <MenuItem Name="MenuItem_AddSongToPlaylist" Header="Add to playlist" Click="MenuItem_AddSongToPlaylist_Click"/>
@@ -101,12 +102,12 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchSongList}"/>
+                            <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchSongList}" Foreground="Black"/>
                             <TextBox Name="TextBox_SearchSongList" Grid.Column="1" 
                                  Text="{Binding SearchTextSong, UpdateSourceTrigger=PropertyChanged}" 
                                  TextChanged="TextBox_SearchSongList_TextChanged"
                                  VerticalAlignment="Center" Padding="5" Margin="5"/>
-                            <Label Grid.Row="1" Content="Sort" Margin="5"/>
+                            <Label Grid.Row="1" Content="Sort" Margin="5" Foreground="Black"/>
                             <ComboBox Name="ComboBox_SortSongList" Grid.Row="1" Grid.Column="1" 
                                   SelectedIndex="{Binding SelectedIndexSong, UpdateSourceTrigger=PropertyChanged}"
                                   SelectionChanged="ComboBox_SortSongList_SelectionChanged"
@@ -148,11 +149,11 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Grid.Row="0" Content="Link to youtube video:"
-                           Margin="3" Padding="5"/>
+                           Margin="3" Padding="5" Foreground="Black"/>
                                 <TextBox Name="textBox_YoutubeVideoLink" Grid.Row="1" Grid.ColumnSpan="2" 
                              Text="Link" Margin="3" Padding="5"/>
                                 <Button Name="button_DownloadYoutubeVideo" Grid.Row="2" Content="Download" 
-                            Click="button_DownloadYoutubeVideo_Click" Width="90" Margin="126,10,127,10" Height="20" Padding="5" Grid.ColumnSpan="2" />
+                            Click="button_DownloadYoutubeVideo_Click" Width="100" Margin="10" Height="20" Padding="5" Grid.ColumnSpan="2" />
                             </Grid>
                         </Border>
 
@@ -176,11 +177,11 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Content="Link to youtube playlist:" Grid.Row="0" Margin="3" Padding="5"/>
+                                <Label Content="Link to youtube playlist:" Grid.Row="0" Margin="3" Padding="5" Foreground="Black"/>
                                 <TextBox Name="textBox_PlaylistLink" Grid.Row="1" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
                                 <Button Name="button_DownloadPlaylist" Grid.Row="2" Content="Download" Click="button_DownloadPlaylist_Click"
-                            Width="100" Margin="10" Padding="5" Height="20" Grid.ColumnSpan="2" />
-                                <Label Content="Playlist downloading progress:" Grid.Row="3" Margin="3" Padding="5"/>
+                            Width="100" Margin="10" Padding="5" Height="20" Grid.ColumnSpan="2" IsEnabled="False"/>
+                                <Label Content="Playlist downloading progress:" Grid.Row="3" Margin="3" Padding="5" Foreground="Black"/>
                                 <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Height="25" Minimum="0" Maximum="1" 
                                  Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"
                                  Margin="3" Padding="5"/>
@@ -214,12 +215,12 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAlbumList}"/>
+                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAlbumList}" Foreground="Black"/>
                                 <TextBox Name="TextBox_SearchAlbumList" Grid.Column="1" 
                                  Text="{Binding SearchTextAlbum, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="TextBox_SearchAlbumList_TextChanged"
                                  VerticalAlignment="Center" Padding="5" Margin="5"/>
-                                <Label Grid.Row="1" Content="Sort" Margin="5"/>
+                                <Label Grid.Row="1" Content="Sort" Margin="5" Foreground="Black"/>
                                 <ComboBox Name="ComboBox_SortAlbumList" Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedIndexAlbum, UpdateSourceTrigger=PropertyChanged}"
                                   SelectionChanged="ComboBox_SortAlbumList_SelectionChanged"
@@ -241,7 +242,7 @@
                     </Grid>
 
                 </TabItem>
-                <TabItem Header="Autors" Padding="5" Height="20" VerticalAlignment="Bottom">
+                <TabItem Header="Autors" Padding="5" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -262,12 +263,12 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAuthorList}"/>
+                                <Label Grid.Column="0" Content="_Search" Margin="5" Target="{Binding ElementName=TextBox_SearchAuthorList}" Foreground="Black"/>
                                 <TextBox Name="TextBox_SearchAuthorList" Grid.Column="1" 
                                  Text="{Binding SearchTextAuthor, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="TextBox_SearchAuthorList_TextChanged"
                                  VerticalAlignment="Center" Padding="5" Margin="5"/>
-                                <Label Grid.Row="1" Content="Sort" Margin="5"/>
+                                <Label Grid.Row="1" Content="Sort" Margin="5" Foreground="Black"/>
                                 <ComboBox Name="ComboBox_SortAuthorList" Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedIndexAuthor, UpdateSourceTrigger=PropertyChanged}"
                                   SelectionChanged="ComboBox_SortAuthorList_SelectionChanged"
@@ -289,7 +290,7 @@
                     </Grid>
 
                 </TabItem>
-                <TabItem Header="Settings" Padding="5">
+                <TabItem Header="Settings" Padding="5" VerticalAlignment="Bottom">
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -300,8 +301,14 @@
                             <RowDefinition Height="100"/>
                         </Grid.RowDefinitions>
 
-                        <Button Name="DarkTheme" Click="DarkThemeButton_Click" Grid.Column="0" Grid.Row="0" Margin="5" Padding="5" Grid.ColumnSpan="2">DARK THEME</Button>
-                        <Button Name="LightTheme" Click="LightThemeButton_Click" Grid.Column="0" Grid.Row="1" Margin="5" Padding="5" Grid.ColumnSpan="2">LIGHT THEME</Button>
+                        <Button Name="DarkTheme" Style="{x:Null}" Click="DarkThemeButton_Click" Grid.Column="0" Grid.Row="0" Margin="5" Padding="5" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="#FF141037" Foreground="#DCDCDD">
+                            <Button.Background>
+                                <ImageBrush ImageSource="background.png"/>
+                            </Button.Background>
+                            DARK THEME
+                        </Button>
+
+                        <Button Name="LightTheme" Style="{x:Null}" Click="LightThemeButton_Click" Grid.Column="0" Grid.Row="1" Margin="5" Padding="5" Grid.ColumnSpan="2" Background="#7E7493" BorderThickness="3" BorderBrush="#FF585265">LIGHT THEME</Button>
                     </Grid>
                 </TabItem>
             </TabControl>
@@ -370,8 +377,8 @@
 
                         <Button Name="buttonNextSong" Grid.Row="0" Grid.Column="3" Click="buttonNextSong_Click" Style="{x:Null}" BorderThickness="0"  Background="{x:Null}" Margin="1" Padding="2">
                             <Image Name="buttonNextSongImage" Source="img/DarkTheme/btnnext.png" Width="32" Height="32" />
-                            </Button>
-                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
+                        </Button>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="4" HorizontalAlignment="Center">
                             <Button Name="buttonPlaySong" Click="buttonPlaySong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
                                 <Image Name="buttonPlaySongImage" Source="img/DarkTheme/btnplay.png" Width="32" Height="32" />
                             </Button>
@@ -382,7 +389,7 @@
 
                             <Button Name="buttonShuffleSong"  Click="buttonShuffleSong_Click" BorderThickness="0" Style="{x:Null}" Background="{x:Null}" Margin="1" Padding="2">
                                 <Image Name="buttonShuffleSongImage" Source="img/DarkTheme/btnshuffle.png" Width="32" Height="32" />
-                             </Button>
+                            </Button>
                         </StackPanel>
 
                     </Grid>
@@ -391,9 +398,6 @@
                 <!-- Current playlist -->
 
                 <Menu Margin="5" Padding="5" Grid.Row="1">
-                    <Menu.Background>
-                        <SolidColorBrush Color="White" Opacity="0.6"/>
-                    </Menu.Background>
                     <MenuItem Name="MenuItem_RemoveSongFromPlaylist" Header="Remove song from playlist" Click="MenuItem_RemoveSongFromPlaylist_Click"/>
                 </Menu>
                 <ListBox Name="listBox_playlistSongList" Grid.Row="3"
