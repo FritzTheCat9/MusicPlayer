@@ -197,7 +197,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="img\DefaultImage.png" />
-    <Resource Include="img\Volume.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MusicPlayerConsole\MusicPlayerConsole.csproj">
@@ -252,6 +251,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="img\LightTheme\btnstop.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\LightTheme\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\LightTheme\volume.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

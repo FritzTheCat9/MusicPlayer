@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -1220,5 +1221,61 @@ namespace MusicPlayerWPF
                 MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
+        #region ThemeControler
+
+        private void LightThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeMusicIcons("LightTheme");
+            DisplayBackground("LightTheme");
+        }
+
+        private void DarkThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeMusicIcons("DarkTheme");
+            DisplayBackground("DarkTheme");
+        }
+
+        private void ChangeMusicIcons(string theme)
+        {
+            string currentSource;
+            string newSource;
+            string from;
+            string to = theme;
+
+            List<Image> musicControlButtonsImages = new List<Image> { buttonPreviousSongImage,
+                buttonPauseSongImage,
+                buttonResumeSongImage,
+                buttonNextSongImage,
+                buttonPlaySongImage,
+                buttonStopSongImage,
+                buttonShuffleSongImage,
+                volumeImage};
+
+
+            foreach (Image image in musicControlButtonsImages)
+            {
+                currentSource = image.Source.ToString();
+
+                from = Regex.Match(currentSource, "(Dark|Light)(Theme)").ToString();
+
+                newSource = currentSource.Replace(from, to);
+                image.Source = new BitmapImage(new Uri(newSource, UriKind.RelativeOrAbsolute));
+            }
+
+        }
+
+        private void DisplayBackground(string theme)
+        {
+            if (theme == "DarkTheme") backgroundImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MusicPlayerWPF;component/img/DarkTheme/background.png", UriKind.RelativeOrAbsolute));
+            else backgroundImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MusicPlayerWPF;component/img/LightTheme/background.png", UriKind.RelativeOrAbsolute));
+        }
+
+        private static BitmapImage GetImageSource(string imageName)
+        {
+            return new BitmapImage(new Uri($"/MusicPlayer;component/img/LightTheme/{imageName}", UriKind.Relative));
+        }
+
+        #endregion ThemeControler
     }
 }
