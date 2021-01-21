@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MusicPlayerWPF"
         mc:Ignorable="d"
         Title="EditAuthorWindow" Height="120" Width="300" MinHeight="120" MinWidth="300" MaxHeight="120">
+    <DockPanel>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -20,4 +21,5 @@
         <TextBox Name="TextBox_Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Padding="5" Margin="5"/>
         <Button Name="Button_EditAuthor" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Width="90" Content="Edit author" Click="Button_EditAuthor_Click" Margin="5" Padding="5"/>
     </Grid>
+    </DockPanel>
 </Window>

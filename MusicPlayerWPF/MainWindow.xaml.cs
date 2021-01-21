@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -1225,5 +1226,57 @@ namespace MusicPlayerWPF
                 MessageBox.Show("Playlist had been exported", "Export Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
+
+        #region ThemeControler
+
+        private void LightThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary newRes = new ResourceDictionary();
+            newRes.Source = new Uri("ResourcesLight.xaml", UriKind.RelativeOrAbsolute);
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(newRes);
+            ChangeMusicIcons("LightTheme");
+        }
+
+        private void DarkThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary newRes = new ResourceDictionary();
+            newRes.Source = new Uri("ResourcesDark.xaml", UriKind.RelativeOrAbsolute);
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(newRes);
+            ChangeMusicIcons("DarkTheme");
+        }
+
+        private void ChangeMusicIcons(string theme)
+        {
+            string currentSource;
+            string newSource;
+            string from;
+            string to = theme;
+
+            List<Image> musicControlButtonsImages = new List<Image> { buttonPreviousSongImage,
+                buttonPauseSongImage,
+                buttonResumeSongImage,
+                buttonNextSongImage,
+                buttonPlaySongImage,
+                buttonStopSongImage,
+                buttonShuffleSongImage,
+                volumeImage};
+
+
+            foreach (Image image in musicControlButtonsImages)
+            {
+                currentSource = image.Source.ToString();
+
+                from = Regex.Match(currentSource, "(Dark|Light)(Theme)").ToString();
+
+                newSource = currentSource.Replace(from, to);
+                image.Source = new BitmapImage(new Uri(newSource, UriKind.RelativeOrAbsolute));
+            }
+
+        }
+
+        #endregion ThemeControler       
     }
 }
