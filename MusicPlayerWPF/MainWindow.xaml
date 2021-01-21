@@ -152,7 +152,7 @@
                                 <TextBox Name="textBox_YoutubeVideoLink" Grid.Row="1" Grid.ColumnSpan="2" 
                              Text="Link" Margin="3" Padding="5"/>
                                 <Button Name="button_DownloadYoutubeVideo" Grid.Row="2" Content="Download" 
-                            Click="button_DownloadYoutubeVideo_Click" Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
+                            Click="button_DownloadYoutubeVideo_Click" Width="90" Margin="126,10,127,10" Height="20" Padding="5" Grid.ColumnSpan="2" />
                             </Grid>
                         </Border>
 
@@ -179,7 +179,7 @@
                                 <Label Content="Link to youtube playlist:" Grid.Row="0" Margin="3" Padding="5"/>
                                 <TextBox Name="textBox_PlaylistLink" Grid.Row="1" Grid.ColumnSpan="2" Text="Link" Margin="3" Padding="5"/>
                                 <Button Name="button_DownloadPlaylist" Grid.Row="2" Content="Download" Click="button_DownloadPlaylist_Click"
-                            Width="90" Margin="3" Padding="5" Grid.ColumnSpan="2" />
+                            Width="100" Margin="10" Padding="5" Height="20" Grid.ColumnSpan="2" />
                                 <Label Content="Playlist downloading progress:" Grid.Row="3" Margin="3" Padding="5"/>
                                 <ProgressBar Name="progressBar_playlistDownload" Grid.Row="4" Height="25" Minimum="0" Maximum="1" 
                                  Value="{Binding Path=WorkerState, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"
@@ -241,7 +241,7 @@
                     </Grid>
 
                 </TabItem>
-                <TabItem Header="Autors" Padding="5">
+                <TabItem Header="Autors" Padding="5" Height="20" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -296,13 +296,12 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
                         </Grid.RowDefinitions>
 
-                        <Button Name="DarkTheme" Click="DarkThemeButton_Click" Grid.Column="0" Grid.Row="1" Margin="5" Padding="5" Grid.ColumnSpan="2">DARK THEME</Button>
-                        <Button Name="LightTheme" Click="LightThemeButton_Click" Grid.Column="0" Grid.Row="2" Margin="5" Padding="5" Grid.ColumnSpan="2">LIGHT THEME</Button>
+                        <Button Name="DarkTheme" Click="DarkThemeButton_Click" Grid.Column="0" Grid.Row="0" Margin="5" Padding="5" Grid.ColumnSpan="2">DARK THEME</Button>
+                        <Button Name="LightTheme" Click="LightThemeButton_Click" Grid.Column="0" Grid.Row="1" Margin="5" Padding="5" Grid.ColumnSpan="2">LIGHT THEME</Button>
                     </Grid>
                 </TabItem>
             </TabControl>
